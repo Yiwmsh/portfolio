@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { WhatsYourName } from "../components/WhatsYourName.tsx";
 import styled from "@emotion/styled";
+import { useEffect } from "react";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;
@@ -21,6 +22,14 @@ const Row = styled.div`
 `;
 
 export const Home: React.FC = () => {
+  const storedName = localStorage.getItem("name");
+
+  const [name, setName] = React.useState(storedName ?? "Friend");
+  React.useEffect(() => {
+    document.addEventListener("onNameChange", () =>
+      setName(localStorage.getItem("name") ?? "Friend")
+    );
+  });
   return (
     <ScrollSnapper>
       <ScrollSection>
@@ -32,6 +41,7 @@ export const Home: React.FC = () => {
               </AdjustedTextContent>{" "}
               <WhatsYourName />
             </Row>
+            <TextContent>Your name is: {name}</TextContent>
           </CardBody>
         </Card>
       </ScrollSection>
