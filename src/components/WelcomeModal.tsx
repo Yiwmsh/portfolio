@@ -10,7 +10,7 @@ import {
 } from "@yiwmsh/react-carpentry";
 import React from "react";
 import { useOverlayTriggerState } from "react-stately";
-import { LightTheme } from "../consts/theme.tsx";
+import { LightTheme } from "../consts";
 
 export const WelcomeModal: React.FC<{ theme?: Theme }> = ({ theme }) => {
   const modalState = useOverlayTriggerState({});

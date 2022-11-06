@@ -10,7 +10,9 @@ const HorizontalTextField = styled(TextField)`
 
 export const nameChangeEvent = new Event("onNameChange");
 
-export const WhatsYourName: React.FC = () => {
+export const WhatsYourName: React.FC<{ withDescription?: boolean }> = ({
+  withDescription = false,
+}) => {
   const storedName = localStorage.getItem("name");
 
   const [text, setText] = React.useState(storedName ?? "Friend");
@@ -23,7 +25,8 @@ export const WhatsYourName: React.FC = () => {
 
   return (
     <HorizontalTextField
-      description="What should I call you?"
+      description={withDescription ? "What should I call you?" : ""}
+      aria-label="Name"
       defaultValue={text}
       value={text}
       onChange={setText}

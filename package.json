@@ -6,9 +6,10 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@yiwmsh/react-carpentry": "^0.2.6",
+    "@yiwmsh/react-carpentry": "^0.2.8",
     "emotion": "^11.0.0",
-    "framer-motion": "^7.6.2",
+    "framer-motion": "4.1.17",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-aria": "^3.20.0",
     "react-dom": "^18.2.0",
@@ -40,5 +41,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "install-peers": "^1.0.4"
   }
 }
