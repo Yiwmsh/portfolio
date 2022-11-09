@@ -1,13 +1,19 @@
-import { ScrollSnapper } from "@yiwmsh/react-carpentry";
+import { Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
 import React from "react";
-import { GreetingSection } from "./home sections/GreetingSection.tsx";
+import { Modal } from "../components/Modal";
 import { IntrocutionSection } from "./home sections/IntroductionSection.tsx";
+import { SplashSection } from "./home sections/SplashSection.tsx";
+import { WelcomeModal } from "./home sections/WelcomeModal.tsx";
 
 export const Home: React.FC = () => {
   return (
-    <ScrollSnapper>
-      <GreetingSection />
-      <IntrocutionSection />
-    </ScrollSnapper>
+    <>
+      <WelcomeModal />
+      <ScrollSnapper>
+        <SplashSection />
+        <Navbar>Text</Navbar>
+        <IntrocutionSection />
+      </ScrollSnapper>
+    </>
   );
 };
