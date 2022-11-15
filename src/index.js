@@ -4,6 +4,9 @@ import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { LightTheme } from "./consts/index.ts";
 import { Home } from "./pages/index.ts";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
