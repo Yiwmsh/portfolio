@@ -3581,10 +3581,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yiwmsh/react-carpentry@^0.2.12":
-  version "0.2.12"
-  resolved "https://npm.pkg.github.com/download/@yiwmsh/react-carpentry/0.2.12/1a5d13e8af700056436a62305993986a4a99299d#1a5d13e8af700056436a62305993986a4a99299d"
-  integrity sha512-BPoOFP2Ue41M6M9Yb+VlX5QIXA0qeFzaG713fZxmw7JA1qBMZGIgpmPMUwJhQG1lcuMhoTspe/ub25Q6Y7TZVw==
+"@yiwmsh/react-carpentry@^0.3.2":
+  version "0.3.2"
+  resolved "https://npm.pkg.github.com/download/@yiwmsh/react-carpentry/0.3.2/10aedb3e5f97cd1c82126df6960ba7f1ee78218f#10aedb3e5f97cd1c82126df6960ba7f1ee78218f"
+  integrity sha512-OwjXYUSdreExE+l1ss5rS4ZvHYPD5n/JkWrnpWmBZBuMQgbXNJShl8AcyKK0w6Hjq15U6J5L7soikaL1Q/9T1g==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"

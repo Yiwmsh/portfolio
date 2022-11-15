@@ -14,6 +14,7 @@ import React from "react";
 import { Modal } from "../../components/Modal.tsx";
 import { WhatsYourName } from "../../components/WhatsYourName.tsx";
 import styled from "@emotion/styled";
+import { NameContext } from "../home";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;
@@ -35,8 +36,9 @@ const DoneButton = styled(Button)`
 `;
 
 export const WelcomeModal: React.FC = () => {
-  //   const storedName = localStorage.getItem("name");
-  const [welcomeModalOpen, setWelcomeModalOpen] = React.useState(true);
+  const [welcomeModalOpen, setWelcomeModalOpen] = React.useState(
+    !localStorage.getItem("name")
+  );
 
   return (
     <Modal isOpen={welcomeModalOpen}>

@@ -2,6 +2,7 @@ import { TextField } from "@yiwmsh/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { useEffect } from "react";
+import { NameContext } from "../home/home.tsx";
 
 const HorizontalTextField = styled(TextField)`
   display: flex;
@@ -13,10 +14,11 @@ export const nameChangeEvent = new Event("onNameChange");
 export const WhatsYourName: React.FC<{ withDescription?: boolean }> = ({
   withDescription = false,
 }) => {
+  const { name, setName } = React.useContext(NameContext);
+
   const storedName = localStorage.getItem("name");
 
   const [text, setText] = React.useState(storedName ?? "Friend");
-  const [name, setName] = React.useState(text);
 
   useEffect(() => {
     localStorage.setItem("name", name);

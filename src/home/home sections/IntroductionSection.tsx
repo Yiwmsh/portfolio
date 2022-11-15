@@ -5,12 +5,14 @@ import {
   CardBody,
   CardHeader,
   CardImage,
+  LinkButton,
   TextContent,
 } from "@yiwmsh/react-carpentry";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection.tsx";
 import styled from "@emotion/styled";
 import moment from "moment";
+import { NameContext } from "../home.tsx";
 
 const PortraitOfMe = styled(CardImage)``;
 
@@ -29,30 +31,28 @@ const Stack = styled.div`
 `;
 
 const Socials = styled(ButtonBank)`
-  gap: 30px;
+  gap: 10px;
 `;
 
-const GitHubButton = styled.a``;
+const CenteredParagraph = styled.p`
+  text-align: center;
+`;
 
 export const IntrocutionSection: React.FC = () => {
-  const age = moment().diff(moment(), "years");
+  const age = moment().diff(moment([1996, 6, 12]), "years");
   const guitarTime = moment().diff(moment([2021, 6]), "years");
 
-  const storedName = localStorage.getItem("name");
-
-  const [name, setName] = React.useState(storedName ?? "Friend");
-  React.useEffect(() => {
-    document.addEventListener("onNameChange", () =>
-      setName(localStorage.getItem("name") ?? "Friend")
-    );
-  });
   return (
     <CenteringSection>
       <Card>
         <CardHeader>
-          <TextContent>
-            <h4>Hi, {name}, I'm Whimsy</h4>
-          </TextContent>
+          <NameContext.Consumer>
+            {({ name, setName }) => (
+              <TextContent>
+                <h4>Hi, {name}, I'm Whimsy</h4>
+              </TextContent>
+            )}
+          </NameContext.Consumer>
         </CardHeader>
         <CardBody>
           <SideBySide>
@@ -112,16 +112,26 @@ export const IntrocutionSection: React.FC = () => {
                 </p>
                 <p>
                   Below, you'll find some examples of my work, and my art. I
-                  hope I can in some way inspire or entertain you. You can also
-                  find me on the following sites!
+                  hope I can in some way inspire or entertain you.
                 </p>
+                <br />
+                <CenteredParagraph>
+                  You can also find me on the following sites!
+                </CenteredParagraph>
               </Bio>
               <Socials>
-                <Button>LinkedIn</Button>
-                <GitHubButton href="https://github.com/Yiwmsh">
-                  GitHub
-                </GitHubButton>
-                <Button>Youtube</Button>
+                <LinkButton
+                  image="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+                  href="https://github.com/Yiwmsh"
+                />
+                <LinkButton
+                  image="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+                  href="https://www.linkedin.com/in/lonelevelsands/"
+                />
+                <LinkButton
+                  image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png"
+                  href="https://www.youtube.com/channel/UCHL1wtFFMlP0X7s8QfZ5ABg"
+                />
               </Socials>
             </Stack>
           </SideBySide>
