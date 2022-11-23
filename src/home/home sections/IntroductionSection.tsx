@@ -9,10 +9,10 @@ import {
   TextContent,
 } from "@yiwmsh/react-carpentry";
 import React from "react";
-import { CenteringSection } from "../../components/CenteringSection.tsx";
+import { CenteringSection } from "../../components/CenteringSection";
 import styled from "@emotion/styled";
 import moment from "moment";
-import { NameContext } from "../home.tsx";
+import { NameContext } from "../home";
 
 const PortraitOfMe = styled(CardImage)``;
 

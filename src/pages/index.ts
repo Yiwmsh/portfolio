@@ -1,1 +1,1 @@
-export * from "../home/home.tsx"
+export * from "../home/home"

@@ -1,9 +1,9 @@
 import { Button, Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
 import React from "react";
 import { Modal } from "../components/Modal";
-import { IntrocutionSection } from "./home sections/IntroductionSection.tsx";
-import { WelcomeModal } from "./home sections/WelcomeModal.tsx";
-import { YoutubeSection } from "./home sections/YoutubeSection.tsx";
+import { IntrocutionSection } from "./home sections/IntroductionSection";
+import { WelcomeModal } from "./home sections/WelcomeModal";
+import { YoutubeSection } from "./home sections/YoutubeSection";
 
 export const NameContext = React.createContext({
   name: localStorage.getItem("name") ?? "Friend",

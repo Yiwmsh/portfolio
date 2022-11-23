@@ -2,7 +2,7 @@ import { TextField } from "@yiwmsh/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { useEffect } from "react";
-import { NameContext } from "../home/home.tsx";
+import { NameContext } from "../home/home";
 
 const HorizontalTextField = styled(TextField)`
   display: flex;

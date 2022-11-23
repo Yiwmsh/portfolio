@@ -1,2 +1,2 @@
-export * from "./WelcomeModal.tsx"
-export * from "./WhatsYourName.tsx"
+export * from "./Modal"
+export * from "./WhatsYourName"

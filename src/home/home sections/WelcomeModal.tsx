@@ -11,8 +11,8 @@ import {
 } from "@yiwmsh/react-carpentry";
 import { motion } from "framer-motion";
 import React from "react";
-import { Modal } from "../../components/Modal.tsx";
-import { WhatsYourName } from "../../components/WhatsYourName.tsx";
+import { Modal } from "../../components/Modal";
+import { WhatsYourName } from "../../components/WhatsYourName";
 import styled from "@emotion/styled";
 import { NameContext } from "../home";
 
