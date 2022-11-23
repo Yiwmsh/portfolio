@@ -1,7 +1,12 @@
-import { ScrollSection, SemanticColors } from "@yiwmsh/react-carpentry";
+import {
+  ScrollSection,
+  SemanticColors,
+  TextContent,
+} from "@yiwmsh/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+import musicPic from "../../resources/musicPic.png";
 
 const YoutubeSectionGrid = styled.div`
   display: grid;
@@ -10,10 +15,10 @@ const YoutubeSectionGrid = styled.div`
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 1fr 6fr 1fr;
   align-items: center;
-  grid-gap: 5px;
+  grid-gap: 10px;
   margin: 0px 5%;
 
-  --GridColumnWidth: calc((100vh * 0.9) / 5);
+  --GridColumnWidth: calc((100vw * 0.9) / 5);
 `;
 
 const YoutubeTitleArea = styled.div`
@@ -23,7 +28,9 @@ const YoutubeTitleArea = styled.div`
 `;
 
 const YoutubeBioContainer = styled(motion.div)<{ focussed: boolean }>`
-  display: inline-block;
+  display: flex;
+  flex-direction: ${({ focussed }) => (focussed ? "row" : "column")};
+  align-items: ${({ focussed }) => (focussed ? "center" : "start")};
   width: 100%;
   height: 100%;
   grid-row: 2;
@@ -34,7 +41,11 @@ const YoutubeBioContainer = styled(motion.div)<{ focussed: boolean }>`
 `;
 
 const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
-  display: inline-block;
+  display: grid;
+  grid-template-columns: ${({ focussed }) =>
+    focussed ? "repeat(5, 1fr)" : "1fr"};
+  grid-template-rows: auto;
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
   grid-row: 2;
@@ -44,9 +55,18 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   overflow: hidden;
 `;
 
+const MusicPic = styled(motion.img)<{ focussed: boolean }>`
+  width: ${({ focussed }) =>
+    focussed ? "calc(var(--GridColumnWidth) * 2)" : "var(--GridColumnWidth)"};
+`;
+
+const YoutubeBio = styled(motion.div)`
+  margin: 5%;
+`;
+
 export const YoutubeSection: React.FC = () => {
-  const [playlist, setPlaylist] = React.useState(undefined);
-  const [bioFocussed, setBioFocussed] = React.useState(true);
+  const [playlist, setPlaylist] = React.useState([]);
+  const [bioFocussed, setBioFocussed] = React.useState(false);
 
   React.useEffect(() => {
     const getYoutubePlaylistVideos = async () => {
@@ -65,9 +85,6 @@ export const YoutubeSection: React.FC = () => {
       const data = await res.json();
 
       setPlaylist(data);
-      console.log(YOUTUBE_API_KEY);
-      console.log(res);
-      console.log(data);
     };
     if (!playlist) {
       getYoutubePlaylistVideos();
@@ -84,21 +101,74 @@ export const YoutubeSection: React.FC = () => {
           focussed={bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
         >
-          <motion.img
+          <MusicPic
             layout
-            src="https://images.unsplash.com/photo-1438021258176-43efc14c67dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
+            alt="I am sitting on my bed playing guitar while looking at tabs on my phone."
+            src={musicPic}
+            focussed={bioFocussed}
           />
+          <YoutubeBio layout>
+            <TextContent>
+              <p>
+                I've been playing music for a really long time. I started with
+                saxaphone, back in elementary school, then swapped to percussion
+                in middle and high school. But my first real love was the piano,
+                which I started teaching myself in 2010, when I was 13.
+              </p>
+              {bioFocussed && (
+                <>
+                  <p>
+                    I started learning piano on a cheap rollout keyboard, which
+                    was only 49 keys and had really stiff sensors. This, as you
+                    might imagine, is not an ideal way to learn the instrument.
+                    But, as I stuck with it, my parents saw that I was truly
+                    dedicated, and for christmas that year they bought me a
+                    weighted 88-key keyboard.
+                  </p>
+                  <p>
+                    Unfortunately, pianos - even keyboards - are big and
+                    expensive, so my access to one has been pretty intermittent
+                    as I've moved around. I've been without one for several
+                    years, now, but whenever I come upon one in the wild it
+                    never takes me long to shake off the rust.
+                  </p>
+                </>
+              )}
+              <p>
+                In 2021, I started teaching myself guitar as well. This was
+                around the time I got my ADHD diagnoses, and was perscribed
+                medication for it, which meant that I had near unlimited focus
+                and drive. I remember one day I sat outside playing for about
+                six hours in a row, without realizing I was getting sunburnt.
+              </p>
+              {bioFocussed && (
+                <>
+                  <p>
+                    I started out on accoustic guitar, learning plenty of folk
+                    songs alongside classics like Wish You Were Here, Hey There
+                    Delilah, and Hallelujah. I often ask my friends to reccomend
+                    songs for me to learn, which I've found is a great way to
+                    stay motivated and discover new music.
+                  </p>
+                </>
+              )}
+              <p>
+                While I lack a formal music education, and I have yet to teach
+                myself much music theory, I aspire to create all sorts of music
+                in my future. I have written a couple of simple melodies and
+                chord changes already, and my authorial tendancies have lent
+                themselves well to lyricism. I hear beautiful music in my head,
+                and as soon as I learn how to manifest it I hope to share it
+                with the world.
+              </p>
+            </TextContent>
+          </YoutubeBio>
         </YoutubeBioContainer>
         <YoutubeVideosContainer
           layout
           focussed={!bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
-        >
-          <motion.img
-            layout
-            src="https://images.unsplash.com/photo-1591788114651-5156119de596?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-          />
-        </YoutubeVideosContainer>
+        ></YoutubeVideosContainer>
       </YoutubeSectionGrid>
     </ScrollSection>
   );

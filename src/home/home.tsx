@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Button, Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
 import React from "react";
 import { Modal } from "../components/Modal";
@@ -10,6 +11,10 @@ export const NameContext = React.createContext({
   setName: (value: string) => {},
 });
 
+const StickyNav = styled(Navbar)`
+  bottom: 0px;
+`;
+
 export const Home: React.FC = () => {
   const [name, setName] = React.useState(
     localStorage.getItem("name") ?? "Friend"
@@ -21,11 +26,11 @@ export const Home: React.FC = () => {
         <WelcomeModal />
         <ScrollSnapper>
           <IntrocutionSection />
-          <Navbar>
+          <StickyNav>
             <Button onPress={() => localStorage.clear()}>
               Clear Local Storage (dev)
             </Button>
-          </Navbar>
+          </StickyNav>
           <YoutubeSection />
           <IntrocutionSection />
         </ScrollSnapper>
