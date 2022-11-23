@@ -8,6 +8,15 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import musicPic from "../../resources/musicPic.png";
 
+const YOUTUBE_PLAYLIST_ITEMS_API =
+  "https://www.googleapis.com/youtube/v3/playlistItems";
+
+const YOUTUBE_PLAYLIST_ID = "PLVnN9RqB5lrxLXVLlz-JCp_CrstjB3pLN";
+
+const YOUTUBE_MAX_RESULTS = 50;
+
+const YOUTUBE_API_KEY = process.env.REACT_APP_youtubeAPIKey;
+
 const YoutubeSectionGrid = styled.div`
   display: grid;
   height: 100%;
@@ -42,9 +51,12 @@ const YoutubeBioContainer = styled(motion.div)<{ focussed: boolean }>`
 
 const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   display: grid;
+  padding: 10px;
+  gap: 10px;
+  max-height: 72vh;
   grid-template-columns: ${({ focussed }) =>
     focussed ? "repeat(5, 1fr)" : "1fr"};
-  grid-template-rows: auto;
+  grid-template-rows: repeat(auto-fill, 10.12vw);
   overflow-y: scroll;
   width: 100%;
   height: 100%;
@@ -52,7 +64,12 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   grid-column: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
-  overflow: hidden;
+  overflow: clip;
+  scrollbar-width: none;
+
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const MusicPic = styled(motion.img)<{ focussed: boolean }>`
@@ -64,27 +81,26 @@ const YoutubeBio = styled(motion.div)`
   margin: 5%;
 `;
 
+const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
+  box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
+  border: 0px;
+  width: 18vw;
+  height: 10.12vw;
+`;
+
 export const YoutubeSection: React.FC = () => {
-  const [playlist, setPlaylist] = React.useState([]);
+  const [playlist, setPlaylist] = React.useState();
   const [bioFocussed, setBioFocussed] = React.useState(false);
 
   React.useEffect(() => {
     const getYoutubePlaylistVideos = async () => {
-      const YOUTUBE_API_KEY = await process.env.REACT_APP_youtubeAPIKey;
-
-      const YOUTUBE_PLAYLIST_ITEMS_API =
-        "https://www.googleapis.com/youtube/v3/playlistItems";
-
-      const YOUTUBE_PLAYLIST_ID = "PLVnN9RqB5lrxLXVLlz-JCp_CrstjB3pLN";
-
-      const YOUTUBE_MAX_RESULTS = 50;
-
       const res = await fetch(
         `${YOUTUBE_PLAYLIST_ITEMS_API}?key=${YOUTUBE_API_KEY}&part=snippet&maxResults=${YOUTUBE_MAX_RESULTS}&playlistId=${YOUTUBE_PLAYLIST_ID}`
       );
       const data = await res.json();
 
-      setPlaylist(data);
+      setPlaylist(data.items);
+      console.log(data.items);
     };
     if (!playlist) {
       getYoutubePlaylistVideos();
@@ -111,8 +127,8 @@ export const YoutubeSection: React.FC = () => {
             <TextContent>
               <p>
                 I've been playing music for a really long time. I started with
-                saxaphone, back in elementary school, then swapped to percussion
-                in middle and high school. But my first real love was the piano,
+                saxaphone for a year, back in elementary school, then swapped to
+                percussion for two years. But my first real love was the piano,
                 which I started teaching myself in 2010, when I was 13.
               </p>
               {bioFocussed && (
@@ -168,7 +184,74 @@ export const YoutubeSection: React.FC = () => {
           layout
           focussed={!bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
-        ></YoutubeVideosContainer>
+        >
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test"
+            src="https://www.youtube.com/embed/JjuRkBvvVC4"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          {/* {fetch(
+            `${YOUTUBE_PLAYLIST_ITEMS_API}?key=${YOUTUBE_API_KEY}&part=snippet&maxResults=${YOUTUBE_MAX_RESULTS}&playlistId=${YOUTUBE_PLAYLIST_ID}`
+          ).then((data) =>
+            data.json().then((json) =>
+              json.items.map(
+                (video: {
+                  snippet: { title: string; resourceId: { videoId: string } };
+                }) => {
+                  return (
+                    <iframe
+                      title={`${video.snippet.title}`}
+                      src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
+                    />
+                  );
+                }
+              )
+            )
+          )} */}
+        </YoutubeVideosContainer>
       </YoutubeSectionGrid>
     </ScrollSection>
   );
