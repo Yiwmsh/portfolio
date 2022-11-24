@@ -37,13 +37,17 @@ const CenteredParagraph = styled.p`
   text-align: center;
 `;
 
+const BioCard = styled(Card)`
+  max-height: 65vh;
+`;
+
 export const IntrocutionSection: React.FC = () => {
   const age = moment().diff(moment([1996, 6, 12]), "years");
   const guitarTime = moment().diff(moment([2021, 6]), "years");
 
   return (
     <CenteringSection>
-      <Card>
+      <BioCard>
         <CardHeader>
           <NameContext.Consumer>
             {({ name, setName }) => (
@@ -135,7 +139,7 @@ export const IntrocutionSection: React.FC = () => {
             </Stack>
           </SideBySide>
         </CardBody>
-      </Card>
+      </BioCard>
     </CenteringSection>
   );
 };
