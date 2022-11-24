@@ -46,6 +46,7 @@ export const Home: React.FC = () => {
     height: 100%;
     top: 0;
     left: 0;
+    z-index: -1;
   `;
 
   const BACKGROUND_TRANSITION = { duration: 5 };
