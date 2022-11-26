@@ -72,7 +72,6 @@ export const Home: React.FC = () => {
             </Button>
           </StickyNav> */}
           <YoutubeSection />
-          <IntrocutionSection />
         </ScrollSnapper>
       </NameContext.Provider>
     </>

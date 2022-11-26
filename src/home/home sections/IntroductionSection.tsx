@@ -50,7 +50,7 @@ export const IntrocutionSection: React.FC = () => {
       <BioCard>
         <CardHeader>
           <NameContext.Consumer>
-            {({ name, setName }) => (
+            {({ name }) => (
               <TextContent>
                 <h4>Hi, {name}, I'm Whimsy</h4>
               </TextContent>

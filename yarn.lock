@@ -3846,10 +3846,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yiwmsh/react-carpentry@^0.3.4":
-  version "0.3.4"
-  resolved "https://npm.pkg.github.com/download/@yiwmsh/react-carpentry/0.3.4/d9682022c6acb51dd0a7a27b2422e8da02b57feb#d9682022c6acb51dd0a7a27b2422e8da02b57feb"
-  integrity sha512-+D0P20uTaIj2Q0lmZkHiRdXHhr4os5CxVNMekx1Iyv41whNxrverUmJwIhgh9MAxQIoPvT8PAlGSb+Ag2KBzVg==
+"@yiwmsh/react-carpentry@^0.4.0":
+  version "0.4.0"
+  resolved "https://npm.pkg.github.com/download/@yiwmsh/react-carpentry/0.4.0/d7adbd684234ee4c1fc2fda2fff5bfa022a95ada#d7adbd684234ee4c1fc2fda2fff5bfa022a95ada"
+  integrity sha512-Zg6GBjD8lks0U7XEiMUCTUDupBZ2Tp9Ngb1jbWbqnjGhyr9zDjBpUKr1+ML08n+J1OeHLqTNrqEFnuwzbfHzjw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
@@ -3864,6 +3864,7 @@
     react "^18.2.0"
     react-aria "^3.20.0"
     react-dom "^18.2.0"
+    react-intersection-observer "^9.4.1"
     react-stately "^3.18.0"
     rollup-plugin-dts "^5.0.0"
     rollup-plugin-terser "^7.0.2"
@@ -9114,6 +9115,11 @@ react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
+
+react-intersection-observer@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.4.1.tgz#4ccb21e16acd0b9cf5b28d275af7055bef878f6b"
+  integrity sha512-IXpIsPe6BleFOEHKzKh5UjwRUaz/JYS0lT/HPsupWEQou2hDqjhLMStc5zyE3eQVT4Fk3FufM8Fw33qW1uyeiw==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
