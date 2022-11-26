@@ -16,7 +16,7 @@ export const NameContext = React.createContext({
 
 const BackgroundAnimation = styled(motion.div)`
   position: absolute;
-  z-index: -2;
+  z-index: -3;
   width: 100%;
   height: 200%;
   background: radial-gradient(
