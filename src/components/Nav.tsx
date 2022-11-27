@@ -29,85 +29,53 @@ const generateRandomNumberInRange = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
 
-/***
- * @excludeFloor The lowest number you wish to exclude from the range of generated numbers. This value is inclusive.
- * @excludeCeiling The highest number you wish to exclude from the range of generated numbers. This value is exclusive.
- */
-const getRandomNumberExcludeRange = (
-  min: number,
-  max: number,
-  excludeFloor: number,
-  excludeCeiling: number
+const generateIndividualStarCoordiante = (
+  innerWidth: number,
+  circleDiameter: number
 ) => {
-  const gapSize = excludeCeiling - excludeFloor;
-  const adjustedMax = max - gapSize;
-  const number = generateRandomNumberInRange(min, adjustedMax);
-  if (number >= excludeFloor && number < excludeCeiling) {
-    return number + gapSize + (adjustedMax - excludeCeiling);
-  }
-  return number;
-};
-
-const getRandomCoordinateExcludeRange = (
-  min: number,
-  max: number,
-  excludeFloor: number,
-  excludeCeiling: number
-) => {
-  let x = generateRandomNumberInRange(min, max);
-  let y = generateRandomNumberInRange(min, max);
-  const numberInRange = (
-    number: number,
-    rangeStart: number,
-    rangeEnd: number
-  ) => {
-    return number >= rangeStart && number < rangeEnd;
-  };
-
-  const xInRange = numberInRange(x, excludeFloor, excludeCeiling);
-  const yInRange = numberInRange(y, excludeFloor, excludeCeiling);
-
-  const shiftNumberOutOfRange = (
-    n: number,
-    min: number,
-    max: number,
-    excludeFloor: number,
-    excludeCeiling: number
-  ) => {
-    const middleOfExclusionRange =
-      excludeFloor + (excludeCeiling - excludeFloor) / 2;
-    if (n >= middleOfExclusionRange) {
-      return (
-        excludeCeiling +
-        (generateRandomNumberInRange(excludeCeiling, max) - excludeCeiling)
-      );
-    } else {
-      return excludeFloor - generateRandomNumberInRange(min, excludeFloor);
-    }
-  };
-
-  if (xInRange && yInRange) {
-    if (xInRange) {
-      x = shiftNumberOutOfRange(x, min, max, excludeFloor, excludeCeiling);
-    }
-    if (yInRange) {
-      y = shiftNumberOutOfRange(y, min, max, excludeFloor, excludeCeiling);
-    }
-  }
-
+  /* Now we can calculate the horizon's arc by assuming our circle's origin is at (50, 0)%,
+  And it has a point at (50, 65)%. Our circle's equation is (x - 50)^2 + y^2 = 4225.
+  Solving for y gives us y = ± sqrt(-x^2 + 100 x + 1725), but we only care about positive y values,
+  Thus y = sqrt(-x^2 + 100 x + 1725).
+  */
+  const x = generateRandomNumberInRange(0, 100);
+  const xPixel = innerWidth * (x / 100);
+  const gapOnEitherSide = (innerWidth - circleDiameter) / 2;
+  const circleXPercent = ((xPixel - gapOnEitherSide) / circleDiameter) * 100;
+  const yFloor =
+    circleXPercent <= 0 || circleXPercent >= 100
+      ? 0
+      : Math.sqrt(-Math.pow(x, 2) + 100 * x + 1725);
+  const y = generateRandomNumberInRange(yFloor, 100);
   return { x: x, y: y };
 };
 
-export const Nav: React.FC = () => {
-  const starCount = 150;
-  const starCoordinates = Array(starCount).fill({
-    x: 0,
-    y: 0,
-  });
+const generateStarCoordinates = (count: number) => {
+  /* We don't want stars in the region of the screen that is too bright.
+  We know that the luminosity boundary occurs at (50, 65)% thanks to our gradient.
+  The gradient cares about screen height, not width, which means that our gradient is always a perfect circle.
+  Thus, we cannot use the parabolic equation y=-(11x^2)/500 + (11x)/5 + 10 on all screen sizes,
+  because on narrow screens the circle will fill more horizontal space than on wider screens.
+  
+  Instead, we must first find the screen's dimensions.
+  */
+  const { innerWidth, innerHeight } = window;
 
-  for (let i = 0; i < starCount; i++) {
-    starCoordinates[i] = getRandomCoordinateExcludeRange(1, 100, 35, 65);
-  }
+  // And then the circle's diameter in pixles.
+
+  const circleDiameter = innerHeight * 0.65 * 2;
+
+  const starCoords = Array.from({ length: count }, () =>
+    generateIndividualStarCoordiante(innerWidth, circleDiameter)
+  );
+
+  return starCoords;
+};
+
+export const Nav: React.FC = () => {
+  const starCount = 100;
+
+  const starCoordinates = generateStarCoordinates(starCount);
 
   return (
     <>
