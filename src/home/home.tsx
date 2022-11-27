@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import { Button, Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
 import React from "react";
 import { Modal } from "../components/Modal";
-import { IntrocutionSection } from "./home sections/IntroductionSection";
+import { BioSection } from "./home sections/BioSection";
 import { SplashSection } from "./home sections/SplashSection";
 import { WelcomeModal } from "./home sections/WelcomeModal";
-import { YoutubeSection } from "./home sections/YoutubeSection";
+import { MusicSection } from "./home sections/MusicSection";
 import { motion } from "framer-motion";
 import { Nav } from "../components/Nav";
 
@@ -65,13 +65,13 @@ export const Home: React.FC = () => {
         </SVGCanvas>
         <ScrollSnapper>
           <SplashSection />
-          <IntrocutionSection />
+          <BioSection />
           {/* <StickyNav>
             <Button onPress={() => localStorage.clear()}>
               Clear Local Storage (dev)
             </Button>
           </StickyNav> */}
-          <YoutubeSection />
+          <MusicSection />
         </ScrollSnapper>
       </NameContext.Provider>
     </>

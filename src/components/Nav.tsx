@@ -15,7 +15,7 @@ const SUN_TRANSITION = {
 };
 
 const SUN_RAY_TRANSITION = {
-  delay: 3.8,
+  delay: 4.5,
   duration: 0.1,
   type: "spring",
   stiffness: 50,

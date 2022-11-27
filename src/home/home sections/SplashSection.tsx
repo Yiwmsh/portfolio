@@ -3,6 +3,7 @@ import { AnimatedText, TextContent } from "@yiwmsh/react-carpentry";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";
+import { ScrollButton } from "../../components/ScrollButton";
 import { NameContext } from "../home";
 
 const CenteringTextContent = styled(TextContent)`
@@ -25,9 +26,15 @@ const SplashGrid = styled.div`
   row-gap: 20px;
 `;
 
+const Flex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 export const SplashSection: React.FC = () => {
   return (
-    <CenteringSection>
+    <CenteringSection id="Splash">
       <CenteringTextContent altColor>
         <NameContext.Consumer>
           {({ name }) => (
@@ -122,6 +129,15 @@ export const SplashSection: React.FC = () => {
           )}
         </NameContext.Consumer>
       </CenteringTextContent>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          delay: 10,
+        }}
+      >
+        <ScrollButton direction="down" target={"Bio"} />
+      </motion.div>
     </CenteringSection>
   );
 };

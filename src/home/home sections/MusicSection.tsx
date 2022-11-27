@@ -7,6 +7,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import musicPic from "../../resources/musicPic.png";
+import { CenteringSection } from "../../components/CenteringSection";
+import { ScrollButton } from "../../components/ScrollButton";
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
   "https://www.googleapis.com/youtube/v3/playlistItems";
@@ -17,12 +19,11 @@ const YOUTUBE_MAX_RESULTS = 50;
 
 const YOUTUBE_API_KEY = process.env.REACT_APP_youtubeAPIKey;
 
-const YoutubeSectionGrid = styled.div`
+const MusicSectionGrid = styled.div`
   display: grid;
-  height: 100%;
+  height: 70vh;
   width: 90%;
   grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 1fr 6fr 1fr;
   align-items: center;
   grid-gap: 10px;
   margin: 0px 5%;
@@ -30,13 +31,7 @@ const YoutubeSectionGrid = styled.div`
   --GridColumnWidth: calc((100vw * 0.9) / 5);
 `;
 
-const YoutubeTitleArea = styled.div`
-  grid-row: 1;
-  grid-column: 2;
-  text-align: center;
-`;
-
-const YoutubeBioContainer = styled(motion.div)<{ focussed: boolean }>`
+const MusicBioContainer = styled(motion.div)<{ focussed: boolean }>`
   display: flex;
   flex-direction: ${({ focussed }) => (focussed ? "row" : "column")};
   align-items: ${({ focussed }) => (focussed ? "center" : "start")};
@@ -50,21 +45,19 @@ const YoutubeBioContainer = styled(motion.div)<{ focussed: boolean }>`
 `;
 
 const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
-  display: grid;
+  height: 70vh;
+  display: flex;
+  flex-direction: ${({ focussed }) => (focussed ? "row" : "column")};
+  flex-wrap: ${({ focussed }) => (focussed ? "wrap" : "none")};
+  overflow-x: scroll;
   padding: 10px;
+  justify-content: space-evenly;
   gap: 10px;
-  max-height: 72vh;
-  grid-template-columns: ${({ focussed }) =>
-    focussed ? "repeat(5, 1fr)" : "1fr"};
-  grid-template-rows: repeat(auto-fill, 10.12vw);
   overflow-y: scroll;
-  width: 100%;
-  height: 100%;
   grid-row: 2;
   grid-column: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
-  overflow: clip;
   scrollbar-width: none;
 
   &:-webkit-scrollbar {
@@ -77,18 +70,19 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
     focussed ? "calc(var(--GridColumnWidth) * 2)" : "var(--GridColumnWidth)"};
 `;
 
-const YoutubeBio = styled(motion.div)`
+const MusicBio = styled(motion.div)`
   margin: 5%;
 `;
 
 const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
   border: 0px;
-  width: 18vw;
-  height: 10.12vw;
+  width: clamp(100%, 100%, 323px);
+  max-width: 323px;
+  height: 187px;
 `;
 
-export const YoutubeSection: React.FC = () => {
+export const MusicSection: React.FC = () => {
   const [playlist, setPlaylist] = React.useState();
   const [bioFocussed, setBioFocussed] = React.useState(false);
 
@@ -107,12 +101,10 @@ export const YoutubeSection: React.FC = () => {
     }
   }, []);
   return (
-    <ScrollSection>
-      <YoutubeSectionGrid>
-        <YoutubeTitleArea>
-          <h1>Music</h1>
-        </YoutubeTitleArea>
-        <YoutubeBioContainer
+    <CenteringSection id="Music">
+      <ScrollButton direction="up" target="Bio" />
+      <MusicSectionGrid>
+        <MusicBioContainer
           layout
           focussed={bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
@@ -123,7 +115,7 @@ export const YoutubeSection: React.FC = () => {
             src={musicPic}
             focussed={bioFocussed}
           />
-          <YoutubeBio layout>
+          <MusicBio layout>
             <TextContent>
               <p>
                 I've been playing music for a really long time. I started with
@@ -178,8 +170,8 @@ export const YoutubeSection: React.FC = () => {
                 with the world.
               </p>
             </TextContent>
-          </YoutubeBio>
-        </YoutubeBioContainer>
+          </MusicBio>
+        </MusicBioContainer>
         <YoutubeVideosContainer
           layout
           focussed={!bioFocussed}
@@ -188,8 +180,74 @@ export const YoutubeSection: React.FC = () => {
           <YoutubeVideo
             layout
             focussed={!bioFocussed}
-            title="test"
-            src="https://www.youtube.com/embed/JjuRkBvvVC4"
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
+          />
+          <YoutubeVideo
+            layout
+            focussed={!bioFocussed}
+            title="test2"
+            src="https://www.youtube.com/embed/zq1vvR-OsLg"
           />
           <YoutubeVideo
             layout
@@ -252,7 +310,7 @@ export const YoutubeSection: React.FC = () => {
             )
           )} */}
         </YoutubeVideosContainer>
-      </YoutubeSectionGrid>
-    </ScrollSection>
+      </MusicSectionGrid>
+    </CenteringSection>
   );
 };

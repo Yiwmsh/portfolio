@@ -12,6 +12,7 @@ import { CenteringSection } from "../../components/CenteringSection";
 import styled from "@emotion/styled";
 import moment from "moment";
 import { NameContext } from "../home";
+import { ScrollButton } from "../../components/ScrollButton";
 
 const PortraitOfMe = styled(CardImage)``;
 
@@ -41,12 +42,13 @@ const BioCard = styled(Card)`
   max-height: 65vh;
 `;
 
-export const IntrocutionSection: React.FC = () => {
+export const BioSection: React.FC = () => {
   const age = moment().diff(moment([1996, 6, 12]), "years");
   const guitarTime = moment().diff(moment([2021, 6]), "years");
 
   return (
-    <CenteringSection>
+    <CenteringSection id="Bio">
+      <ScrollButton target="Splash" direction="up" />
       <BioCard>
         <CardHeader>
           <NameContext.Consumer>
@@ -61,12 +63,7 @@ export const IntrocutionSection: React.FC = () => {
           <SideBySide>
             <PortraitOfMe
               src="https://avatars.githubusercontent.com/u/110123778?v=4"
-              alt="A picture of me, Whimsy. 
-          The picture is slightly out of focus.
-          I am looking to my right. 
-          I am pale, with chest-length brown hair combed mostly over the right side of my head. 
-          I am wearing glasses, a black choker, and a floral-print t-shirt, 
-          and am sitting in front of white, floral-print curtains."
+              alt="A picture of me, staring off to the side."
             />
             <Stack>
               <Bio>
@@ -140,6 +137,7 @@ export const IntrocutionSection: React.FC = () => {
           </SideBySide>
         </CardBody>
       </BioCard>
+      <ScrollButton direction="down" target="Music" />
     </CenteringSection>
   );
 };
