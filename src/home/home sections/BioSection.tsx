@@ -2,6 +2,7 @@ import {
   ButtonBank,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   CardImage,
   LinkButton,
@@ -32,6 +33,7 @@ const Stack = styled.div`
 
 const Socials = styled(ButtonBank)`
   gap: 10px;
+  justify-content: center;
 `;
 
 const CenteredParagraph = styled.p`
@@ -115,27 +117,29 @@ export const BioSection: React.FC = () => {
                   hope I can in some way inspire or entertain you.
                 </p>
                 <br />
-                <CenteredParagraph>
-                  You can also find me on the following sites!
-                </CenteredParagraph>
               </Bio>
-              <Socials>
-                <LinkButton
-                  image="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-                  href="https://github.com/Yiwmsh"
-                />
-                <LinkButton
-                  image="https://cdn-icons-png.flaticon.com/512/174/174857.png"
-                  href="https://www.linkedin.com/in/lonelevelsands/"
-                />
-                <LinkButton
-                  image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png"
-                  href="https://www.youtube.com/channel/UCHL1wtFFMlP0X7s8QfZ5ABg"
-                />
-              </Socials>
             </Stack>
           </SideBySide>
         </CardBody>
+        <CardFooter>
+          <CenteredParagraph>
+            You can also find me on the following sites!
+          </CenteredParagraph>
+          <Socials>
+            <LinkButton
+              image="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+              href="https://github.com/Yiwmsh"
+            />
+            <LinkButton
+              image="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+              href="https://www.linkedin.com/in/lonelevelsands/"
+            />
+            <LinkButton
+              image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/2560px-YouTube_full-color_icon_%282017%29.svg.png"
+              href="https://www.youtube.com/channel/UCHL1wtFFMlP0X7s8QfZ5ABg"
+            />
+          </Socials>
+        </CardFooter>
       </BioCard>
       <ScrollButton direction="down" target="Music" />
     </CenteringSection>
