@@ -50,9 +50,16 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   flex-direction: ${({ focussed }) => (focussed ? "row" : "column")};
   flex-wrap: ${({ focussed }) => (focussed ? "wrap" : "none")};
   overflow-x: scroll;
+  align-items: center;
+  align-content: center;
   padding: 10px;
-  justify-content: space-evenly;
-  gap: 10px;
+  ${({ focussed }) =>
+    focussed
+      ? `
+  justify-content: center;
+  `
+      : ""}
+  gap: 5px;
   overflow-y: scroll;
   grid-row: 2;
   grid-column: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
@@ -83,23 +90,23 @@ const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
 `;
 
 export const MusicSection: React.FC = () => {
-  const [playlist, setPlaylist] = React.useState();
+  const [youtubeVideos, setYoutubeVideos] = React.useState([]);
   const [bioFocussed, setBioFocussed] = React.useState(false);
 
   React.useEffect(() => {
-    const getYoutubePlaylistVideos = async () => {
-      const res = await fetch(
+    const getYoutubePlaylistVids = async () => {
+      fetch(
         `${YOUTUBE_PLAYLIST_ITEMS_API}?key=${YOUTUBE_API_KEY}&part=snippet&maxResults=${YOUTUBE_MAX_RESULTS}&playlistId=${YOUTUBE_PLAYLIST_ID}`
-      );
-      const data = await res.json();
-
-      setPlaylist(data.items);
-      console.log(data.items);
+      ).then((res) => {
+        res.json().then((json: { items: [] }) => {
+          setYoutubeVideos((arr) => [...json.items]);
+        });
+      });
     };
-    if (!playlist) {
-      getYoutubePlaylistVideos();
-    }
+
+    getYoutubePlaylistVids();
   }, []);
+
   return (
     <CenteringSection id="Music">
       <ScrollButton direction="up" target="Bio" />
@@ -177,138 +184,17 @@ export const MusicSection: React.FC = () => {
           focussed={!bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
         >
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          <YoutubeVideo
-            layout
-            focussed={!bioFocussed}
-            title="test2"
-            src="https://www.youtube.com/embed/zq1vvR-OsLg"
-          />
-          {/* {fetch(
-            `${YOUTUBE_PLAYLIST_ITEMS_API}?key=${YOUTUBE_API_KEY}&part=snippet&maxResults=${YOUTUBE_MAX_RESULTS}&playlistId=${YOUTUBE_PLAYLIST_ID}`
-          ).then((data) =>
-            data.json().then((json) =>
-              json.items.map(
-                (video: {
-                  snippet: { title: string; resourceId: { videoId: string } };
-                }) => {
-                  return (
-                    <iframe
-                      title={`${video.snippet.title}`}
-                      src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
-                    />
-                  );
-                }
-              )
+          {youtubeVideos.map(
+            (video: {
+              snippet: { title: string; resourceId: { videoId: string } };
+            }) => (
+              <YoutubeVideo
+                layout
+                focussed={!bioFocussed}
+                src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
+              />
             )
-          )} */}
+          )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
     </CenteringSection>
