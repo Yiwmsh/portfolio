@@ -16,10 +16,6 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm login --scope=@Yiwmsh --registry=https://npm.pkg.github.com
-    yiwmsh
-    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
-    lonelevelsands@gmail.com
     npm install
     npm run build
   displayName: 'npm install and build'
