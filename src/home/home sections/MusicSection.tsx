@@ -1,8 +1,4 @@
-import {
-  ScrollSection,
-  SemanticColors,
-  TextContent,
-} from "@yiwmsh/react-carpentry";
+import { SemanticColors, TextContent } from "@yiwmsh/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
@@ -28,6 +24,16 @@ const MusicSectionGrid = styled.div`
   grid-gap: 10px;
   margin: 0px 5%;
 
+  @media screen and (max-width: 1700px) and (min-width: 600px) {
+    width: 98%;
+    margin: 0px;
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+  }
+
   --GridColumnWidth: calc((100vw * 0.9) / 5);
 `;
 
@@ -38,7 +44,14 @@ const MusicBioContainer = styled(motion.div)<{ focussed: boolean }>`
   width: 100%;
   height: 100%;
   grid-row: 2;
-  grid-column: ${({ focussed }) => (focussed ? "1 / span 2" : "1")};
+  @media screen and (min-width: 600px) {
+    grid-column: ${({ focussed }) => (focussed ? "1 / span 2" : "1")};
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-row: ${({ focussed }) => (focussed ? "1 / span 2" : "1")};
+    flex-direction: row;
+  }
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
   overflow: hidden;
@@ -62,7 +75,16 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   gap: 5px;
   overflow-y: scroll;
   grid-row: 2;
-  grid-column: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
+  @media screen and (min-width: 600px) {
+    grid-column: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-row: ${({ focussed }) => (focussed ? "2 / span 3" : "3")};
+    height: 90%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
   scrollbar-width: none;
@@ -78,10 +100,24 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
       ? "calc((var(--GridColumnWidth) * 2) - 10px)"
       : "calc(var(--GridColumnWidth) - 20px)"};
   padding: 5px 5px 0 5px;
+  aspect-ratio: 10 / 13;
+
+  @media screen and (max-width: 600px) {
+    max-height: 100%;
+    max-width: 30%;
+    width: unset;
+  }
 `;
 
-const MusicBio = styled(motion.div)`
+const MusicBio = styled(motion.div)<{ focussed: boolean }>`
   margin: 5%;
+
+  @media screen and (max-height: 1060px) {
+    overflow-y: scroll;
+    max-height: 100%;
+    padding-right: 5px;
+    ${({ focussed }) => (focussed ? "" : "display: none;")}
+  }
 `;
 
 const IndentedSection = styled.div`
@@ -94,6 +130,31 @@ const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
   width: clamp(20px, 100%, 323px);
   max-width: 323px;
   aspect-ratio: 16 / 9;
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+    ${({ focussed }) => (focussed ? "" : "display: none;")}
+  }
+`;
+
+const BioTitle = styled(motion.div)<{ focussed: boolean }>`
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding-left: 20%;
+
+  @media screen and (max-width: 600px) {
+    ${({ focussed }) => (focussed ? "display: none" : "display: flex")}
+  }
+`;
+
+const VideosTitle = styled.h3<{ focussed: boolean }>`
+  display: none;
+  margin: auto;
+  @media screen and (max-width: 600px) {
+    ${({ focussed }) => (focussed ? "display: none" : "display: inline")}
+  }
 `;
 
 export const MusicSection: React.FC = () => {
@@ -129,7 +190,12 @@ export const MusicSection: React.FC = () => {
             src={musicPic}
             focussed={bioFocussed}
           />
-          <MusicBio layout>
+          <BioTitle focussed={bioFocussed}>
+            <TextContent>
+              <h3>Bio</h3>
+            </TextContent>
+          </BioTitle>
+          <MusicBio focussed={bioFocussed} layout>
             <TextContent>
               <p>
                 I've been playing music for a really long time. I started with
@@ -191,6 +257,9 @@ export const MusicSection: React.FC = () => {
           focussed={!bioFocussed}
           onClick={() => setBioFocussed(!bioFocussed)}
         >
+          <VideosTitle focussed={!bioFocussed}>
+            <TextContent>Videos</TextContent>
+          </VideosTitle>
           {youtubeVideos.map(
             (video: {
               snippet: { title: string; resourceId: { videoId: string } };

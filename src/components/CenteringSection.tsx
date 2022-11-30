@@ -6,4 +6,8 @@ export const CenteringSection = styled(ScrollSection)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-height: 1000px) {
+    padding-top: 20%;
+  }
 `;
