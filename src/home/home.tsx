@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { Button, Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
 import React from "react";
-import { Modal } from "../components/Modal";
 import { BioSection } from "./home sections/BioSection";
 import { SplashSection } from "./home sections/SplashSection";
 import { WelcomeModal } from "./home sections/WelcomeModal";
@@ -13,6 +12,10 @@ export const NameContext = React.createContext({
   name: localStorage.getItem("name") ?? "Friend",
   setName: (value: string) => {},
 });
+
+const StickyNav = styled(Navbar)`
+  bottom: 0;
+`;
 
 const BackgroundAnimation = styled(motion.div)`
   position: absolute;
@@ -51,28 +54,47 @@ export const Home: React.FC = () => {
 
   const BACKGROUND_TRANSITION = { duration: 5 };
 
+  const [welcomeModalOpen, setWelcomeModalOpen] = React.useState(
+    !localStorage.getItem("name")
+  );
+
+  const DoneButton = styled(Button)`
+    width: 100%;
+  `;
+
+  const closeModalButton = (
+    <DoneButton onPress={() => setWelcomeModalOpen(false)}>Submit</DoneButton>
+  );
+
   return (
     <>
-      <BackgroundAnimation
-        initial={{ top: "-100vh" }}
-        animate={{ top: 0 }}
-        transition={BACKGROUND_TRANSITION}
-      />
       <NameContext.Provider value={{ name, setName }}>
-        <WelcomeModal />
-        <SVGCanvas>
-          <Nav />
-        </SVGCanvas>
-        <ScrollSnapper>
-          <SplashSection />
-          <BioSection />
-          {/* <StickyNav>
-            <Button onPress={() => localStorage.clear()}>
-              Clear Local Storage (dev)
-            </Button>
-          </StickyNav> */}
-          <MusicSection />
-        </ScrollSnapper>
+        <WelcomeModal
+          closeButton={closeModalButton}
+          welcomeModalOpen={welcomeModalOpen}
+        />
+        {!welcomeModalOpen && (
+          <>
+            <BackgroundAnimation
+              initial={{ top: "-100vh" }}
+              animate={{ top: 0 }}
+              transition={BACKGROUND_TRANSITION}
+            />
+            <SVGCanvas>
+              <Nav />
+            </SVGCanvas>
+            <ScrollSnapper>
+              <SplashSection />
+              <BioSection />
+              {/* <StickyNav>
+                <Button onPress={() => localStorage.clear()}>
+                  Clear Local Storage (dev)
+                </Button>
+              </StickyNav> */}
+              <MusicSection />
+            </ScrollSnapper>
+          </>
+        )}
       </NameContext.Provider>
     </>
   );

@@ -23,9 +23,12 @@ export const Modal: React.FC<{
     <AnimatePresence>
       {isOpen && (
         <Underlay
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 0, zIndex: 2 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, pointerEvents: "none" }}
+          transition={{
+            duration: 1,
+          }}
         >
           {children}
         </Underlay>

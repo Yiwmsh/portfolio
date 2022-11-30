@@ -10,7 +10,7 @@ import {
   TextContent,
 } from "@yiwmsh/react-carpentry";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Modal } from "../../components/Modal";
 import { WhatsYourName } from "../../components/WhatsYourName";
 import styled from "@emotion/styled";
@@ -31,15 +31,10 @@ const CenteringButtonBank = styled(ButtonBank)`
   justify-content: center;
 `;
 
-const DoneButton = styled(Button)`
-  width: 100%;
-`;
-
-export const WelcomeModal: React.FC = () => {
-  const [welcomeModalOpen, setWelcomeModalOpen] = React.useState(
-    !localStorage.getItem("name")
-  );
-
+export const WelcomeModal: React.FC<{
+  closeButton: ReactNode;
+  welcomeModalOpen: boolean;
+}> = ({ closeButton, welcomeModalOpen }) => {
   return (
     <Modal isOpen={welcomeModalOpen}>
       <motion.div
@@ -64,11 +59,7 @@ export const WelcomeModal: React.FC = () => {
             </Row>
           </CardBody>
           <CardFooter>
-            <CenteringButtonBank>
-              <DoneButton onPress={() => setWelcomeModalOpen(false)}>
-                Submit
-              </DoneButton>
-            </CenteringButtonBank>
+            <CenteringButtonBank>{closeButton}</CenteringButtonBank>
           </CardFooter>
         </Card>
       </motion.div>
