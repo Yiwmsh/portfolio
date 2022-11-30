@@ -13,23 +13,25 @@ const CenteringTextContent = styled(TextContent)`
 const IntroductorySpan = styled(motion.span)`
   font-size: 2em;
   grid-row: auto;
+
+  @media screen and (max-width: 444px) {
+    font-size: 7vmin;
+  }
 `;
 
 const NameSpan = styled(motion.span)`
   font-size: 3em;
   grid-row: auto;
+
+  @media screen and (max-width: 444px) {
+    font-size: 14vmin;
+  }
 `;
 
 const SplashGrid = styled.div`
   display: grid;
   grid-template-rows: 2em 2em 3em;
   row-gap: 20px;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `;
 
 export const SplashSection: React.FC = () => {
