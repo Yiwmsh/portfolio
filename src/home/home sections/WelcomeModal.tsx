@@ -8,7 +8,7 @@ import {
   CardToolbar,
   SemanticColors,
   TextContent,
-} from "@yiwmsh/react-carpentry";
+} from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
 import { Modal } from "../../components/Modal";

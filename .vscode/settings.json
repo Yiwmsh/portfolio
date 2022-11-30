@@ -7,5 +7,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/node_modules": true
-  }
+  },
+  "appService.defaultWebAppToDeploy": "/subscriptions/88b74265-d3a3-4d4d-b3d0-dec7bd86bbd4/AppServices/subscriptions/88b74265-d3a3-4d4d-b3d0-dec7bd86bbd4/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/portfolio-host",
+  "appService.deploySubpath": "."
 }

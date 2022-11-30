@@ -1,4 +1,4 @@
-import { ScrollSection } from "@yiwmsh/react-carpentry";
+import { ScrollSection } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 
 export const CenteringSection = styled(ScrollSection)`

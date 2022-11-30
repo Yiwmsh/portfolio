@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { AnimatedText, TextContent } from "@yiwmsh/react-carpentry";
+import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";

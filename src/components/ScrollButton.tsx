@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { SemanticColors } from "@yiwmsh/react-carpentry";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 
 const ScrollButtonStyle = styled.button<{ direction: "up" | "down" }>`
   padding: 15px;

@@ -7,7 +7,7 @@ import {
   CardImage,
   LinkButton,
   TextContent,
-} from "@yiwmsh/react-carpentry";
+} from "@chrisellis/react-carpentry";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";
 import styled from "@emotion/styled";

@@ -1,4 +1,4 @@
-import { ThemeContext } from "@yiwmsh/react-carpentry";
+import { ThemeContext } from "@chrisellis/react-carpentry";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";

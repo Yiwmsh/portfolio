@@ -1,4 +1,4 @@
-import { Theme } from "@yiwmsh/react-carpentry";
+import { Theme } from "@chrisellis/react-carpentry";
 
 export const LightTheme = new Theme({
   background: "#FFFFFF",

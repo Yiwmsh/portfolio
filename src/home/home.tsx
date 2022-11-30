@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Navbar, ScrollSnapper } from "@yiwmsh/react-carpentry";
+import { Button, Navbar, ScrollSnapper } from "@chrisellis/react-carpentry";
 import React from "react";
 import { BioSection } from "./home sections/BioSection";
 import { SplashSection } from "./home sections/SplashSection";

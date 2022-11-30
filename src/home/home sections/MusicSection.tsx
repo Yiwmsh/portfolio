@@ -1,4 +1,4 @@
-import { SemanticColors, TextContent } from "@yiwmsh/react-carpentry";
+import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
