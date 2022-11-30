@@ -73,10 +73,6 @@ const generateStarCoordinates = (count: number) => {
 };
 
 export const Nav: React.FC = () => {
-  const starCount = 100;
-
-  const starCoordinates = generateStarCoordinates(starCount);
-
   return (
     <>
       <defs>
@@ -155,6 +151,18 @@ export const Nav: React.FC = () => {
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
+      <Stars />
+    </>
+  );
+};
+
+const Stars: React.FC = () => {
+  const starCount = 100;
+
+  const starCoordinates = generateStarCoordinates(starCount);
+
+  return (
+    <>
       {starCoordinates.map((coordinate) => {
         return <Star coordinates={coordinate} />;
       })}

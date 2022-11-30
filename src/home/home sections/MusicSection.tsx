@@ -74,19 +74,26 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
 
 const MusicPic = styled(motion.img)<{ focussed: boolean }>`
   width: ${({ focussed }) =>
-    focussed ? "calc(var(--GridColumnWidth) * 2)" : "var(--GridColumnWidth)"};
+    focussed
+      ? "calc((var(--GridColumnWidth) * 2) - 10px)"
+      : "calc(var(--GridColumnWidth) - 20px)"};
+  padding: 5px 5px 0 5px;
 `;
 
 const MusicBio = styled(motion.div)`
   margin: 5%;
 `;
 
+const IndentedSection = styled.div`
+  padding-left: 20px;
+`;
+
 const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
   border: 0px;
-  width: clamp(100%, 100%, 323px);
+  width: clamp(20px, 100%, 323px);
   max-width: 323px;
-  height: 187px;
+  aspect-ratio: 16 / 9;
 `;
 
 export const MusicSection: React.FC = () => {
@@ -131,7 +138,7 @@ export const MusicSection: React.FC = () => {
                 which I started teaching myself in 2010, when I was 13.
               </p>
               {bioFocussed && (
-                <>
+                <IndentedSection>
                   <p>
                     I started learning piano on a cheap rollout keyboard, which
                     was only 49 keys and had really stiff sensors. This, as you
@@ -147,7 +154,7 @@ export const MusicSection: React.FC = () => {
                     years, now, but whenever I come upon one in the wild it
                     never takes me long to shake off the rust.
                   </p>
-                </>
+                </IndentedSection>
               )}
               <p>
                 In 2021, I started teaching myself guitar as well. This was
@@ -157,7 +164,7 @@ export const MusicSection: React.FC = () => {
                 six hours in a row, without realizing I was getting sunburnt.
               </p>
               {bioFocussed && (
-                <>
+                <IndentedSection>
                   <p>
                     I started out on accoustic guitar, learning plenty of folk
                     songs alongside classics like Wish You Were Here, Hey There
@@ -165,7 +172,7 @@ export const MusicSection: React.FC = () => {
                     songs for me to learn, which I've found is a great way to
                     stay motivated and discover new music.
                   </p>
-                </>
+                </IndentedSection>
               )}
               <p>
                 While I lack a formal music education, and I have yet to teach

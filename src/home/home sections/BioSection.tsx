@@ -123,7 +123,9 @@ export const BioSection: React.FC = () => {
         </CardBody>
         <CardFooter>
           <CenteredParagraph>
-            You can also find me on the following sites!
+            <TextContent>
+              You can also find me on the following sites!
+            </TextContent>
           </CenteredParagraph>
           <Socials>
             <LinkButton

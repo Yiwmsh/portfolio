@@ -2,7 +2,7 @@ import { Theme } from "@yiwmsh/react-carpentry";
 
 export const LightTheme = new Theme({
   background: "#FFFFFF",
-  // foreground: "rgba(255, 255, 255, 0.1)",
+  foreground: "rgba(255, 255, 255, 0.1)",
   shadow: "rgba(0, 0, 0, 0.15)",
   primary: "#b05251",
   primaryActive: "#c44a3d",
@@ -10,7 +10,7 @@ export const LightTheme = new Theme({
   secondary: "#0047AB",
   secondaryActive: "#0047d9",
   secondaryDisabled: "#002e6f",
-  text: "#000000",
+  text: "#FFFFFF",
   altText: "#FFFFFF",
   error: "#ED6767",
 });
