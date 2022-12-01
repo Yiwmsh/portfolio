@@ -5,8 +5,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  CardToolbar,
-  SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
