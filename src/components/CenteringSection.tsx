@@ -8,6 +8,5 @@ export const CenteringSection = styled(ScrollSection)`
   justify-content: center;
 
   @media screen and (max-height: 1000px) {
-    padding-top: 20%;
   }
 `;
