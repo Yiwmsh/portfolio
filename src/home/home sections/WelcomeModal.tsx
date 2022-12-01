@@ -1,12 +1,9 @@
 import {
-  Button,
   ButtonBank,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
-  CardToolbar,
-  SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
@@ -14,7 +11,6 @@ import React, { ReactNode } from "react";
 import { Modal } from "../../components/Modal";
 import { WhatsYourName } from "../../components/WhatsYourName";
 import styled from "@emotion/styled";
-import { NameContext } from "../home";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;
@@ -25,6 +21,10 @@ const Row = styled.div`
   flex-direction: row;
   vertical-align: middle;
   gap: 5px;
+
+  @media screen and (max-width: 770px) {
+    flex-direction: column;
+  }
 `;
 
 const CenteringButtonBank = styled(ButtonBank)`
