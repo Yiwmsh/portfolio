@@ -87,11 +87,11 @@ export const BioSection: React.FC = () => {
             <p>But, before that, of course, A little bit about me:</p>
             <p>
               I'm {age} years old, a dual citizen, American and British. My
-              family travelled a lot when I was growing up, so I was raised in
-              lots of places; Florida, Cumbria, the UAE, and not infreqently on
-              a boat. My father owned a 52' sailing yatch, and when I was young
+              family traveled a lot when I was growing up, so I was raised in
+              lots of places; Florida, Cumbria, the UAE, and not infrequently on
+              a boat. My father owned a 52' sailing yacht, and when I was young
               we completed two trans-Atlantic voyages, and did some sailing in
-              the Carribean. These are some of my fondest memories, and I hope
+              the Caribbean. These are some of my fondest memories, and I hope
               to sail again in my future.
             </p>
             <p>

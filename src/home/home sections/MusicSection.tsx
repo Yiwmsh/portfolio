@@ -199,7 +199,7 @@ export const MusicSection: React.FC = () => {
             <TextContent>
               <p>
                 I've been playing music for a really long time. I started with
-                saxaphone for a year, back in elementary school, then swapped to
+                saxophone for a year, back in elementary school, then swapped to
                 percussion for two years. But my first real love was the piano,
                 which I started teaching myself in 2010, when I was 13.
               </p>
@@ -224,7 +224,7 @@ export const MusicSection: React.FC = () => {
               )}
               <p>
                 In 2021, I started teaching myself guitar as well. This was
-                around the time I got my ADHD diagnoses, and was perscribed
+                around the time I got my ADHD diagnoses, and was prescribed
                 medication for it, which meant that I had near unlimited focus
                 and drive. I remember one day I sat outside playing for about
                 six hours in a row, without realizing I was getting sunburnt.
@@ -232,9 +232,9 @@ export const MusicSection: React.FC = () => {
               {bioFocussed && (
                 <IndentedSection>
                   <p>
-                    I started out on accoustic guitar, learning plenty of folk
+                    I started out on acoustic guitar, learning plenty of folk
                     songs alongside classics like Wish You Were Here, Hey There
-                    Delilah, and Hallelujah. I often ask my friends to reccomend
+                    Delilah, and Hallelujah. I often ask my friends to recommend
                     songs for me to learn, which I've found is a great way to
                     stay motivated and discover new music.
                   </p>
@@ -244,7 +244,7 @@ export const MusicSection: React.FC = () => {
                 While I lack a formal music education, and I have yet to teach
                 myself much music theory, I aspire to create all sorts of music
                 in my future. I have written a couple of simple melodies and
-                chord changes already, and my authorial tendancies have lent
+                chord changes already, and my authorial tendencies have lent
                 themselves well to lyricism. I hear beautiful music in my head,
                 and as soon as I learn how to manifest it I hope to share it
                 with the world.

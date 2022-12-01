@@ -29,7 +29,7 @@ const generateRandomNumberInRange = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
 
-const generateIndividualStarCoordiante = (
+const generateIndividualStarCoordinate = (
   innerWidth: number,
   circleDiameter: number
 ) => {
@@ -61,12 +61,12 @@ const generateStarCoordinates = (count: number) => {
   */
   const { innerWidth, innerHeight } = window;
 
-  // And then the circle's diameter in pixles.
+  // And then the circle's diameter in pixels.
 
   const circleDiameter = innerHeight * 0.65 * 2;
 
   const starCoords = Array.from({ length: count }, () =>
-    generateIndividualStarCoordiante(innerWidth, circleDiameter)
+    generateIndividualStarCoordinate(innerWidth, circleDiameter)
   );
 
   return starCoords;

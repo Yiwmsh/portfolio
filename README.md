@@ -1,6 +1,9 @@
-# WIP
+# Portfolio
 
-This is my personal portfolio website, live at: https://www.whimsy.page/
+This is personal portfolio website, live at https://www.whimsy.page
 
 I'm using my own component library: https://github.com/Yiwmsh/react-carpentry
-Alongside Framer-Motion and react-aria
+
+As well as Framer Motion: https://www.framer.com/motion/
+
+And react-aria: https://react-spectrum.adobe.com/react-aria/
