@@ -87,9 +87,10 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   }
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
-  scrollbar-width: none;
 
-  &:-webkit-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
     display: none;
   }
 `;
