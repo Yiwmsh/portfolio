@@ -87,14 +87,17 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   }
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
-  scrollbar-width: none;
 
-  &:-webkit-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
     display: none;
   }
 `;
 
 const MusicPic = styled(motion.img)<{ focussed: boolean }>`
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
   width: ${({ focussed }) =>
     focussed
       ? "calc((var(--GridColumnWidth) * 2) - 10px)"
@@ -125,7 +128,8 @@ const IndentedSection = styled.div`
 `;
 
 const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
-  box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
+  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
+  border-radius: 10px;
   border: 0px;
   width: clamp(20px, 100%, 323px);
   max-width: 323px;

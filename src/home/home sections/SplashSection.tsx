@@ -6,6 +6,8 @@ import { CenteringSection } from "../../components/CenteringSection";
 import { ScrollButton } from "../../components/ScrollButton";
 import { NameContext } from "../home";
 
+const newcomer = localStorage.getItem("name") ? true : false;
+
 const CenteringTextContent = styled(TextContent)`
   text-align: center;
 `;
@@ -49,7 +51,9 @@ export const SplashSection: React.FC = () => {
                   transition={{ delay: 5 }}
                 >
                   <AnimatedText
-                    text={`Hello, ${name}, it's lovely to meet you.`}
+                    text={`Hello, ${name}, ${
+                      !newcomer ? "it's lovely to meet you" : "welcome back"
+                    }.`}
                     animationVariants={{
                       hidden: {
                         opacity: 0,

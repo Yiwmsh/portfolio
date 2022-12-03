@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardImage,
   LinkButton,
+  SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
 import React from "react";
@@ -14,32 +15,40 @@ import styled from "@emotion/styled";
 import moment from "moment";
 import { NameContext } from "../home";
 import { ScrollButton } from "../../components/ScrollButton";
+import portrait from "../../resources/portrait.jpg";
 
 const PortraitOfMe = styled.img`
-  @media screen and (max-height: 1000px), (max-width: 1463px) {
-    aspect-ratio: 1 / 1;
-    max-height: 100%;
-    max-width: 40%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
+  aspect-ratio: 1.332 / 1;
+  @media screen and (max-width: 850px) {
+    max-height: 40%;
+  }
+
+  @media screen and (max-height: 1000px) {
+    max-width: 30%;
   }
 `;
 
-const SideBySide = styled.div`
+const BioCardBody = styled.div`
   padding: 0 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
 
-  @media screen and (max-height: 1000px), (max-width: 1463px) {
+  @media screen and (max-width: 850px) {
     max-height: 60%;
+    flex-direction: column;
   }
 `;
 
 const Bio = styled(TextContent)`
+  padding: 5px;
   @media screen and (max-height: 1000px), (max-width: 1463px) {
     overflow-y: scroll;
     max-height: 100%;
-    padding-right: 5px;
   }
 `;
 
@@ -54,6 +63,7 @@ const CenteredParagraph = styled.p`
 
 const BioCard = styled(Card)`
   max-height: 65vh;
+  max-width: 95vw;
 `;
 
 export const BioSection: React.FC = () => {
@@ -73,11 +83,8 @@ export const BioSection: React.FC = () => {
             )}
           </NameContext.Consumer>
         </CardHeader>
-        <SideBySide>
-          <PortraitOfMe
-            src="https://avatars.githubusercontent.com/u/110123778?v=4"
-            alt="Whimsy, staring off to the side."
-          />
+        <BioCardBody>
+          <PortraitOfMe src={portrait} alt="Whimsy, staring off to the side." />
           <Bio>
             <p>I am a queer, non-binary author, musician, and programmer.</p>
             <p>
@@ -124,7 +131,7 @@ export const BioSection: React.FC = () => {
             </p>
             <br />
           </Bio>
-        </SideBySide>
+        </BioCardBody>
         <CenteredParagraph>
           <TextContent>
             You can also find me on the following sites!
