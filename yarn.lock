@@ -1454,10 +1454,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@chrisellis/react-carpentry@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@chrisellis/react-carpentry/-/react-carpentry-0.4.0.tgz#8e076692a750eda4d6acb267d4b1873e9ba427f2"
-  integrity sha512-4Vm1pPK91B+0/YgPc7yXYVHE5w5ae9jKx/j/mcok+LetqUGsK5f7UfX6YBN8siisZbjpmvWFzWWbLRI4eoUXUw==
+"@chrisellis/react-carpentry@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@chrisellis/react-carpentry/-/react-carpentry-0.4.1.tgz#f0988ef548a227cb0d5a0f81c6d1603aeb667957"
+  integrity sha512-4XXlxGBr0mRyNwGywKgdUlLdYoCTrKFlDMs5PSNRz7hhMoaBckmwHfwmNDGqcaX7Uw0xnEHzf3V2j43oQueutQ==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
