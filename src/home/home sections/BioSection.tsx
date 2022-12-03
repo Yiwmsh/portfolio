@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardImage,
   LinkButton,
+  SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
 import React from "react";
@@ -17,6 +18,8 @@ import { ScrollButton } from "../../components/ScrollButton";
 import portrait from "../../resources/portrait.jpg";
 
 const PortraitOfMe = styled.img`
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
   aspect-ratio: 1.332 / 1;
   @media screen and (max-width: 1463px) {
     max-height: 40%;
