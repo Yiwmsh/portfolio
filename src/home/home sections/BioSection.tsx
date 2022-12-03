@@ -14,24 +14,25 @@ import styled from "@emotion/styled";
 import moment from "moment";
 import { NameContext } from "../home";
 import { ScrollButton } from "../../components/ScrollButton";
+import portrait from "../../resources/portrait.jpg";
 
 const PortraitOfMe = styled.img`
-  @media screen and (max-height: 1000px), (max-width: 1463px) {
-    aspect-ratio: 1 / 1;
-    max-height: 100%;
-    max-width: 40%;
+  aspect-ratio: 1.332 / 1;
+  @media screen and (max-width: 1463px) {
+    max-height: 40%;
   }
 `;
 
-const SideBySide = styled.div`
+const BioBody = styled.div`
   padding: 0 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
 
-  @media screen and (max-height: 1000px), (max-width: 1463px) {
+  @media screen and (max-width: 1463px) {
     max-height: 60%;
+    flex-direction: column;
   }
 `;
 
@@ -54,6 +55,7 @@ const CenteredParagraph = styled.p`
 
 const BioCard = styled(Card)`
   max-height: 65vh;
+  max-width: 95vw;
 `;
 
 export const BioSection: React.FC = () => {
@@ -73,11 +75,8 @@ export const BioSection: React.FC = () => {
             )}
           </NameContext.Consumer>
         </CardHeader>
-        <SideBySide>
-          <PortraitOfMe
-            src="https://avatars.githubusercontent.com/u/110123778?v=4"
-            alt="Whimsy, staring off to the side."
-          />
+        <BioBody>
+          <PortraitOfMe src={portrait} alt="Whimsy, staring off to the side." />
           <Bio>
             <p>I am a queer, non-binary author, musician, and programmer.</p>
             <p>
@@ -124,7 +123,7 @@ export const BioSection: React.FC = () => {
             </p>
             <br />
           </Bio>
-        </SideBySide>
+        </BioBody>
         <CenteredParagraph>
           <TextContent>
             You can also find me on the following sites!
