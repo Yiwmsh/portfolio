@@ -62,6 +62,12 @@ export const Home: React.FC = () => {
     width: 50%;
   `;
 
+  const SmartScrollSnapper = styled(ScrollSnapper)`
+    @supports (-webkit-font-smoothing: antialiased) {
+      overflow: hidden;
+    }
+  `;
+
   const closeModalButton = (
     <DoneButton onPress={() => setWelcomeModalOpen(false)}>Submit</DoneButton>
   );
@@ -83,7 +89,7 @@ export const Home: React.FC = () => {
             <SVGCanvas>
               <Nav />
             </SVGCanvas>
-            <ScrollSnapper>
+            <SmartScrollSnapper>
               <SplashSection />
               <BioSection />
               {/* <StickyNav>
@@ -92,7 +98,7 @@ export const Home: React.FC = () => {
                 </Button>
               </StickyNav> */}
               <MusicSection />
-            </ScrollSnapper>
+            </SmartScrollSnapper>
           </>
         )}
       </NameContext.Provider>
