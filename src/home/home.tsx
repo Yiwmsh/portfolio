@@ -53,13 +53,13 @@ export const Home: React.FC = () => {
   `;
 
   const BACKGROUND_TRANSITION = { duration: 5 };
-
   const [welcomeModalOpen, setWelcomeModalOpen] = React.useState(
     !localStorage.getItem("name")
   );
 
   const DoneButton = styled(Button)`
-    width: 100%;
+    margin-top: 5px;
+    width: 50%;
   `;
 
   const closeModalButton = (
