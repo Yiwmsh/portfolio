@@ -123,7 +123,7 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
       ? "calc((var(--GridColumnWidth) * 2) - 10px)"
       : "calc(var(--GridColumnWidth) - 20px)"};
   aspect-ratio: 10 / 13;
-  margin: 5px auto;
+  margin: ${({ focussed }) => (focussed ? "0 0 0 5px" : "5px auto")};
 
   @media screen and (max-width: 600px) {
     max-height: 90%;
