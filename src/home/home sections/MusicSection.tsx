@@ -51,10 +51,29 @@ const MusicBioContainer = styled(motion.div)<{ focussed: boolean }>`
   @media screen and (max-width: 600px) {
     grid-row: ${({ focussed }) => (focussed ? "1 / span 2" : "1")};
     flex-direction: row;
+    ${({ focussed }) => (focussed ? "" : "justify-content: space-between;")}
   }
   background-color: var(${SemanticColors.foreground});
   box-shadow: 0.125em 0.25em 1.25em var(--shadow-color);
   overflow: hidden;
+`;
+
+const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
+  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
+  border-radius: 10px;
+  border: 0px;
+  width: clamp(20px, 100%, 323px);
+  max-width: 323px;
+  aspect-ratio: 16 / 9;
+
+  @media screen and (max-width: 1500px) {
+    max-width: 100%;
+    ${({ focussed }) => (focussed ? "" : "display: none;")};
+  }
+
+  @media screen and (max-height: 1060px) {
+    ${({ focussed }) => (focussed ? "" : "display: none;")};
+  }
 `;
 
 const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
@@ -63,8 +82,9 @@ const YoutubeVideosContainer = styled(motion.div)<{ focussed: boolean }>`
   flex-direction: ${({ focussed }) => (focussed ? "row" : "column")};
   flex-wrap: ${({ focussed }) => (focussed ? "wrap" : "none")};
   overflow-x: scroll;
-  align-items: center;
-  align-content: center;
+
+  align-content: start;
+
   padding: 10px;
   ${({ focussed }) =>
     focussed
@@ -106,7 +126,8 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
   margin: 5px auto;
 
   @media screen and (max-width: 600px) {
-    max-height: 100%;
+    max-height: 90%;
+    margin: auto 5px;
     max-width: 30%;
     width: unset;
   }
@@ -114,10 +135,16 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
 
 const MusicBio = styled(motion.div)<{ focussed: boolean }>`
   margin: 5%;
+  overflow-y: auto;
+  max-height: 100%;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   @media screen and (max-height: 1060px) {
-    overflow-y: scroll;
-    max-height: 100%;
     padding-right: 5px;
     ${({ focussed }) => (focussed ? "" : "display: none;")}
   }
@@ -127,37 +154,38 @@ const IndentedSection = styled.div`
   padding-left: 20px;
 `;
 
-const YoutubeVideo = styled(motion.iframe)<{ focussed: boolean }>`
-  box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
-  border-radius: 10px;
-  border: 0px;
-  width: clamp(20px, 100%, 323px);
-  max-width: 323px;
-  aspect-ratio: 16 / 9;
-
-  @media screen and (max-width: 600px) {
-    max-width: 100%;
-    ${({ focussed }) => (focussed ? "" : "display: none;")}
-  }
-`;
-
 const BioTitle = styled(motion.div)<{ focussed: boolean }>`
   display: none;
-  width: 100%;
-  height: 100%;
   align-items: center;
-  padding-left: 20%;
+  height: 100%;
+
+  @media screen and (max-height: 1060px) {
+    ${({ focussed }) => (focussed ? "display: none" : "display: flex")};
+    margin: auto;
+  }
 
   @media screen and (max-width: 600px) {
-    ${({ focussed }) => (focussed ? "display: none" : "display: flex")}
+    ${({ focussed }) => (focussed ? "display: none" : "display: flex")};
+    margin: 0;
   }
 `;
 
 const VideosTitle = styled.h3<{ focussed: boolean }>`
   display: none;
   margin: auto;
+  @media screen and (max-width: 1500px) {
+    ${({ focussed }) => (focussed ? "display: none" : "display: inline")};
+  }
+  @media screen and (max-height: 1060px) {
+    ${({ focussed }) => (focussed ? "display: none" : "display: inline")};
+  }
+`;
+
+const InvisibleSpacer = styled(MusicPic)`
+  visibility: hidden;
+  display: none;
   @media screen and (max-width: 600px) {
-    ${({ focussed }) => (focussed ? "display: none" : "display: inline")}
+    display: inline;
   }
 `;
 
@@ -199,6 +227,13 @@ export const MusicSection: React.FC = () => {
               <h3>Bio</h3>
             </TextContent>
           </BioTitle>
+          <InvisibleSpacer
+            aria-hidden
+            layout
+            alt="I am sitting on my bed playing guitar while looking at tabs on my phone."
+            src={musicPic}
+            focussed={bioFocussed}
+          />
           <MusicBio focussed={bioFocussed} layout>
             <TextContent>
               <p>
@@ -264,6 +299,18 @@ export const MusicSection: React.FC = () => {
           <VideosTitle focussed={!bioFocussed}>
             <TextContent>Videos</TextContent>
           </VideosTitle>
+          {youtubeVideos.map(
+            (video: {
+              snippet: { title: string; resourceId: { videoId: string } };
+            }) => (
+              <YoutubeVideo
+                layout
+                focussed={!bioFocussed}
+                src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
+              />
+            )
+          )}
+
           {youtubeVideos.map(
             (video: {
               snippet: { title: string; resourceId: { videoId: string } };
