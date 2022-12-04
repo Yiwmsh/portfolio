@@ -310,18 +310,6 @@ export const MusicSection: React.FC = () => {
               />
             )
           )}
-
-          {youtubeVideos.map(
-            (video: {
-              snippet: { title: string; resourceId: { videoId: string } };
-            }) => (
-              <YoutubeVideo
-                layout
-                focussed={!bioFocussed}
-                src={`https://www.youtube.com/embed/${video.snippet.resourceId.videoId}`}
-              />
-            )
-          )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
     </CenteringSection>
