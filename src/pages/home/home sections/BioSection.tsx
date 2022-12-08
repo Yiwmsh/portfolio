@@ -15,7 +15,7 @@ import moment from "moment";
 import portrait from "../../../resources/portrait.jpg";
 import { CenteringSection } from "../../../components/CenteringSection";
 import { ScrollButton } from "../../../components/ScrollButton";
-import { NameContext } from "../home";
+import { NameContext } from "../../site";
 
 const PortraitOfMe = styled.img`
   border-radius: 10px;

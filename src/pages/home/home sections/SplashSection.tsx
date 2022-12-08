@@ -3,8 +3,8 @@ import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { CenteringSection } from "../../../components/CenteringSection";
-import { NameContext } from "../home";
 import { ScrollButton } from "../../../components/ScrollButton";
+import { NameContext } from "../../site";
 
 const newcomer = localStorage.getItem("name") ? true : false;
 

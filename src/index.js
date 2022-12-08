@@ -5,7 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { LightTheme } from "./consts/index";
 import { routs } from "./router";
 import { Router, Outlet, ReactLocation } from "@tanstack/react-location";
-import { Home } from "./pages/index";
+import { Site } from "./pages/site";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -14,10 +14,11 @@ const location = new ReactLocation();
 root.render(
   <React.StrictMode>
     <ThemeContext theme={LightTheme}>
-      {/* <Home /> */}
-      <Router routes={routs} location={location}>
-        <Outlet />
-      </Router>
+      <Site>
+        <Router routes={routs} location={location}>
+          <Outlet />
+        </Router>
+      </Site>
     </ThemeContext>
   </React.StrictMode>
 );
