@@ -8,9 +8,8 @@ import {
 } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
-import { Modal } from "../../components/Modal";
-import { WhatsYourName } from "../../components/WhatsYourName";
 import styled from "@emotion/styled";
+import { Modal, WhatsYourName } from "../../../components";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";
 import { ScrollButton } from "../../components/ScrollButton";
-import { NameContext } from "../home";
+import { NameContext } from "../../pages/home/home";
 
 const newcomer = localStorage.getItem("name") ? true : false;
 

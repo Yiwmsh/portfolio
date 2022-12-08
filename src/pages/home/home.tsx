@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 import { Button, Navbar, ScrollSnapper } from "@chrisellis/react-carpentry";
 import React from "react";
 import { BioSection } from "./home sections/BioSection";
-import { SplashSection } from "./home sections/SplashSection";
-import { WelcomeModal } from "./home sections/WelcomeModal";
-import { MusicSection } from "./home sections/MusicSection";
 import { motion } from "framer-motion";
-import { Nav } from "../components/Nav";
+import { Nav } from "../../components/Nav";
+import { WelcomeModal } from "./home sections/WelcomeModal";
+import { SplashSection } from "./home sections/SplashSection";
+import { MusicSection } from "./home sections/MusicSection";
 
 export const NameContext = React.createContext({
   name: localStorage.getItem("name") ?? "Friend",

@@ -10,11 +10,11 @@ import {
   TextContent,
 } from "@chrisellis/react-carpentry";
 import React from "react";
-import { CenteringSection } from "../../components/CenteringSection";
+import { CenteringSection } from "../../../components/CenteringSection";
 import styled from "@emotion/styled";
 import moment from "moment";
 import { NameContext } from "../home";
-import { ScrollButton } from "../../components/ScrollButton";
+import { ScrollButton } from "../../../components/ScrollButton";
 import portrait from "../../resources/portrait.jpg";
 
 const PortraitOfMe = styled.img`
