@@ -30,25 +30,39 @@ export const Login: React.FC<{
   const [password, setPassword] = React.useState("");
   return (
     <Card centered="both">
-      <CardHeader>
-        <h1>
-          <TextContent>Please enter your credentials</TextContent>
-        </h1>
-      </CardHeader>
-      <CardBody>
-        <TextField type="username" onChange={setUsername} label="Username" />
-        <TextField type="password" onChange={setPassword} label="Password" />
-        <ErrorMessage show={falseCredentials}>
-          Incorrect Credentials!
-        </ErrorMessage>
-      </CardBody>
-      <CardFooter>
-        <CenteringButtonBank>
-          <Button onPress={() => handleLogin(username, password)}>
-            Submit
-          </Button>
-        </CenteringButtonBank>
-      </CardFooter>
+      <form action="#" method="post">
+        <CardHeader>
+          <h1>
+            <TextContent>Please enter your credentials</TextContent>
+          </h1>
+        </CardHeader>
+        <CardBody>
+          <TextField
+            type="name"
+            autoComplete="username"
+            isRequired
+            onChange={setUsername}
+            label="Username"
+          />
+          <TextField
+            type="password"
+            autoComplete="current-password"
+            isRequired
+            onChange={setPassword}
+            label="Password"
+          />
+          <ErrorMessage show={falseCredentials}>
+            Incorrect Credentials!
+          </ErrorMessage>
+        </CardBody>
+        <CardFooter>
+          <CenteringButtonBank>
+            <Button onPress={() => handleLogin(username, password)}>
+              Submit
+            </Button>
+          </CenteringButtonBank>
+        </CardFooter>
+      </form>
     </Card>
   );
 };
