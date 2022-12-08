@@ -7,9 +7,16 @@ import {
   TextContent,
   CardFooter,
   Button,
+  SemanticColors,
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { CenteringButtonBank } from "../home/home sections/WelcomeModal";
+
+const ErrorMessage = styled.p<{ show: boolean }>`
+  color: var(${SemanticColors.error});
+  display: ${({ show }) => (show ? "inline" : "none")};
+  text-align: center;
+`;
 
 export const Login: React.FC<{
   loginHandler: (username: string, password: string) => boolean;
@@ -31,6 +38,9 @@ export const Login: React.FC<{
       <CardBody>
         <TextField type="username" onChange={setUsername} label="Username" />
         <TextField type="password" onChange={setPassword} label="Password" />
+        <ErrorMessage show={falseCredentials}>
+          Incorrect Credentials!
+        </ErrorMessage>
       </CardBody>
       <CardFooter>
         <CenteringButtonBank>

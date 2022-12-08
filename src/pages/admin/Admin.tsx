@@ -24,13 +24,15 @@ export const Admin: React.FC = () => {
     }
   };
 
-  if (storedUsername && storedPassword) {
-    handleLogin(storedUsername, storedPassword);
-    if (!loggedIn) {
-      sessionStorage.removeItem("username");
-      sessionStorage.removeItem("password");
+  React.useEffect(() => {
+    if (storedUsername && storedPassword) {
+      handleLogin(storedUsername, storedPassword);
+      if (!loggedIn) {
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("password");
+      }
     }
-  }
+  }, []);
 
   return loggedIn ? (
     <>
