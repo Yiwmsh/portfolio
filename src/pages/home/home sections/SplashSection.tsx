@@ -37,6 +37,8 @@ const SplashGrid = styled.div`
 `;
 
 export const SplashSection: React.FC = () => {
+  const session = sessionStorage.getItem("stars") ? true : false;
+
   return (
     <CenteringSection id="Splash">
       <CenteringTextContent altColor>
@@ -48,7 +50,7 @@ export const SplashSection: React.FC = () => {
                   layout
                   initial={{ display: "none" }}
                   animate={{ display: "inline" }}
-                  transition={{ delay: 5 }}
+                  transition={{ delay: session ? 0 : 5 }}
                 >
                   <AnimatedText
                     text={`Hello, ${name}, ${
@@ -78,7 +80,7 @@ export const SplashSection: React.FC = () => {
                   layout
                   initial={{ display: "none" }}
                   animate={{ display: "inline" }}
-                  transition={{ delay: 7 }}
+                  transition={{ delay: session ? 2 : 7 }}
                 >
                   <AnimatedText
                     text={`My name is`}
@@ -106,7 +108,7 @@ export const SplashSection: React.FC = () => {
                   layout
                   initial={{ display: "none" }}
                   animate={{ display: "inline" }}
-                  transition={{ delay: 8 }}
+                  transition={{ delay: session ? 3 : 8 }}
                 >
                   <AnimatedText
                     text={`Whimsy`}
@@ -139,7 +141,7 @@ export const SplashSection: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
-          delay: 10,
+          delay: session ? 5 : 10,
         }}
       >
         <ScrollButton direction="down" target={"Bio"} />

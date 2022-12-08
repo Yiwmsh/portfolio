@@ -6,18 +6,32 @@ const StarStyle = styled(motion.path)`
   z-index: -2;
 `;
 
-export const Star: React.FC<{ coordinates: { x: number; y: number } }> = ({
+export interface Coordinate {
+  x: number;
+  y: number;
+}
+
+export interface StarData {
+  coordinates: Coordinate;
+  scale: number;
+  rotation: number;
+  delay: number;
+  duration: number;
+}
+
+export const Star: React.FC<StarData> = ({
   coordinates,
+  scale,
+  rotation,
+  delay,
+  duration,
 }) => {
-  const scale = Math.random() * (0.8 - 0.2) + 0.2;
-  const rotation = Math.random() * 360;
-  const randomDelay = Math.random() * 10;
-  const randomDuration = Math.random() * 5;
+  const session = sessionStorage.getItem("stars") ? true : false;
   return (
     <motion.g
       initial={{
-        opacity: 0,
-        scale: 0,
+        opacity: session ? 1 : 0,
+        scale: session ? scale : 0,
         x: `${coordinates.x}vw`,
         y: `${coordinates.y}vh`,
       }}
@@ -31,10 +45,10 @@ export const Star: React.FC<{ coordinates: { x: number; y: number } }> = ({
         initial={{ rotate: rotation }}
         animate={{ opacity: [1, 0, 1] }}
         transition={{
-          duration: randomDuration + 2,
-          delay: randomDelay,
+          duration: duration + 2,
+          delay: delay,
           repeat: Infinity,
-          repeatDelay: randomDelay,
+          repeatDelay: delay,
         }}
       />
     </motion.g>

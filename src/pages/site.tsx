@@ -63,6 +63,8 @@ export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <DoneButton onPress={() => setWelcomeModalOpen(false)}>Submit</DoneButton>
   );
 
+  const session = sessionStorage.getItem("stars") ? true : false;
+
   return (
     <>
       <NameContext.Provider value={{ name, setName }}>
@@ -73,7 +75,7 @@ export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {!welcomeModalOpen && (
           <>
             <BackgroundAnimation
-              initial={{ top: "-100vh" }}
+              initial={{ top: session ? 0 : "-100vh" }}
               animate={{ top: 0 }}
               transition={BACKGROUND_TRANSITION}
             />

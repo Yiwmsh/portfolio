@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
-import { Star } from "./Star";
+import { Star, StarData, Coordinate } from "./Star";
 
 const Sun = styled(motion.circle)``;
 
@@ -29,10 +29,12 @@ const generateRandomNumberInRange = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
 
-const generateIndividualStarCoordinate = (
-  innerWidth: number,
-  circleDiameter: number
-) => {
+const generateStar = (innerWidth: number, circleDiameter: number): StarData => {
+  const scale = Math.random() * (0.8 - 0.2) + 0.2;
+  const rotation = Math.random() * 360;
+  const delay = Math.random() * 10;
+  const duration = Math.random() * 5;
+
   /* Now we can calculate the horizon's arc by assuming our circle's origin is at (50, 0)%,
   And it has a point at (50, 65)%. Our circle's equation is (x - 50)^2 + y^2 = 4225.
   Solving for y gives us y = ± sqrt(-x^2 + 100 x + 1725), but we only care about positive y values,
@@ -47,10 +49,17 @@ const generateIndividualStarCoordinate = (
       ? 0
       : Math.sqrt(-Math.pow(x, 2) + 100 * x + 1725);
   const y = generateRandomNumberInRange(yFloor, 100);
-  return { x: x, y: y };
+
+  return {
+    coordinates: { x: x, y: y },
+    scale: scale,
+    rotation: rotation,
+    delay: delay,
+    duration: duration,
+  };
 };
 
-const generateStarCoordinates = (count: number) => {
+const generateStars = (count: number): StarData[] => {
   /* We don't want stars in the region of the screen that is too bright.
   We know that the luminosity boundary occurs at (50, 65)% thanks to our gradient.
   The gradient cares about screen height, not width, which means that our gradient is always a perfect circle.
@@ -65,14 +74,16 @@ const generateStarCoordinates = (count: number) => {
 
   const circleDiameter = innerHeight * 0.65 * 2;
 
-  const starCoords = Array.from({ length: count }, () =>
-    generateIndividualStarCoordinate(innerWidth, circleDiameter)
+  const stars = Array.from({ length: count }, () =>
+    generateStar(innerWidth, circleDiameter)
   );
 
-  return starCoords;
+  sessionStorage.setItem("stars", JSON.stringify(stars));
+  return stars;
 };
 
 export const Nav: React.FC = () => {
+  const session = sessionStorage.getItem("stars") ? true : false;
   return (
     <>
       <defs>
@@ -83,8 +94,8 @@ export const Nav: React.FC = () => {
       </defs>
       <Sun
         fill={"url('#sun')"}
-        initial={{ x: "50%", r: 50, y: "-100vh" }}
-        animate={{ y: 10 }}
+        initial={{ x: "50%", r: 50, y: session ? 10 : "-100vh" }}
+        animate={session ? {} : { scale: 1.3 }}
         whileHover={{ scale: 1.2 }}
         transition={SUN_TRANSITION}
       />
@@ -94,8 +105,8 @@ export const Nav: React.FC = () => {
       <motion.path
         d={SUN_RAY_PATH}
         fill="#f4f812"
-        initial={{ x: "50%", scale: 0, y: 5, rotate: 0 }}
-        animate={{ scale: 1.3 }}
+        initial={{ x: "50%", scale: session ? 1.3 : 0, y: 5, rotate: 0 }}
+        animate={session ? {} : { scale: 1.3 }}
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
@@ -104,11 +115,11 @@ export const Nav: React.FC = () => {
         fill="#f4f812"
         initial={{
           x: `calc(50% - 41.7812px)`,
-          scale: 0,
+          scale: session ? 1.3 : 0,
           y: 49.7929 - 60,
           rotate: 40,
         }}
-        animate={{ scale: 1.3 }}
+        animate={session ? {} : { scale: 1.3 }}
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
@@ -117,11 +128,11 @@ export const Nav: React.FC = () => {
         fill="#f4f812"
         initial={{
           x: "calc(50% - 64.0125px)",
-          scale: 0,
+          scale: session ? 1.3 : 0,
           y: 11.2871 - 60,
           rotate: 80,
         }}
-        animate={{ scale: 1.3 }}
+        animate={session ? {} : { scale: 1.3 }}
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
@@ -130,11 +141,11 @@ export const Nav: React.FC = () => {
         fill="#f4f812"
         initial={{
           x: "calc(50% + 41.7812px)",
-          scale: 0,
+          scale: session ? 1.3 : 0,
           y: 49.7929 - 60,
           rotate: -40,
         }}
-        animate={{ scale: 1.3 }}
+        animate={session ? {} : { scale: 1.3 }}
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
@@ -143,11 +154,11 @@ export const Nav: React.FC = () => {
         fill="#f4f812"
         initial={{
           x: "calc(50% + 64.0125px)",
-          scale: 0,
+          scale: session ? 1.3 : 0,
           y: 11.2871 - 60,
           rotate: -80,
         }}
-        animate={{ scale: 1.3 }}
+        animate={session ? {} : { scale: 1.3 }}
         transition={SUN_RAY_TRANSITION}
         whileHover={{ scale: 20 }}
       />
@@ -158,13 +169,16 @@ export const Nav: React.FC = () => {
 
 const Stars: React.FC = () => {
   const starCount = 100;
+  const storedStars = sessionStorage.getItem("stars");
 
-  const starCoordinates = generateStarCoordinates(starCount);
+  const stars = storedStars
+    ? JSON.parse(storedStars)
+    : generateStars(starCount);
 
   return (
     <>
-      {starCoordinates.map((coordinate) => {
-        return <Star coordinates={coordinate} />;
+      {stars.map((star: StarData) => {
+        return <Star {...star} />;
       })}
     </>
   );
