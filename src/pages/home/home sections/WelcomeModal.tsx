@@ -26,7 +26,7 @@ const Row = styled.div`
   }
 `;
 
-const CenteringButtonBank = styled(ButtonBank)`
+export const CenteringButtonBank = styled(ButtonBank)`
   justify-content: center;
 `;
 
