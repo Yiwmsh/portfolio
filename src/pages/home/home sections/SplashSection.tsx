@@ -2,9 +2,9 @@ import styled from "@emotion/styled";
 import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { CenteringSection } from "../../components/CenteringSection";
-import { ScrollButton } from "../../components/ScrollButton";
-import { NameContext } from "../../pages/home/home";
+import { CenteringSection } from "../../../components/CenteringSection";
+import { NameContext } from "../home";
+import { ScrollButton } from "../../../components/ScrollButton";
 
 const newcomer = localStorage.getItem("name") ? true : false;
 

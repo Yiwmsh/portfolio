@@ -10,12 +10,12 @@ import {
   TextContent,
 } from "@chrisellis/react-carpentry";
 import React from "react";
-import { CenteringSection } from "../../../components/CenteringSection";
 import styled from "@emotion/styled";
 import moment from "moment";
-import { NameContext } from "../home";
+import portrait from "../../../resources/portrait.jpg";
+import { CenteringSection } from "../../../components/CenteringSection";
 import { ScrollButton } from "../../../components/ScrollButton";
-import portrait from "../../resources/portrait.jpg";
+import { NameContext } from "../home";
 
 const PortraitOfMe = styled.img`
   border-radius: 10px;

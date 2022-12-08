@@ -2,9 +2,9 @@ import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import musicPic from "../../resources/musicPic.png";
-import { CenteringSection } from "../../components/CenteringSection";
-import { ScrollButton } from "../../components/ScrollButton";
+import musicPic from "../../../resources/musicPic.png";
+import { CenteringSection } from "../../../components/CenteringSection";
+import { ScrollButton } from "../../../components/ScrollButton";
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
   "https://www.googleapis.com/youtube/v3/playlistItems";
