@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
 import { Star, StarData, Coordinate } from "./Star";
+import { SessionContext } from "../pages/site";
 
 const Sun = styled(motion.circle)``;
 
@@ -56,6 +57,7 @@ const generateStar = (innerWidth: number, circleDiameter: number): StarData => {
     rotation: rotation,
     delay: delay,
     duration: duration,
+    session: false,
   };
 };
 
@@ -83,102 +85,105 @@ const generateStars = (count: number): StarData[] => {
 };
 
 export const Nav: React.FC = () => {
-  const session = sessionStorage.getItem("stars") ? true : false;
   return (
-    <>
-      <defs>
-        <radialGradient id="sun">
-          <stop offset="0%" stop-color="rgba(208, 124, 80, 1)" />
-          <stop offset="100%" stop-color="#f4f812" />
-        </radialGradient>
-      </defs>
-      <Sun
-        fill={"url('#sun')"}
-        initial={{ x: "50%", r: 50, y: session ? 10 : "-100vh" }}
-        animate={session ? {} : { scale: 1.3 }}
-        whileHover={{ scale: 1.2 }}
-        transition={SUN_TRANSITION}
-      />
-      {/*
+    <SessionContext.Consumer>
+      {({ session }) => (
+        <>
+          <defs>
+            <radialGradient id="sun">
+              <stop offset="0%" stop-color="rgba(208, 124, 80, 1)" />
+              <stop offset="100%" stop-color="#f4f812" />
+            </radialGradient>
+          </defs>
+          <Sun
+            fill={"url('#sun')"}
+            initial={{ x: "50%", r: 50, y: session ? 10 : "-100vh" }}
+            animate={session ? {} : { y: 10 }}
+            whileHover={{ scale: 1.2 }}
+            transition={SUN_TRANSITION}
+          />
+          {/*
           This is the centermost sunray
           */}
-      <motion.path
-        d={SUN_RAY_PATH}
-        fill="#f4f812"
-        initial={{ x: "50%", scale: session ? 1.3 : 0, y: 5, rotate: 0 }}
-        animate={session ? {} : { scale: 1.3 }}
-        transition={SUN_RAY_TRANSITION}
-        whileHover={{ scale: 20 }}
-      />
-      <motion.path
-        d={SUN_RAY_PATH}
-        fill="#f4f812"
-        initial={{
-          x: `calc(50% - 41.7812px)`,
-          scale: session ? 1.3 : 0,
-          y: 49.7929 - 60,
-          rotate: 40,
-        }}
-        animate={session ? {} : { scale: 1.3 }}
-        transition={SUN_RAY_TRANSITION}
-        whileHover={{ scale: 20 }}
-      />
-      <motion.path
-        d={SUN_RAY_PATH}
-        fill="#f4f812"
-        initial={{
-          x: "calc(50% - 64.0125px)",
-          scale: session ? 1.3 : 0,
-          y: 11.2871 - 60,
-          rotate: 80,
-        }}
-        animate={session ? {} : { scale: 1.3 }}
-        transition={SUN_RAY_TRANSITION}
-        whileHover={{ scale: 20 }}
-      />
-      <motion.path
-        d={SUN_RAY_PATH}
-        fill="#f4f812"
-        initial={{
-          x: "calc(50% + 41.7812px)",
-          scale: session ? 1.3 : 0,
-          y: 49.7929 - 60,
-          rotate: -40,
-        }}
-        animate={session ? {} : { scale: 1.3 }}
-        transition={SUN_RAY_TRANSITION}
-        whileHover={{ scale: 20 }}
-      />
-      <motion.path
-        d={SUN_RAY_PATH}
-        fill="#f4f812"
-        initial={{
-          x: "calc(50% + 64.0125px)",
-          scale: session ? 1.3 : 0,
-          y: 11.2871 - 60,
-          rotate: -80,
-        }}
-        animate={session ? {} : { scale: 1.3 }}
-        transition={SUN_RAY_TRANSITION}
-        whileHover={{ scale: 20 }}
-      />
-      <Stars />
-    </>
+          <motion.path
+            d={SUN_RAY_PATH}
+            fill="#f4f812"
+            initial={{ x: "50%", scale: session ? 1.3 : 0, y: 5, rotate: 0 }}
+            animate={session ? {} : { scale: 1.3 }}
+            transition={SUN_RAY_TRANSITION}
+            whileHover={{ scale: 20 }}
+          />
+          <motion.path
+            d={SUN_RAY_PATH}
+            fill="#f4f812"
+            initial={{
+              x: `calc(50% - 41.7812px)`,
+              scale: session ? 1.3 : 0,
+              y: 49.7929 - 60,
+              rotate: 40,
+            }}
+            animate={session ? {} : { scale: 1.3 }}
+            transition={SUN_RAY_TRANSITION}
+            whileHover={{ scale: 20 }}
+          />
+          <motion.path
+            d={SUN_RAY_PATH}
+            fill="#f4f812"
+            initial={{
+              x: "calc(50% - 64.0125px)",
+              scale: session ? 1.3 : 0,
+              y: 11.2871 - 60,
+              rotate: 80,
+            }}
+            animate={session ? {} : { scale: 1.3 }}
+            transition={SUN_RAY_TRANSITION}
+            whileHover={{ scale: 20 }}
+          />
+          <motion.path
+            d={SUN_RAY_PATH}
+            fill="#f4f812"
+            initial={{
+              x: "calc(50% + 41.7812px)",
+              scale: session ? 1.3 : 0,
+              y: 49.7929 - 60,
+              rotate: -40,
+            }}
+            animate={session ? {} : { scale: 1.3 }}
+            transition={SUN_RAY_TRANSITION}
+            whileHover={{ scale: 20 }}
+          />
+          <motion.path
+            d={SUN_RAY_PATH}
+            fill="#f4f812"
+            initial={{
+              x: "calc(50% + 64.0125px)",
+              scale: session ? 1.3 : 0,
+              y: 11.2871 - 60,
+              rotate: -80,
+            }}
+            animate={session ? {} : { scale: 1.3 }}
+            transition={SUN_RAY_TRANSITION}
+            whileHover={{ scale: 20 }}
+          />
+          <Stars session={session} />
+        </>
+      )}
+    </SessionContext.Consumer>
   );
 };
 
-const Stars: React.FC = () => {
+const Stars: React.FC<{ session: boolean }> = ({ session }) => {
   const starCount = 100;
   const storedStars = sessionStorage.getItem("stars");
 
-  const stars = storedStars
-    ? JSON.parse(storedStars)
+  const stars = session
+    ? JSON.parse(storedStars ?? "")
     : generateStars(starCount);
 
   return (
     <>
       {stars.map((star: StarData) => {
-        return <Star {...star} />;
+        return <Star {...star} session={session} />;
       })}
     </>
   );

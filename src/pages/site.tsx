@@ -10,6 +10,10 @@ export const NameContext = React.createContext({
   setName: (value: string) => {},
 });
 
+export const SessionContext = React.createContext({
+  session: sessionStorage.getItem("stars") ? true : false,
+});
+
 const StickyNav = styled(Navbar)`
   bottom: 0;
 `;
@@ -63,8 +67,6 @@ export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <DoneButton onPress={() => setWelcomeModalOpen(false)}>Submit</DoneButton>
   );
 
-  const session = sessionStorage.getItem("stars") ? true : false;
-
   return (
     <>
       <NameContext.Provider value={{ name, setName }}>
@@ -73,17 +75,21 @@ export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           welcomeModalOpen={welcomeModalOpen}
         />
         {!welcomeModalOpen && (
-          <>
-            <BackgroundAnimation
-              initial={{ top: session ? 0 : "-100vh" }}
-              animate={{ top: 0 }}
-              transition={BACKGROUND_TRANSITION}
-            />
-            <SVGCanvas>
-              <Nav />
-            </SVGCanvas>
-            {children}
-          </>
+          <SessionContext.Consumer>
+            {({ session }) => (
+              <>
+                <BackgroundAnimation
+                  initial={{ top: session ? 0 : "-100vh" }}
+                  animate={{ top: 0 }}
+                  transition={BACKGROUND_TRANSITION}
+                />
+                <SVGCanvas>
+                  <Nav />
+                </SVGCanvas>
+                {children}
+              </>
+            )}
+          </SessionContext.Consumer>
         )}
       </NameContext.Provider>
     </>

@@ -17,6 +17,7 @@ export interface StarData {
   rotation: number;
   delay: number;
   duration: number;
+  session?: boolean;
 }
 
 export const Star: React.FC<StarData> = ({
@@ -25,8 +26,8 @@ export const Star: React.FC<StarData> = ({
   rotation,
   delay,
   duration,
+  session,
 }) => {
-  const session = sessionStorage.getItem("stars") ? true : false;
   return (
     <motion.g
       initial={{
