@@ -2,7 +2,7 @@ import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import musicPic from "../../../resources/musicPic.png";
+import musicPic from "../../../resources/musicPic.webp";
 import { CenteringSection } from "../../../components/CenteringSection";
 import { ScrollButton } from "../../../components/ScrollButton";
 
