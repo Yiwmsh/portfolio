@@ -1,4 +1,4 @@
-import { Home, Admin } from "./pages";
+import { Home, SignInManager } from "./pages";
 
 export const routs = [
   {
@@ -7,6 +7,6 @@ export const routs = [
   },
   {
     path: "/admin",
-    element: <Admin />,
+    element: <SignInManager />,
   },
 ];

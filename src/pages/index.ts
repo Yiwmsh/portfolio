@@ -1,2 +1,3 @@
 export * from "./home/home"
-export * from "./admin/Admin";
+export * from "./admin/AdminDashboard";
+export * from "./admin/SignIn"
