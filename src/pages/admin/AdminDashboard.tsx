@@ -2,6 +2,8 @@ import { Button } from "@chrisellis/react-carpentry";
 import { getAuth, signOut } from "firebase/auth";
 import React from "react";
 import { SignInButton } from "./SignIn";
+import { BlogPostEditor } from "./Blog/BlogPostEditor";
+import { CenteringSection } from "../../components/CenteringSection";
 
 export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   authorized,
@@ -9,10 +11,10 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   const auth = getAuth();
 
   return authorized ? (
-    <>
-      <p>Placeholder</p>
+    <CenteringSection>
+      <BlogPostEditor />
       <Button onPress={() => signOut(auth)}>Log Out</Button>
-    </>
+    </CenteringSection>
   ) : (
     <>
       <SignInButton />
