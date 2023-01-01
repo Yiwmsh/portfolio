@@ -15,7 +15,7 @@ const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;
 `;
 
-const Row = styled.div`
+export const Row = styled.div`
   display: flex;
   flex-direction: row;
   vertical-align: middle;

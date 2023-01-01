@@ -4,6 +4,17 @@ import React from "react";
 import { SignInButton } from "./SignIn";
 import { BlogPostEditor } from "./Blog/BlogPostEditor";
 import { CenteringSection } from "../../components/CenteringSection";
+import styled from "@emotion/styled";
+import { BlogPostList } from "./Blog/BlogPostList";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
+import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
+
+const SignOutButton = styled(Button)`
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+`;
 
 export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   authorized,
@@ -12,8 +23,8 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
 
   return authorized ? (
     <CenteringSection>
-      <BlogPostEditor />
-      <Button onPress={() => signOut(auth)}>Log Out</Button>
+      <BlogAdminPanel />
+      <SignOutButton onPress={() => signOut(auth)}>Sign Out</SignOutButton>
     </CenteringSection>
   ) : (
     <>
