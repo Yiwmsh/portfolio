@@ -11,9 +11,22 @@ const AccordionContainer = styled(motion.div)``;
 
 const AccordionButton = styled.button``;
 
-const AccordionContent = styled(motion.div)<{ isOpen: boolean }>`
-  visibility: ${(isOpen) => (isOpen ? "visible" : "hidden")};
-`;
+const AccordionContentDisplay = styled(motion.div)``;
+
+export const AccordionContent: React.FC<{
+  children: React.ReactNode;
+  isOpen: boolean;
+}> = ({ children, isOpen }) => {
+  return (
+    <>
+      {isOpen ? (
+        <AccordionContentDisplay>{children}</AccordionContentDisplay>
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
 
 export const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -27,9 +40,7 @@ export const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
       >
         {title}
       </AccordionButton>
-      <AnimatePresence>
-        <AccordionContent isOpen={isOpen}>{children}</AccordionContent>
-      </AnimatePresence>
+      <AccordionContent children={children} isOpen={isOpen}></AccordionContent>
     </AccordionContainer>
   );
 };

@@ -111,7 +111,6 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
         </Row>
       </BlogPostCardHeader>
       <CardBody>
-        <Accordion title="Test">Test</Accordion>
         <PostContent>{post.content}</PostContent>
       </CardBody>
       <CardFooter></CardFooter>
