@@ -10,7 +10,7 @@ export const BlogAdminPanel: React.FC = () => {
   const [postTitles, setPostTitles] = React.useState([""]);
   const [currentPost, setCurrentPost] = React.useState<
     BlogPostProps | undefined
-  >();
+  >(undefined);
 
   const handleSetCurrentPost = async (title: string) => {
     if (title === "") {
@@ -18,7 +18,7 @@ export const BlogAdminPanel: React.FC = () => {
     } else {
       const response = await getDoc(doc(db, "blog-posts", title));
       console.log(response.data());
-      setCurrentPost({ ...(response.data() as BlogPostProps) });
+      setCurrentPost(await (response.data() as BlogPostProps));
     }
   };
 
@@ -34,6 +34,7 @@ export const BlogAdminPanel: React.FC = () => {
 
     fetchData();
   }, []);
+
   return (
     <Row>
       <BlogPostList

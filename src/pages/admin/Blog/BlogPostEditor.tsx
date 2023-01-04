@@ -53,21 +53,19 @@ enum ValidationStateOption {
 export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
   post,
 }) => {
-  console.log("Post:");
-  console.log(post);
-
-  const [title, setTitle] = React.useState(post?.title ?? "");
-  const [metaTitle, setMetaTitle] = React.useState(post?.metaTitle ?? "");
-  const [slug, setSlug] = React.useState(post?.slug ?? "");
-  const [authors, setAuthors] = React.useState(post?.authors ?? ["Whimsy"]);
-  const [content, setContent] = React.useState(post?.content ?? "");
-  const [publish, setPublish] = React.useState(post?.publish ?? false);
+  const postData = { ...post };
+  const [title, setTitle] = React.useState(postData?.title ?? "");
+  const [metaTitle, setMetaTitle] = React.useState(postData?.metaTitle ?? "");
+  const [slug, setSlug] = React.useState(postData?.slug ?? "");
+  const [authors, setAuthors] = React.useState(postData?.authors ?? ["Whimsy"]);
+  const [content, setContent] = React.useState(postData?.content ?? "");
+  const [publish, setPublish] = React.useState(postData?.publish ?? false);
   const [publishedDate, setPublishedDate] = React.useState<Timestamp | null>(
-    post?.publishedDate ?? null
+    postData?.publishedDate ?? null
   );
-  const [series, setSeries] = React.useState(post?.series ?? []);
-  const [related, setRelated] = React.useState(post?.relatedPosts ?? []);
-  const [tags, setTags] = React.useState(post?.tags ?? []);
+  const [series, setSeries] = React.useState(postData?.series ?? []);
+  const [related, setRelated] = React.useState(postData?.relatedPosts ?? []);
+  const [tags, setTags] = React.useState(postData?.tags ?? []);
 
   const [uploadSuccess, setUploadSuccess] = React.useState<boolean | undefined>(
     undefined
@@ -85,7 +83,7 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
       }
       await setDoc(doc(db, "blog-posts", title), {
         title: title,
-        createdDate: post?.createdDate ?? Timestamp.now(),
+        createdDate: postData?.createdDate ?? Timestamp.now(),
         lastUpdated: Timestamp.now(),
         metaTitle: metaTitle === "" ? title : metaTitle,
         slug: slug === "" ? title : slug,
@@ -93,7 +91,7 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         content: content,
         publish: publish,
         publishedDate: publishedDate ?? null,
-        views: post?.views ?? 0,
+        views: postData?.views ?? 0,
         series: series,
         related: related,
         tags: tags,
@@ -122,7 +120,6 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
     setSeries(post?.series ?? []);
     setRelated(post?.relatedPosts ?? []);
     setTags(post?.tags ?? []);
-    console.log(`Title: ${title}`);
   }, [post]);
 
   return (
