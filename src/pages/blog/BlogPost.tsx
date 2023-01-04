@@ -3,7 +3,7 @@ import { BlogPostProps } from "../admin";
 import { CardBody, CardFooter, CardHeader } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
-import { Accordion } from "../../components/Accordian";
+import { RichTextDisplay } from "../../components/RichTextEditor/RichTextDisplay";
 
 const BlogPostCardHeader = styled(CardHeader)`
   margin: 30px 0;
@@ -111,7 +111,9 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
         </Row>
       </BlogPostCardHeader>
       <CardBody>
-        <PostContent>{post.content}</PostContent>
+        <PostContent>
+          <RichTextDisplay content={post.content} />
+        </PostContent>
       </CardBody>
       <CardFooter></CardFooter>
     </BlogPostCard>

@@ -71,6 +71,8 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
   const [related, setRelated] = React.useState(postData?.relatedPosts ?? []);
   const [tags, setTags] = React.useState(postData?.tags ?? []);
 
+  const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
+
   const [uploadSuccess, setUploadSuccess] = React.useState<boolean | undefined>(
     undefined
   );
@@ -146,6 +148,9 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
             onChange={(value) => {
               validateTitle(value);
               setTitle(value);
+              if (slugMatchesTitle) {
+                setSlug(slugifyTitle(value));
+              }
             }}
             errorMessage={titleErrorMessage}
             isRequired
@@ -159,13 +164,28 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
           value={metaTitle}
           onChange={(value) => setMetaTitle(value)}
         />
-        <TextField
-          label="Slug"
-          value={slug}
-          onChange={(value) => {
-            setSlug(slugifyTitle(value));
-          }}
-        />
+        <Row>
+          <TextField
+            label="Slug"
+            value={slug}
+            isDisabled={slugMatchesTitle}
+            onChange={(value) => {
+              setSlug(slugifyTitle(value));
+            }}
+          />
+          <TextContent>
+            <label htmlFor="slug-matches-title">Slug matches title?</label>
+          </TextContent>
+          <input
+            name="slug-matches-title"
+            type="checkbox"
+            checked={slugMatchesTitle}
+            onChange={(event) => {
+              setSlugMatchesTitle(!slugMatchesTitle);
+              setSlug(slugifyTitle(title));
+            }}
+          />
+        </Row>
         <TextField
           label="Author(s)"
           value={authors.join(", ")}
