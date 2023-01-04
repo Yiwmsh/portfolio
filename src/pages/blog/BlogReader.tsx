@@ -1,13 +1,32 @@
 import { useMatch } from "@tanstack/react-location";
 import React from "react";
 import { BlogPostProps } from "../admin";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { BlogPost } from "./BlogPost";
+import styled from "@emotion/styled";
+
+const BlogContainer = styled.section`
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  top: 0;
+  left: 0;
+  position: fixed;
+  overflow-y: scroll;
+  overflow-x: auto;
+`;
 
 export const BlogReader: React.FC = () => {
   const {
-    params: { blogTitle },
+    params: { blogSlug },
   } = useMatch();
 
   const [blogPost, setBlogPost] = React.useState<BlogPostProps | undefined>(
@@ -16,8 +35,12 @@ export const BlogReader: React.FC = () => {
 
   React.useEffect(() => {
     const getPost = async () => {
-      const response = await getDoc(doc(db, "blog-posts", blogTitle));
-      const post = await (response.data() as BlogPostProps);
+      const q = query(
+        collection(db, "blog-posts"),
+        where("slug", "==", blogSlug)
+      );
+      const response = await getDocs(q);
+      const post = await (response.docs[0].data() as BlogPostProps);
       setBlogPost(post);
     };
 
@@ -28,7 +51,9 @@ export const BlogReader: React.FC = () => {
       {blogPost === undefined ? (
         "No post selected."
       ) : (
-        <BlogPost post={blogPost} />
+        <BlogContainer>
+          <BlogPost post={blogPost} />
+        </BlogContainer>
       )}
     </>
   );

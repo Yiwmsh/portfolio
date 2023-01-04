@@ -10,7 +10,7 @@ import {
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "./blogPostProps";
-import { setDoc, doc, Timestamp } from "firebase/firestore";
+import { setDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {
   CenteringButtonBank,
@@ -50,6 +50,10 @@ enum ValidationStateOption {
   Invalid = "invalid",
 }
 
+const slugifyTitle = (title: string): string => {
+  return title.toLowerCase().replaceAll(" ", "-");
+};
+
 export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
   post,
 }) => {
@@ -77,25 +81,35 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
   const [titleErrorMessage, setTitleErrorMessage] = React.useState("");
 
   const submitBlogPost = async () => {
+    let pubDate = publishedDate;
     if (titleValidity === ValidationStateOption.Valid) {
-      if (publish && !publishedDate) {
-        setPublishedDate(Timestamp.now());
+      console.log(`Publish: ${publish}`);
+      console.log(`Publish Date: ${publishedDate}`);
+      if (publish && (publishedDate === undefined || publishedDate === null)) {
+        console.log(Timestamp.now());
+        pubDate = Timestamp.now();
       }
       await setDoc(doc(db, "blog-posts", title), {
         title: title,
         createdDate: postData?.createdDate ?? Timestamp.now(),
         lastUpdated: Timestamp.now(),
         metaTitle: metaTitle === "" ? title : metaTitle,
-        slug: slug === "" ? title : slug,
+        slug: slugifyTitle(slug === "" ? title : slug),
         authors: authors,
         content: content,
         publish: publish,
-        publishedDate: publishedDate ?? null,
+        publishedDate: pubDate ?? null,
         views: postData?.views ?? 0,
         series: series,
         related: related,
         tags: tags,
       });
+    }
+  };
+
+  const deleteBlogPost = async () => {
+    if (title) {
+      await deleteDoc(doc(db, "blog-posts", title));
     }
   };
 
@@ -140,6 +154,18 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         </TitleField>
       </TitleCardHeader>
       <CardBody>
+        <TextField
+          label="Meta Title"
+          value={metaTitle}
+          onChange={(value) => setMetaTitle(value)}
+        />
+        <TextField
+          label="Slug"
+          value={slug}
+          onChange={(value) => {
+            setSlug(slugifyTitle(value));
+          }}
+        />
         <TextField
           label="Author(s)"
           value={authors.join(", ")}
@@ -186,6 +212,7 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
       <CardFooter>
         <CenteringButtonBank>
           <Button onPress={() => submitBlogPost()}>Submit</Button>
+          <Button onPress={() => deleteBlogPost()}>Delete</Button>
         </CenteringButtonBank>
       </CardFooter>
     </BlogPostEditorCard>

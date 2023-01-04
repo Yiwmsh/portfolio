@@ -21,7 +21,7 @@ export const routs = [
         element: <BlogReader />,
       },
       {
-        path: ":blogTitle",
+        path: ":blogSlug",
         element: <BlogReader />,
       },
     ],
