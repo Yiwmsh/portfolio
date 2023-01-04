@@ -9,7 +9,7 @@ import {
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
-import { BlogPostProps } from "./blogPost";
+import { BlogPostProps } from "./blogPostProps";
 import { setDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {

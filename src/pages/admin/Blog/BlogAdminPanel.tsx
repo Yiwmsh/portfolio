@@ -4,7 +4,7 @@ import { db } from "../../../firebase";
 import { BlogPostList } from "./BlogPostList";
 import { BlogPostEditor } from "./BlogPostEditor";
 import { Row } from "../../home/home sections/WelcomeModal";
-import { BlogPostProps } from "./blogPost";
+import { BlogPostProps } from "./blogPostProps";
 
 export const BlogAdminPanel: React.FC = () => {
   const [postTitles, setPostTitles] = React.useState([""]);

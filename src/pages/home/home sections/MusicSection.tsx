@@ -21,8 +21,8 @@ const MusicSectionGrid = styled.div`
   width: 90%;
   grid-template-columns: 1fr 3fr 1fr;
   align-items: center;
-  grid-gap: 10px;
-  margin: 0px 5%;
+  grid-column-gap: 10px;
+  margin: 10px 5%;
 
   @media screen and (max-width: 1700px) and (min-width: 600px) {
     width: 98%;
@@ -312,6 +312,7 @@ export const MusicSection: React.FC = () => {
           )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
+      <ScrollButton direction="down" target="Blog" />
     </CenteringSection>
   );
 };

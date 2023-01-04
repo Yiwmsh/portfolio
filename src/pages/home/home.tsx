@@ -3,6 +3,7 @@ import React from "react";
 import { BioSection } from "./home sections/BioSection";
 import { SplashSection } from "./home sections/SplashSection";
 import { MusicSection } from "./home sections/MusicSection";
+import { BlogSection } from "./home sections/BlogSection";
 
 export const Home: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ export const Home: React.FC = () => {
                 </Button>
               </StickyNav> */}
       <MusicSection />
+      <BlogSection />
     </ScrollSnapper>
   );
 };
