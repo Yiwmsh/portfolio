@@ -21,7 +21,8 @@ const RichTextP = styled.p``;
 
 export const parseRichText = (content: string): React.ReactNode => {
   const globalPattern =
-    /(?:<(.)>([\w\W]*)(<\/\1>))|(<br\/>)|(?<!<.>)([^<>]+)(?!<\/.>)/gm;
+    /(?:<(.)>([\w\W])*?(<\/\1>))|(<br\/>)|(?<!<.>)([^<>]+)(?!<\/.>)/gm;
+  // (?:<(.)>([^(<\/\1>)]*)(<\/\1>))|(<br\/>)|(?<!<.>)([^<>]+)(?!<\/.>)
   const pattern = /(?:<(.)>([\w\W]*)(<\/\1>))|(<br\/>)/m;
   let match;
   let retVal = [];

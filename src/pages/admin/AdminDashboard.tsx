@@ -1,4 +1,10 @@
-import { Button } from "@chrisellis/react-carpentry";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@chrisellis/react-carpentry";
 import { getAuth, signOut } from "firebase/auth";
 import React from "react";
 import { SignInButton } from "./SignIn";
@@ -9,6 +15,7 @@ import { BlogPostList } from "./Blog/BlogPostList";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
+import { RichTextEditor } from "../../components/RichTextEditor/RichTextEditor";
 
 const SignOutButton = styled(Button)`
   position: fixed;
@@ -24,11 +31,24 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   return authorized ? (
     <CenteringSection>
       <BlogAdminPanel />
+      {/* <TestSegment /> */}
       <SignOutButton onPress={() => signOut(auth)}>Sign Out</SignOutButton>
     </CenteringSection>
   ) : (
     <>
       <SignInButton />
     </>
+  );
+};
+
+const TestSegment: React.FC = () => {
+  return (
+    <Card centered="both" width="80%" height="80%">
+      <CardHeader />
+      <CardBody>
+        <RichTextEditor />
+      </CardBody>
+      <CardFooter />
+    </Card>
   );
 };
