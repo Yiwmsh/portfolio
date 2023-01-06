@@ -11,11 +11,15 @@ enum RichTextDecoration {
   break = "<br/>",
   p = "<p>",
   image = "<img>",
+  picture = "<pic>",
   video = "<vid>",
   literal = "<lit>",
+  code = "```",
 }
 
 const decorations = Object.values(RichTextDecoration);
+const openingSymbols = new Set(decorations.map((decoration) => decoration[0]));
+console.log(openingSymbols);
 
 const longestTagLength = () => {
   const sortedDecorations = Object.values(RichTextDecoration).sort(
@@ -31,8 +35,8 @@ const shortestTagLength = () => {
   return sortedDecorations[0].length;
 };
 
-const maxLookaheadLength = longestTagLength();
-const minLookaheadLength = shortestTagLength();
+const maxLookaheadLength = longestTagLength() + 1;
+const minLookaheadLength = shortestTagLength() + 1;
 
 const RichTextBold = styled.b``;
 const RichTextItalic = styled.i``;
@@ -43,6 +47,10 @@ const RichTextBreak = styled.br``;
 const RichTextP = styled.p``;
 const RichTextImg = styled.img``;
 const RichTextVid = styled.iframe``;
+const RichTextCode = styled.div`
+  background-color: #708090;
+  color: white;
+`;
 
 interface Tag {
   tag: string;
@@ -55,6 +63,9 @@ const isSelfClosing = (tag: Tag): boolean => {
 };
 
 const getExpectedClosingTag = (tag: Tag): string => {
+  if (tag.tag === "```") {
+    return "```";
+  }
   const symbol = tag.tag.replace("<", "").replace(">", "");
   return `</${symbol}>`;
 };
@@ -100,13 +111,16 @@ const taggedContentToReactNode = (
   tag: string,
   content: string
 ): React.ReactNode => {
-  if (tag === RichTextDecoration.literal) {
-    return <>{content}</>;
+  switch (tag) {
+    case RichTextDecoration.literal:
+      return <>{content}</>;
+    case RichTextDecoration.code:
+      return <RichTextCode>{content}</RichTextCode>;
   }
   const containsInnerTags = decorations.some((decoration) =>
     content.includes(decoration)
   );
-  const innerContent = containsInnerTags ? parseRichText(content) : content;
+  const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
     case RichTextDecoration.bold:
       return <RichTextBold>{innerContent}</RichTextBold>;
@@ -118,6 +132,7 @@ const taggedContentToReactNode = (
       return <RichTextH2>{innerContent}</RichTextH2>;
     case RichTextDecoration.h3:
       return <RichTextH3>{innerContent}</RichTextH3>;
+    case RichTextDecoration.picture:
     case RichTextDecoration.image:
       try {
         return <RichTextImg src={innerContent as string} />;
@@ -136,21 +151,28 @@ const taggedContentToReactNode = (
         console.log(e);
       }
       break;
+    case RichTextDecoration.code:
+      return <RichTextCode>{innerContent}</RichTextCode>;
   }
   return <>{innerContent}</>;
 };
 
-const parseRichText = (content: string): React.ReactNode => {
-  console.log("Parsing");
-  console.log(content);
+const recursiveParser = (content: string): React.ReactNode => {
   let retVal: React.ReactNode[] = [<></>];
   let lastTagEnd = 0;
   for (let cursor = 0; cursor < content.length; cursor++) {
-    if (content[cursor] === "<") {
-      console.log(`< found at ${cursor}`);
+    if (openingSymbols.has(content[cursor])) {
       const openTag = checkTag(content, cursor);
       if (openTag) {
         if (isSelfClosing(openTag)) {
+          switch (openTag.tag) {
+            case RichTextDecoration.break:
+              const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
+              retVal.push(<>{preTagContent}</>);
+              retVal.push(<br />);
+              cursor = openTag.tagEnd;
+              lastTagEnd = cursor;
+          }
         } else {
           const closeTag = findClosingTag(openTag, content);
           if (closeTag) {
@@ -170,10 +192,9 @@ const parseRichText = (content: string): React.ReactNode => {
   }
   const trailingContent = content.slice(lastTagEnd, content.length);
   retVal.push(trailingContent);
-  console.log(retVal);
   return retVal;
 };
 
 export const RichTextDisplay: React.FC<{ content: string }> = ({ content }) => {
-  return <>{parseRichText(content)}</>;
+  return <>{recursiveParser(content)}</>;
 };
