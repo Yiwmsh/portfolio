@@ -2,14 +2,37 @@ import React from "react";
 import styled from "@emotion/styled";
 
 enum RichTextDecoration {
-  bold = "b",
-  italic = "i",
-  h1 = "h1",
-  h2 = "h2",
-  h3 = "h3",
-  break = "br",
-  p = "p",
+  content = "<>",
+  bold = "<b>",
+  italic = "<i>",
+  h1 = "<h1>",
+  h2 = "<h2>",
+  h3 = "<h3>",
+  break = "<br/>",
+  p = "<p>",
+  image = "<img>",
+  video = "<vid>",
+  literal = "<lit>",
 }
+
+const decorations = Object.values(RichTextDecoration);
+
+const longestTagLength = () => {
+  const sortedDecorations = Object.values(RichTextDecoration).sort(
+    (a, b) => b.length - a.length
+  );
+  return sortedDecorations[0].length;
+};
+
+const shortestTagLength = () => {
+  const sortedDecorations = Object.values(RichTextDecoration).sort(
+    (a, b) => a.length - b.length
+  );
+  return sortedDecorations[0].length;
+};
+
+const maxLookaheadLength = longestTagLength();
+const minLookaheadLength = shortestTagLength();
 
 const RichTextBold = styled.b``;
 const RichTextItalic = styled.i``;
@@ -18,46 +41,137 @@ const RichTextH2 = styled.h2``;
 const RichTextH3 = styled.h3``;
 const RichTextBreak = styled.br``;
 const RichTextP = styled.p``;
+const RichTextImg = styled.img``;
+const RichTextVid = styled.iframe``;
 
-export const parseRichText = (content: string): React.ReactNode => {
-  const globalPattern =
-    /(?:<(.)>([\w\W])*?(<\/\1>))|(<br\/>)|(?<!<.>)([^<>]+)(?!<\/.>)/gm;
-  // (?:<(.)>([^(<\/\1>)]*)(<\/\1>))|(<br\/>)|(?<!<.>)([^<>]+)(?!<\/.>)
-  const pattern = /(?:<(.)>([\w\W]*)(<\/\1>))|(<br\/>)/m;
-  let match;
-  let retVal = [];
-  while ((match = globalPattern.exec(content)) !== null) {
-    if (match[0] === "<br/>") {
-      retVal.push(<RichTextBreak />);
-    } else if (!match[1]) {
-      retVal.push(<>{match[0]}</>);
-    } else {
-      const innerContent =
-        match[2].match(pattern) !== null ? parseRichText(match[2]) : match[2];
-      switch (match[1]) {
-        case RichTextDecoration.bold:
-          retVal.push(<RichTextBold>{innerContent}</RichTextBold>);
-          break;
-        case RichTextDecoration.italic:
-          retVal.push(<RichTextItalic>{innerContent}</RichTextItalic>);
-          break;
-        case RichTextDecoration.p:
-          retVal.push(<RichTextP>{innerContent}</RichTextP>);
-          break;
-        case RichTextDecoration.h1:
-          retVal.push(<RichTextH1>{innerContent}</RichTextH1>);
-          break;
-        case RichTextDecoration.h2:
-          retVal.push(<RichTextH2>{innerContent}</RichTextH2>);
-          break;
-        case RichTextDecoration.h3:
-          retVal.push(<RichTextH3>{innerContent}</RichTextH3>);
-          break;
+interface Tag {
+  tag: string;
+  tagStart: number;
+  tagEnd: number;
+}
+
+const isSelfClosing = (tag: Tag): boolean => {
+  return tag.tag === RichTextDecoration.break;
+};
+
+const getExpectedClosingTag = (tag: Tag): string => {
+  const symbol = tag.tag.replace("<", "").replace(">", "");
+  return `</${symbol}>`;
+};
+
+const checkTag = (content: string, cursor: number): Tag | false => {
+  for (
+    let lookaheadCursor = 1;
+    lookaheadCursor < maxLookaheadLength;
+    lookaheadCursor++
+  ) {
+    const slice = content.slice(cursor, lookaheadCursor + cursor);
+    if (decorations.some((decoration) => decoration === slice)) {
+      return { tag: slice, tagStart: cursor, tagEnd: lookaheadCursor + cursor };
+    }
+  }
+  return false;
+};
+
+const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
+  const expectedClosingTag = getExpectedClosingTag(openingTag);
+  for (let cursor = openingTag.tagEnd; cursor < content.length; cursor++) {
+    if (content[cursor] === expectedClosingTag[0]) {
+      for (
+        let lookaheadCursor = 0;
+        lookaheadCursor < maxLookaheadLength + 1;
+        lookaheadCursor++
+      ) {
+        const slice = content.slice(cursor, lookaheadCursor + cursor);
+        if (slice === expectedClosingTag) {
+          return {
+            tag: slice,
+            tagStart: cursor,
+            tagEnd: cursor + lookaheadCursor,
+          };
+        }
       }
     }
   }
+  return false;
+};
 
-  return retVal.length > 0 ? retVal : <>{content}</>;
+const taggedContentToReactNode = (
+  tag: string,
+  content: string
+): React.ReactNode => {
+  if (tag === RichTextDecoration.literal) {
+    return <>{content}</>;
+  }
+  const containsInnerTags = decorations.some((decoration) =>
+    content.includes(decoration)
+  );
+  const innerContent = containsInnerTags ? parseRichText(content) : content;
+  switch (tag) {
+    case RichTextDecoration.bold:
+      return <RichTextBold>{innerContent}</RichTextBold>;
+    case RichTextDecoration.content:
+      return <>{innerContent}</>;
+    case RichTextDecoration.h1:
+      return <RichTextH1>{innerContent}</RichTextH1>;
+    case RichTextDecoration.h2:
+      return <RichTextH2>{innerContent}</RichTextH2>;
+    case RichTextDecoration.h3:
+      return <RichTextH3>{innerContent}</RichTextH3>;
+    case RichTextDecoration.image:
+      try {
+        return <RichTextImg src={innerContent as string} />;
+      } catch (e) {
+        console.log(e);
+      }
+      break;
+    case RichTextDecoration.italic:
+      return <RichTextItalic>{innerContent}</RichTextItalic>;
+    case RichTextDecoration.p:
+      return <RichTextP>{innerContent}</RichTextP>;
+    case RichTextDecoration.video:
+      try {
+        return <RichTextVid src={innerContent as string} />;
+      } catch (e) {
+        console.log(e);
+      }
+      break;
+  }
+  return <>{innerContent}</>;
+};
+
+const parseRichText = (content: string): React.ReactNode => {
+  console.log("Parsing");
+  console.log(content);
+  let retVal: React.ReactNode[] = [<></>];
+  let lastTagEnd = 0;
+  for (let cursor = 0; cursor < content.length; cursor++) {
+    if (content[cursor] === "<") {
+      console.log(`< found at ${cursor}`);
+      const openTag = checkTag(content, cursor);
+      if (openTag) {
+        if (isSelfClosing(openTag)) {
+        } else {
+          const closeTag = findClosingTag(openTag, content);
+          if (closeTag) {
+            const innerContent = content.slice(
+              openTag.tagEnd,
+              closeTag.tagStart
+            );
+            const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
+            retVal.push(<>{preTagContent}</>);
+            retVal.push(taggedContentToReactNode(openTag.tag, innerContent));
+            cursor = closeTag.tagEnd;
+            lastTagEnd = cursor;
+          }
+        }
+      }
+    }
+  }
+  const trailingContent = content.slice(lastTagEnd, content.length);
+  retVal.push(trailingContent);
+  console.log(retVal);
+  return retVal;
 };
 
 export const RichTextDisplay: React.FC<{ content: string }> = ({ content }) => {
