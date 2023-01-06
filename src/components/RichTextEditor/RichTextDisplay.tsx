@@ -43,7 +43,6 @@ const RichTextItalic = styled.i``;
 const RichTextH1 = styled.h1``;
 const RichTextH2 = styled.h2``;
 const RichTextH3 = styled.h3``;
-const RichTextBreak = styled.br``;
 const RichTextP = styled.p``;
 const RichTextImg = styled.img``;
 const RichTextVid = styled.iframe``;
@@ -170,8 +169,8 @@ const recursiveParser = (content: string): React.ReactNode => {
               const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
               retVal.push(<>{preTagContent}</>);
               retVal.push(<br />);
-              cursor = openTag.tagEnd;
-              lastTagEnd = cursor;
+              cursor = openTag.tagEnd - 1;
+              lastTagEnd = openTag.tagEnd;
           }
         } else {
           const closeTag = findClosingTag(openTag, content);
@@ -183,8 +182,8 @@ const recursiveParser = (content: string): React.ReactNode => {
             const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
             retVal.push(<>{preTagContent}</>);
             retVal.push(taggedContentToReactNode(openTag.tag, innerContent));
-            cursor = closeTag.tagEnd;
-            lastTagEnd = cursor;
+            cursor = closeTag.tagEnd - 1;
+            lastTagEnd = closeTag.tagEnd;
           }
         }
       }
@@ -195,6 +194,21 @@ const recursiveParser = (content: string): React.ReactNode => {
   return retVal;
 };
 
+const autoAddParagraphs = (content: string): string => {
+  // const paragraphRegex = /^([^\r\n]+[\r\n]{0,1})+/gm;
+  const paragraphRegex = /^([^\r\n]+[\r\n]{0,1})+(\n|$)/gm;
+  const paragraphs = content.replaceAll(
+    paragraphRegex,
+    (substring) => `<p>${substring.trim()}</p>`
+  );
+
+  return paragraphs.replaceAll("\n", "<br/>");
+};
+
+const parseRichText = (content: string): React.ReactNode => {
+  return recursiveParser(autoAddParagraphs(content));
+};
+
 export const RichTextDisplay: React.FC<{ content: string }> = ({ content }) => {
-  return <>{recursiveParser(content)}</>;
+  return <>{parseRichText(content)}</>;
 };
