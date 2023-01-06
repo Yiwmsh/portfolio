@@ -195,7 +195,6 @@ const recursiveParser = (content: string): React.ReactNode => {
 };
 
 const autoAddParagraphs = (content: string): string => {
-  // const paragraphRegex = /^([^\r\n]+[\r\n]{0,1})+/gm;
   const paragraphRegex = /^([^\r\n]+[\r\n]{0,1})+(\n|$)/gm;
   const paragraphs = content.replaceAll(
     paragraphRegex,
