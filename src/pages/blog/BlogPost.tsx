@@ -47,7 +47,7 @@ const PostContent = styled.div``;
 
 const ReadingTime = styled.div``;
 
-const displayTimestamp = (timestamp: Timestamp): string => {
+export const displayTimestamp = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();
   const timeAgo = new Date().getTime() - date.getTime();
   const month = date.getMonth() + 1;
@@ -69,7 +69,7 @@ const displayTimestamp = (timestamp: Timestamp): string => {
   }
 };
 
-const calculateReadingTime = (content: string): string => {
+export const calculateReadingTime = (content: string): string => {
   const words = content.split(" ");
   const minutes = words.length / 238;
   if (minutes < 1) {

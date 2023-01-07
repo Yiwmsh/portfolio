@@ -25,6 +25,14 @@ export const SignInButton: React.FC = () => {
   );
 };
 
+export const CheckAuth = async (): Promise<boolean> => {
+  //This database check is not real security, because this admin section does not really need to be secured.
+  //The security happens in the firestore rules. But this does feel nicer.
+  const authenticationDoc = doc(db, "auth", "authentication");
+  const authenticationSnapshot = await getDoc(authenticationDoc);
+  return authenticationSnapshot.exists();
+};
+
 export const SignInManager: React.FC = () => {
   const [authorized, setAuthorized] = useState(false);
   const auth = getAuth();
@@ -34,12 +42,9 @@ export const SignInManager: React.FC = () => {
       if (user) {
         //This database check is not real security, because this admin section does not really need to be secured.
         //The security happens in the firestore rules. But this does feel nicer.
-        const authenticationDoc = doc(db, "auth", "authentication");
-        const authenticationSnapshot = await getDoc(authenticationDoc);
+        const isAuthorized = await CheckAuth();
 
-        console.log(authenticationSnapshot);
-
-        if (authenticationSnapshot.exists()) {
+        if (isAuthorized) {
           setAuthorized(true);
         } else {
           setAuthorized(false);
