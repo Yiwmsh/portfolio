@@ -4,6 +4,7 @@ import { BlogPostProps } from "../../../admin";
 import { calculateReadingTime, displayTimestamp } from "../../../blog/BlogPost";
 import { TextContent } from "@chrisellis/react-carpentry";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
+import { BottomBlur } from "./BlogPostPreview";
 
 const BigPreviewContainer = styled.button`
   width: 100%;
@@ -15,6 +16,7 @@ const BigPreviewContainer = styled.button`
   border: none;
   cursor: pointer;
   padding: 10px;
+  position: relative;
 `;
 
 const BigPreviewHeader = styled.div`
@@ -54,7 +56,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
             <BigPreviewTitle>{post.title}</BigPreviewTitle>
             <BigPreviewHeader>
               <div>
-                By{post.authors.length > 1 ? ":" : ""} {post.authors}
+                By{post.authors.length > 1 ? ":" : ""} {post.authors.join(", ")}
               </div>
               {"·"}
               <div>{calculateReadingTime(post.content)}</div>
@@ -74,6 +76,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
               <RichTextDisplay content={post.content} />
             </BigPreviewContent>
           </TextContent>
+          <BottomBlur />
         </BigPreviewContainer>
       ) : (
         ""

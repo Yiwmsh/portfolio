@@ -1,14 +1,7 @@
 import { useMatch } from "@tanstack/react-location";
 import React from "react";
 import { BlogPostProps } from "../admin";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { BlogPost } from "./BlogPost";
 import styled from "@emotion/styled";

@@ -3,6 +3,7 @@ import React from "react";
 import { BlogPostProps } from "../../../admin";
 import { BlogPostPreview } from "./BlogPostPreview";
 import { TextContent } from "@chrisellis/react-carpentry";
+import { StyledLink } from "./BlogSection";
 
 const BlogPostPreviewListGrid = styled.div`
   display: grid;
@@ -21,10 +22,10 @@ export const BlogPostPreviewList: React.FC<{ posts: BlogPostProps[] }> = ({
 }) => {
   return (
     <BlogPostPreviewListGrid>
-      {posts.map((post) => (
+      {posts.slice(1).map((post) => (
         <BlogPostPreview post={post} />
       ))}
-      {posts.length < 10 ? (
+      {posts.length < 5 ? (
         <LastEntry>
           <TextContent>
             That's it for the time being - check back later for more!
@@ -33,7 +34,7 @@ export const BlogPostPreviewList: React.FC<{ posts: BlogPostProps[] }> = ({
       ) : (
         <LastEntry>
           <TextContent>
-            Find more <a href="/blog">here</a>
+            Find more <StyledLink href="/blog">here</StyledLink>
           </TextContent>
         </LastEntry>
       )}

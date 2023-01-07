@@ -4,6 +4,7 @@ import { BlogPostProps } from "../../../admin";
 import { calculateReadingTime, displayTimestamp } from "../../../blog/BlogPost";
 import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
+import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 
 export const Row = styled.div`
   display: flex;
@@ -11,14 +12,13 @@ export const Row = styled.div`
   gap: 10px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 5px;
 `;
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;
   grid-row: auto;
   overflow: hidden;
-  height: calc(6vh - 10px);
+  height: calc(10vh - 5px);
   background-color: var(${SemanticColors.foreground});
   padding: 5px;
   border: none;
@@ -35,9 +35,9 @@ const BlogPostPreviewSnippet = styled.div`
   text-overflow: ellipsis;
 `;
 
-const BlogPostPreviewBottomBlur = styled.div`
+export const BottomBlur = styled.div`
   position: absolute;
-  height: 10px;
+  height: 1em;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -46,10 +46,10 @@ const BlogPostPreviewBottomBlur = styled.div`
 
 const BlogPostPreviewPublishedDate = styled.div``;
 
-const removeTags = (content: string) => {
-  const tagPattern = /(<[^<>]*>)/gm;
-  return content.replaceAll(tagPattern, "");
-};
+// const removeTags = (content: string) => {
+//   const tagPattern = /(<[^<>]*>)/gm;
+//   return content.replaceAll(tagPattern, "");
+// };
 
 export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
   post,
@@ -79,10 +79,10 @@ export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
           )}
         </Row>
         <BlogPostPreviewSnippet>
-          {removeTags(post.content.slice(0, 600))}
+          <RichTextDisplay content={post.content.slice(0, 600)} />
         </BlogPostPreviewSnippet>
       </TextContent>
-      <BlogPostPreviewBottomBlur />
+      <BottomBlur />
     </BlogPostPreviewContainer>
   );
 };

@@ -100,7 +100,7 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         authors: authors,
         content: content,
         publish: publish,
-        publishedDate: pubDate ?? null,
+        publishedDate: publish ? pubDate ?? null : null,
         views: postData?.views ?? 0,
         series: series,
         related: related,

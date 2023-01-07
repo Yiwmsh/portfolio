@@ -1,4 +1,4 @@
-import { Card, SemanticColors, TextContent } from "@chrisellis/react-carpentry";
+import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import { CenteringSection } from "../../../../components/CenteringSection";
 import { ScrollButton } from "../../../../components/ScrollButton";
 import React from "react";
@@ -15,6 +15,14 @@ import { db } from "../../../../firebase";
 import { BlogPostProps } from "../../../admin";
 import { BlogPostPreviewList } from "./BlogPostPreviewList";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
+
+export const StyledLink = styled.a`
+  &:link,
+  &:visited {
+    color: var(${SemanticColors.secondary});
+    text-decoration: none;
+  }
+`;
 
 const BlogGrid = styled.div`
   display: grid;
@@ -64,7 +72,7 @@ export const BlogSection: React.FC = () => {
         collection(db, "blog-posts"),
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),
-        limit(10)
+        limit(5)
       );
 
       const response = await getDocs(q);
@@ -94,7 +102,7 @@ export const BlogSection: React.FC = () => {
               <p>
                 Or, at least, a preview of it. The full thing, with search
                 features and more breathing room for all my little words, can be
-                found <a href="/blog">here</a>.
+                found <StyledLink href="/blog">here</StyledLink>.
               </p>
               <p>
                 I like to write about the things I do, from music, to writing,
