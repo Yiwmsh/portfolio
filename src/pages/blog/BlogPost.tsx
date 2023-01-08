@@ -4,6 +4,7 @@ import { CardBody, CardFooter, CardHeader } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
 import { RichTextDisplay } from "../../components/RichTextEditor/RichTextDisplay";
+import { Helmet } from "react-helmet";
 
 const BlogPostCardHeader = styled(CardHeader)`
   margin: 30px 0;
@@ -87,6 +88,9 @@ export const calculateReadingTime = (content: string): string => {
 export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   return (
     <BlogPostCard>
+      <Helmet>
+        <title>{post.title}</title>
+      </Helmet>
       <BlogPostCardHeader>
         <Row>
           <div>

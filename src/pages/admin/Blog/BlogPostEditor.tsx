@@ -84,9 +84,8 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
 
   const submitBlogPost = async () => {
     let pubDate = publishedDate;
+    validateTitle(title);
     if (titleValidity === ValidationStateOption.Valid) {
-      console.log(`Publish: ${publish}`);
-      console.log(`Publish Date: ${publishedDate}`);
       if (publish && (publishedDate === undefined || publishedDate === null)) {
         console.log(Timestamp.now());
         pubDate = Timestamp.now();

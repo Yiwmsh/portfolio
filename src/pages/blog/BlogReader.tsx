@@ -42,7 +42,7 @@ export const BlogReader: React.FC = () => {
   return (
     <>
       {blogPost === undefined ? (
-        "No post selected."
+        "Coming soon!"
       ) : (
         <BlogContainer>
           <BlogPost post={blogPost} />
