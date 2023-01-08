@@ -1,18 +1,14 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "../../../admin";
-import { calculateReadingTime, displayTimestamp } from "../../../blog/BlogPost";
+import {
+  calculateReadingTime,
+  displayTimestamp,
+} from "../../../blog/BlogPost/BlogPost";
 import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
-
-export const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-`;
+import { Row } from "../../../../components/Row";
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;

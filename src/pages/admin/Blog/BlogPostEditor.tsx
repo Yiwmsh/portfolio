@@ -17,7 +17,7 @@ import {
   CenteringButtonBank,
   Row,
 } from "../../home/home sections/WelcomeModal";
-import { displayTimestamp } from "../../blog/BlogPost";
+import { displayTimestamp } from "../../blog/BlogPost/BlogPost";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {
@@ -85,6 +85,9 @@ export const BlogPostEditor: React.FC<{
   const [lastUpdated, setLastUpdated] = React.useState<Timestamp | undefined>(
     postData?.lastUpdated ?? undefined
   );
+  const [featuredPriority, setFeaturedPriorty] = React.useState(
+    post?.featuredPriority ?? 0
+  );
 
   const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
 
@@ -116,6 +119,7 @@ export const BlogPostEditor: React.FC<{
         series: series,
         related: related,
         tags: tags,
+        featuredPriority: featuredPriority,
       });
       console.log("Update tried");
       checkUploadSuccess();
@@ -164,6 +168,7 @@ export const BlogPostEditor: React.FC<{
     setRelated(post?.relatedPosts ?? []);
     setTags(post?.tags ?? []);
     setLastUpdated(post?.lastUpdated);
+    setFeaturedPriorty(post?.featuredPriority ?? 0);
   }, [post]);
 
   return (
@@ -275,6 +280,18 @@ export const BlogPostEditor: React.FC<{
           value={series.join(", ")}
           onChange={(value) => {
             setSeries(parseCommaDelineatedString(value));
+          }}
+        />
+        <TextField
+          label="Featured Priority"
+          type="number"
+          value={`${featuredPriority}`}
+          onChange={(value) => {
+            try {
+              setFeaturedPriorty(parseInt(value));
+            } catch (e) {
+              console.log(e);
+            }
           }}
         />
       </CardBody>

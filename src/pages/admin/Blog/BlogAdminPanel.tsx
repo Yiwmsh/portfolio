@@ -1,4 +1,12 @@
-import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  getDoc,
+  doc,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import React from "react";
 import { db } from "../../../firebase";
 import { BlogPostList } from "./BlogPostList";
@@ -24,7 +32,13 @@ export const BlogAdminPanel: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       let allTitles = [""];
-      const response = await getDocs(collection(db, "blog-posts"));
+      const blogPosts = collection(db, "blog-posts");
+      const q = query(
+        blogPosts,
+        where("lastUpdated", "!=", ""),
+        orderBy("lastUpdated", "desc")
+      );
+      const response = await getDocs(q);
       response.forEach((doc) => {
         allTitles.push(doc.data().title);
       });

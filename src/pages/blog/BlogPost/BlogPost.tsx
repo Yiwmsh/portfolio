@@ -1,9 +1,9 @@
 import React from "react";
-import { BlogPostProps } from "../admin";
+import { BlogPostProps } from "../../admin";
 import { CardBody, CardFooter, CardHeader } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
-import { RichTextDisplay } from "../../components/RichTextEditor/RichTextDisplay";
+import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
 import { Helmet } from "react-helmet";
 
 const BlogPostCardHeader = styled(CardHeader)`

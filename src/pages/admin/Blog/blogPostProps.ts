@@ -15,4 +15,5 @@ export interface BlogPostProps {
     series?: string[];
     tags?: string[];
     views?: number;
+    featuredPriority: number;
 }
