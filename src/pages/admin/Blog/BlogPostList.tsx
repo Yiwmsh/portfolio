@@ -35,7 +35,6 @@ export const BlogPostList: React.FC<{
           title ? (
             <Post
               onClick={() => {
-                console.log("Post clicked");
                 setCurrentPost(title);
               }}
             >

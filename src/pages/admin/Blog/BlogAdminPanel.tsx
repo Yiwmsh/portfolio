@@ -17,7 +17,6 @@ export const BlogAdminPanel: React.FC = () => {
       setCurrentPost(undefined);
     } else {
       const response = await getDoc(doc(db, "blog-posts", title));
-      console.log(response.data());
       setCurrentPost(await (response.data() as BlogPostProps));
     }
   };

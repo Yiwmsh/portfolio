@@ -79,7 +79,11 @@ export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
           )}
         </Row>
         <BlogPostPreviewSnippet>
-          <RichTextDisplay content={post.content.slice(0, 600)} />
+          <RichTextDisplay
+            content={
+              post.summary === "" ? post.content.slice(0, 600) : post.summary
+            }
+          />
         </BlogPostPreviewSnippet>
       </TextContent>
       <BottomBlur />

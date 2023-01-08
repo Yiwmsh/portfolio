@@ -6,6 +6,7 @@ export interface BlogPostProps {
     slug?: string;
     authors: string[];
     content: string;
+    summary: string;
     createdDate?: Timestamp;
     lastUpdated?: Timestamp;
     publish: boolean;

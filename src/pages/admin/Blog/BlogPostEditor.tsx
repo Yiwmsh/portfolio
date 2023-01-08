@@ -6,16 +6,18 @@ import {
   CardHeader,
   TextContent,
   TextField,
+  SemanticColors,
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "./blogPostProps";
-import { setDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
+import { setDoc, getDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {
   CenteringButtonBank,
   Row,
 } from "../../home/home sections/WelcomeModal";
+import { displayTimestamp } from "../../blog/BlogPost";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {
@@ -23,8 +25,17 @@ const BlogPostEditorCard = styled(Card)`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: var(${SemanticColors.error});
+`;
+
 const BlogPostContentInput = styled.textarea`
   min-height: 20vh;
+  resize: both;
+`;
+
+const BlogPostSummaryInput = styled.textarea`
+  min-height: 10vh;
   resize: both;
 `;
 
@@ -54,14 +65,15 @@ const slugifyTitle = (title: string): string => {
   return title.toLowerCase().replaceAll(" ", "-");
 };
 
-export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
-  post,
-}) => {
+export const BlogPostEditor: React.FC<{
+  post?: BlogPostProps;
+}> = ({ post }) => {
   const postData = { ...post };
   const [title, setTitle] = React.useState(postData?.title ?? "");
   const [metaTitle, setMetaTitle] = React.useState(postData?.metaTitle ?? "");
   const [slug, setSlug] = React.useState(postData?.slug ?? "");
   const [authors, setAuthors] = React.useState(postData?.authors ?? ["Whimsy"]);
+  const [summary, setSummary] = React.useState(postData?.summary ?? "");
   const [content, setContent] = React.useState(postData?.content ?? "");
   const [publish, setPublish] = React.useState(postData?.publish ?? false);
   const [publishedDate, setPublishedDate] = React.useState<Timestamp | null>(
@@ -70,16 +82,15 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
   const [series, setSeries] = React.useState(postData?.series ?? []);
   const [related, setRelated] = React.useState(postData?.relatedPosts ?? []);
   const [tags, setTags] = React.useState(postData?.tags ?? []);
+  const [lastUpdated, setLastUpdated] = React.useState<Timestamp | undefined>(
+    postData?.lastUpdated ?? undefined
+  );
 
   const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
 
-  const [uploadSuccess, setUploadSuccess] = React.useState<boolean | undefined>(
-    undefined
-  );
-
-  const [titleValidity, setTitleValidity] = React.useState(
-    ValidationStateOption.Invalid
-  );
+  const [titleValidity, setTitleValidity] = React.useState<
+    ValidationStateOption | undefined
+  >();
   const [titleErrorMessage, setTitleErrorMessage] = React.useState("");
 
   const submitBlogPost = async () => {
@@ -98,6 +109,7 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         slug: slugifyTitle(slug === "" ? title : slug),
         authors: authors,
         content: content,
+        summary: summary,
         publish: publish,
         publishedDate: publish ? pubDate ?? null : null,
         views: postData?.views ?? 0,
@@ -105,6 +117,21 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         related: related,
         tags: tags,
       });
+      console.log("Update tried");
+      checkUploadSuccess();
+    }
+  };
+
+  const checkUploadSuccess = async () => {
+    const response = await getDoc(doc(db, "blog-posts", title));
+    try {
+      const serverLastUpdatedPost = ((await response.data()) as BlogPostProps)
+        .lastUpdated;
+      if (serverLastUpdatedPost !== lastUpdated) {
+        setLastUpdated(serverLastUpdatedPost);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -129,12 +156,14 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
     setMetaTitle(post?.metaTitle ?? "");
     setSlug(post?.slug ?? "slug");
     setAuthors(post?.authors ?? ["Whimsy"]);
+    setSummary(post?.summary ?? "");
     setContent(post?.content ?? "");
     setPublish(post?.publish ?? false);
     setPublishedDate(post?.publishedDate ?? null);
     setSeries(post?.series ?? []);
     setRelated(post?.relatedPosts ?? []);
     setTags(post?.tags ?? []);
+    setLastUpdated(post?.lastUpdated);
   }, [post]);
 
   return (
@@ -158,6 +187,16 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         </TitleField>
       </TitleCardHeader>
       <CardBody>
+        <Row>
+          <p>
+            Post Created:{" "}
+            {post?.createdDate ? displayTimestamp(post?.createdDate) : ""}
+          </p>
+          <p>·</p>
+          <p>
+            Last Updated: {lastUpdated ? displayTimestamp(lastUpdated) : ""}
+          </p>
+        </Row>
         <TextField
           label="Meta Title"
           value={metaTitle}
@@ -190,6 +229,17 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
           value={authors.join(", ")}
           onChange={(value) => setAuthors(parseCommaDelineatedString(value))}
         />
+        <TextContent>
+          <label htmlFor="summary">Summary</label>
+        </TextContent>
+        <BlogPostSummaryInput
+          name="summary"
+          value={summary}
+          onChange={(event) => {
+            setSummary(event.target.value);
+          }}
+        />
+
         <TextContent>
           <label htmlFor="content">Content</label>
         </TextContent>
@@ -229,6 +279,11 @@ export const BlogPostEditor: React.FC<{ post?: BlogPostProps }> = ({
         />
       </CardBody>
       <CardFooter>
+        {titleValidity === ValidationStateOption.Invalid ? (
+          <ErrorMessage>You must enter a title!</ErrorMessage>
+        ) : (
+          ""
+        )}
         <CenteringButtonBank>
           <Button onPress={() => submitBlogPost()}>Submit</Button>
           <Button onPress={() => deleteBlogPost()}>Delete</Button>

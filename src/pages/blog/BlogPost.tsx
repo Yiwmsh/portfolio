@@ -90,6 +90,7 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
     <BlogPostCard>
       <Helmet>
         <title>{post.title}</title>
+        <meta name="description" content={post.content.slice(0, 600)} />
       </Helmet>
       <BlogPostCardHeader>
         <Row>
