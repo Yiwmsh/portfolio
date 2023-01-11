@@ -15,6 +15,7 @@ enum RichTextDecoration {
   video = "<vid>",
   literal = "<lit>",
   code = "```",
+  link = "<a>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -50,6 +51,7 @@ const RichTextCode = styled.div`
   background-color: #708090;
   color: white;
 `;
+const RichTextLink = styled.a``;
 
 interface Tag {
   tag: string;
@@ -106,6 +108,14 @@ const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
   return false;
 };
 
+const parseLink = (innerContent: string): { link: string; text: string } => {
+  const urlRegex = /(?:{(.*)})/gm;
+  const link = innerContent.match(urlRegex)?.[0].replaceAll(/[{}]/gm, "");
+  console.log(link);
+  const text = innerContent.replace(urlRegex, "").replaceAll(/[{}]/gm, "");
+  return { link: link ?? "", text: text };
+};
+
 const taggedContentToReactNode = (
   tag: string,
   content: string
@@ -121,6 +131,11 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.link:
+      const linkValues = parseLink(content);
+      return (
+        <RichTextLink href={linkValues.link}>{linkValues.text}</RichTextLink>
+      );
     case RichTextDecoration.bold:
       return <RichTextBold>{innerContent}</RichTextBold>;
     case RichTextDecoration.content:
