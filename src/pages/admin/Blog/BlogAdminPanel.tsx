@@ -13,8 +13,13 @@ import { BlogPostList } from "./BlogPostList";
 import { BlogPostEditor } from "./BlogPostEditor";
 import { Row } from "../../home/home sections/WelcomeModal";
 import { BlogPostProps } from "./blogPostProps";
+import {
+  GetBlogPostsByQuery,
+  SortBlogPosts,
+} from "../../../components/BlogPostTools";
 
 export const BlogAdminPanel: React.FC = () => {
+  const [query, setQuery] = React.useState("");
   const [postTitles, setPostTitles] = React.useState([""]);
   const [currentPost, setCurrentPost] = React.useState<
     BlogPostProps | undefined
@@ -29,23 +34,18 @@ export const BlogAdminPanel: React.FC = () => {
     }
   };
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      let allTitles = [""];
-      const blogPosts = collection(db, "blog-posts");
-      const q = query(
-        blogPosts,
-        where("lastUpdated", "!=", ""),
-        orderBy("lastUpdated", "desc")
-      );
-      const response = await getDocs(q);
-      response.forEach((doc) => {
-        allTitles.push(doc.data().title);
-      });
-      setPostTitles(allTitles);
-    };
+  const getAndSetBlogPosts = async () => {
+    console.log(`Query: ${query}`);
+    const allBlogPosts = await GetBlogPostsByQuery(query);
+    setPostTitles(
+      SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map(
+        (post) => post.title
+      )
+    );
+  };
 
-    fetchData();
+  React.useEffect(() => {
+    getAndSetBlogPosts();
   }, []);
 
   return (
@@ -53,6 +53,8 @@ export const BlogAdminPanel: React.FC = () => {
       <BlogPostList
         postTitles={postTitles}
         setCurrentPost={handleSetCurrentPost}
+        searchFieldChanged={setQuery}
+        searchButtonClicked={getAndSetBlogPosts}
       />
       <BlogPostEditor post={currentPost} />
     </Row>

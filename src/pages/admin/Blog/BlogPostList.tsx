@@ -1,5 +1,11 @@
-import { Card, TextContent } from "@chrisellis/react-carpentry";
+import {
+  Button,
+  Card,
+  TextContent,
+  TextField,
+} from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { Row } from "../../../components";
 
 const PostList = styled.div`
   overflow-y: auto;
@@ -14,15 +20,28 @@ const Post = styled.button`
   margin-bottom: 5px;
 `;
 
+const SearchButton = styled(Button)`
+  margin: 20px 0;
+`;
+
 export const BlogPostList: React.FC<{
   postTitles: string[];
   setCurrentPost: (title: string) => void;
-}> = ({ postTitles, setCurrentPost }) => {
+  searchFieldChanged: (value: string) => void;
+  searchButtonClicked: () => void;
+}> = ({
+  postTitles,
+  setCurrentPost,
+  searchButtonClicked,
+  searchFieldChanged,
+}) => {
   return (
     <Card width="10vw" height="80vh">
       <TextContent>
         <h3>Blog Posts</h3>
       </TextContent>
+      <TextField label="Search" onChange={searchFieldChanged} />
+      <SearchButton onPress={searchButtonClicked}>Search</SearchButton>
       <PostList>
         <Post
           onClick={() => {

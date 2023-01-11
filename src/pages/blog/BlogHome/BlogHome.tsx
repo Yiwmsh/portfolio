@@ -6,8 +6,19 @@ import { db } from "../../../firebase";
 import { BlogPost } from "../BlogPost/BlogPost";
 import styled from "@emotion/styled";
 import { BlogHomeHeader } from "./BlogHomeHeader";
+import { BlogHomeFeaturedContainer } from "./BlogHomeFeatured";
+import { ThemeContext } from "@chrisellis/react-carpentry";
+import { LightTheme } from "../../../consts";
 
 const BlogHomeGrid = styled.div`
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  background-color: white;
+  top: 0;
+  left: 0;
+  position: fixed;
+  overflow-y: scroll;
   display: grid;
   grid-template-rows: 1fr 4fr;
   grid-template-columns: 2fr 4fr 2fr;
@@ -47,16 +58,17 @@ export const BlogHome: React.FC = () => {
     getPost();
   }, []);
   return (
-    <>
+    <ThemeContext theme={LightTheme}>
       {blogPost === undefined ? (
         <BlogHomeGrid>
           <BlogHomeHeader tags={[]} />
+          <BlogHomeFeaturedContainer />
         </BlogHomeGrid>
       ) : (
         <BlogContainer>
           <BlogPost post={blogPost} />
         </BlogContainer>
       )}
-    </>
+    </ThemeContext>
   );
 };

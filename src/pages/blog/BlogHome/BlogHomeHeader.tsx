@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const HeaderContainer = styled.div`
   grid-row: 1;
   grid-column: 1 / span 3;
+  border-bottom: 1px solid black;
 `;
 
 const BlogHomeTitleRow = styled.div`
@@ -31,37 +32,22 @@ const BlogHomePreTags = styled.p`
   text-align: center;
 `;
 
-const BlogHomeTagsBanner = styled(motion.div)`
-  position: relative;
-  display: flex;
-  flex-direction: horizontal;
-  overflow-x: hidden;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  width: 100vw;
-  height: 2em;
-  text-align: center;
-`;
-
-const Tag = styled.p``;
+const defaultTags = ["stuff", "whatever I want", "anything"];
 
 export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
+  const allTags = [tags, defaultTags].flat();
+  const getRandomArrayIndex = (array: Array<any>): number => {
+    return Math.floor(Math.random() * array.length);
+  };
   return (
     <HeaderContainer>
       <BlogHomeTitleRow>
         <HeaderPreTitle>Hi there, my name is </HeaderPreTitle>
         <HeaderTitle>Whimsy</HeaderTitle>
       </BlogHomeTitleRow>
-      <BlogHomePreTags>This is where I talk about</BlogHomePreTags>
-      <BlogHomeTagsBanner>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-        <Tag>Tag</Tag>
-      </BlogHomeTagsBanner>
+      <BlogHomePreTags>
+        This is where I talk about {allTags[getRandomArrayIndex(allTags)]}
+      </BlogHomePreTags>
     </HeaderContainer>
   );
 };
