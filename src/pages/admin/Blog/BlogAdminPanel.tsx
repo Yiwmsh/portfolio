@@ -1,12 +1,4 @@
-import {
-  getDocs,
-  collection,
-  getDoc,
-  doc,
-  query,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import React from "react";
 import { db } from "../../../firebase";
 import { BlogPostList } from "./BlogPostList";

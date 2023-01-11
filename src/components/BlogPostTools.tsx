@@ -1,13 +1,9 @@
-import React from "react";
-import styled from "@emotion/styled";
 import { BlogPostProps } from "../pages/admin";
 import {
   collection,
   where,
-  orderBy,
   getDocs,
   query,
-  getDoc,
   QuerySnapshot,
   DocumentData,
 } from "firebase/firestore";
