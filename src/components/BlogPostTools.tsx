@@ -31,26 +31,26 @@ export const GetBlogPostsByQuery = async (
     }
   };
 
-  if (!searchString) {
+  if (!searchString || searchString === "") {
     const response = await getDocs(blogPosts);
-    addDocsToReturnArray(response);
+    await addDocsToReturnArray(response);
   } else {
     console.log("Querying by name");
     const titleQuery = query(blogPosts, where("title", ">=", searchString));
     const titleRes = await getDocs(titleQuery);
-    addDocsToReturnArray(titleRes);
+    await addDocsToReturnArray(titleRes);
     const tagQuery = query(
       blogPosts,
       where("tags", "array-contains", searchString)
     );
     const tagRes = await getDocs(tagQuery);
-    addDocsToReturnArray(tagRes);
+    await addDocsToReturnArray(tagRes);
     const seriesQuery = query(
       blogPosts,
       where("series", "array-contains", searchString)
     );
     const seriesRes = await getDocs(seriesQuery);
-    addDocsToReturnArray(seriesRes);
+    await addDocsToReturnArray(seriesRes);
   }
 
   console.log("Finished");
