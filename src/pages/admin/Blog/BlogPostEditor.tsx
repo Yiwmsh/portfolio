@@ -101,7 +101,6 @@ export const BlogPostEditor: React.FC<{
     validateTitle(title);
     if (titleValidity === ValidationStateOption.Valid) {
       if (publish && (publishedDate === undefined || publishedDate === null)) {
-        console.log(Timestamp.now());
         pubDate = Timestamp.now();
       }
       await setDoc(doc(db, "blog-posts", title), {
@@ -121,7 +120,6 @@ export const BlogPostEditor: React.FC<{
         tags: tags,
         featuredPriority: featuredPriority,
       });
-      console.log("Update tried");
       checkUploadSuccess();
     }
   };
@@ -341,11 +339,8 @@ const PublishRow: React.FC<{
               }
               onChange={(event) => {
                 const value = event.target.value;
-                console.log(value);
                 const date = new Date(value);
-                console.log(date);
                 const timestamp = Timestamp.fromDate(date);
-                console.log(timestamp.toDate().toISOString);
                 setPublishedDate(timestamp);
               }}
             />

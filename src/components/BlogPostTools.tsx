@@ -28,7 +28,6 @@ export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   for (let i = 0; i < response.size; i++) {
     try {
       const docData = (await response.docs[i].data()) as BlogPostProps;
-      console.log(docData);
       allPublishedPosts.push(docData);
     } catch (e) {
       console.log(e);
@@ -53,7 +52,6 @@ export const GetRecentPublishedBlogPosts = async (): Promise<
   for (let i = 0; i < response.size; i++) {
     try {
       const docData = (await response.docs[i].data()) as BlogPostProps;
-      console.log(docData);
       allPublishedPosts.push(docData);
     } catch (e) {
       console.log(e);
@@ -76,7 +74,6 @@ export const GetBlogPostsByQuery = async (
         const docData = (await firestoreResponse.docs[
           i
         ].data()) as BlogPostProps;
-        console.log(docData);
         allMatchingPosts.push(docData);
       } catch (e) {
         console.log(e);
@@ -88,7 +85,6 @@ export const GetBlogPostsByQuery = async (
     const response = await getDocs(blogPosts);
     await addDocsToReturnArray(response);
   } else {
-    console.log("Querying by name");
     const titleQuery = query(blogPosts, where("title", ">=", searchString));
     const titleRes = await getDocs(titleQuery);
     await addDocsToReturnArray(titleRes);
@@ -105,8 +101,6 @@ export const GetBlogPostsByQuery = async (
     const seriesRes = await getDocs(seriesQuery);
     await addDocsToReturnArray(seriesRes);
   }
-
-  console.log("Finished");
 
   return allMatchingPosts;
 };

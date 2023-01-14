@@ -12,7 +12,6 @@ export const RichTextEditor: React.FC<TextFieldProps> = ({
   ...rest
 }) => {
   const handleChange = (value: string) => {
-    console.log(value);
     onChange?.(value);
   };
   return (

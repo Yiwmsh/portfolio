@@ -24,7 +24,6 @@ enum RichTextDecoration {
 
 const decorations = Object.values(RichTextDecoration);
 const openingSymbols = new Set(decorations.map((decoration) => decoration[0]));
-console.log(openingSymbols);
 
 const longestTagLength = () => {
   const sortedDecorations = Object.values(RichTextDecoration).sort(
@@ -128,7 +127,6 @@ const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
 const parseLink = (innerContent: string): { link: string; text: string } => {
   const urlRegex = /(?:{(.*)})/gm;
   const link = innerContent.match(urlRegex)?.[0].replaceAll(/[{}]/gm, "");
-  console.log(link);
   const text = innerContent.replace(urlRegex, "").replaceAll(/[{}]/gm, "");
   return { link: link ?? "", text: text };
 };
