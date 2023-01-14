@@ -1,6 +1,6 @@
 {
   "name": "portfolio",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "dependencies": {
     "@chrisellis/react-carpentry": "^0.4.1",
@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/react-helmet": "^6.1.6",
+    "brunch": "^4.0.2",
     "dotenv": "^16.0.3",
     "emotion": "^11.0.0",
     "firebase": "^9.15.0",
@@ -20,14 +21,17 @@
     "react-helmet": "^6.1.0",
     "react-scripts": "5.0.1",
     "react-stately": "^3.18.0",
+    "serve": "^14.1.2",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "serve -s build",
     "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "yarn build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "install-peers": "^1.0.4"
+    "install-peers": "^1.0.4",
+    "terser-brunch": "^4.1.0"
   }
 }
