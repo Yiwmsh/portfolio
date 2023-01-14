@@ -29,7 +29,9 @@ export const Blog: React.FC = () => {
       setBlogPost(post);
     };
 
-    getPost();
+    if (blogSlug !== undefined) {
+      getPost();
+    }
   }, []);
   return (
     <ThemeContext theme={LightTheme}>
