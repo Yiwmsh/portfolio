@@ -22,6 +22,7 @@ export const Blog: React.FC = () => {
     const getPost = async () => {
       const q = query(
         collection(db, "blog-posts"),
+        where("publish", "==", "true"),
         where("slug", "==", blogSlug)
       );
       const response = await getDocs(q);

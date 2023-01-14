@@ -12,17 +12,16 @@ import { db } from "../firebase";
 
 const blogPosts = collection(db, "blog-posts");
 
-export const GetAllBlogPosts = async (): Promise<BlogPostProps[]> => {
-  return await GetBlogPostsByQuery();
+export const GetAllBlogPosts = async (
+  published: boolean
+): Promise<BlogPostProps[]> => {
+  return await GetBlogPostsByQuery(published);
 };
 
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   const allPublishedPosts: BlogPostProps[] = [];
 
-  const q = query(
-    collection(db, "blog-posts"),
-    where("publishedDate", "!=", "null")
-  );
+  const q = query(collection(db, "blog-posts"), where("publish", "==", "true"));
   const response = await getDocs(q);
 
   for (let i = 0; i < response.size; i++) {
@@ -44,6 +43,7 @@ export const GetRecentPublishedBlogPosts = async (): Promise<
 
   const q = query(
     collection(db, "blog-posts"),
+    where("publish", "==", "true"),
     where("publishedDate", "!=", "null"),
     orderBy("publishedDate", "desc")
   );
@@ -62,6 +62,7 @@ export const GetRecentPublishedBlogPosts = async (): Promise<
 };
 
 export const GetBlogPostsByQuery = async (
+  published: boolean,
   searchString?: string
 ): Promise<BlogPostProps[]> => {
   const allMatchingPosts: BlogPostProps[] = [];
@@ -85,19 +86,31 @@ export const GetBlogPostsByQuery = async (
     const response = await getDocs(blogPosts);
     await addDocsToReturnArray(response);
   } else {
-    const titleQuery = query(blogPosts, where("title", ">=", searchString));
+    const titleQuery = published
+      ? query(
+          blogPosts,
+          where("publish", "==", "true"),
+          where("title", ">=", searchString)
+        )
+      : query(blogPosts, where("title", ">=", searchString));
     const titleRes = await getDocs(titleQuery);
     await addDocsToReturnArray(titleRes);
-    const tagQuery = query(
-      blogPosts,
-      where("tags", "array-contains", searchString)
-    );
+    const tagQuery = published
+      ? query(
+          blogPosts,
+          where("publish", "==", "true"),
+          where("tags", "array-contains", searchString)
+        )
+      : query(blogPosts, where("tags", "array-contains", searchString));
     const tagRes = await getDocs(tagQuery);
     await addDocsToReturnArray(tagRes);
-    const seriesQuery = query(
-      blogPosts,
-      where("series", "array-contains", searchString)
-    );
+    const seriesQuery = published
+      ? query(
+          blogPosts,
+          where("publish", "==", "true"),
+          where("series", "array-contains", searchString)
+        )
+      : query(blogPosts, where("series", "array-contains", searchString));
     const seriesRes = await getDocs(seriesQuery);
     await addDocsToReturnArray(seriesRes);
   }
