@@ -28,7 +28,6 @@ export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   for (let i = 0; i < response.size; i++) {
     try {
       const docData = (await response.docs[i].data()) as BlogPostProps;
-      console.log(docData);
       allPublishedPosts.push(docData);
     } catch (e) {
       console.log(e);

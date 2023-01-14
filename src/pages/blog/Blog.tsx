@@ -14,8 +14,6 @@ export const Blog: React.FC = () => {
     params: { blogSlug },
   } = useMatch();
 
-  console.log(blogSlug);
-
   const [blogPost, setBlogPost] = React.useState<BlogPostProps | undefined>(
     undefined
   );
