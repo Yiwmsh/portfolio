@@ -3,7 +3,7 @@ import React from "react";
 import { BlogPostProps } from "../../../admin";
 import {
   calculateReadingTime,
-  displayTimestamp,
+  fancyDisplayTimestamp,
 } from "../../../blog/BlogPost/BlogPost";
 import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
@@ -42,11 +42,6 @@ export const BottomBlur = styled.div`
 
 const BlogPostPreviewPublishedDate = styled.div``;
 
-// const removeTags = (content: string) => {
-//   const tagPattern = /(<[^<>]*>)/gm;
-//   return content.replaceAll(tagPattern, "");
-// };
-
 export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
   post,
 }) => {
@@ -67,7 +62,7 @@ export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
             <>
               {"·"}
               <BlogPostPreviewPublishedDate>
-                {displayTimestamp(post.publishedDate)}
+                {fancyDisplayTimestamp(post.publishedDate)}
               </BlogPostPreviewPublishedDate>
             </>
           ) : (

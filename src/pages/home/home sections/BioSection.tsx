@@ -1,10 +1,7 @@
 import {
   ButtonBank,
   Card,
-  CardBody,
-  CardFooter,
   CardHeader,
-  CardImage,
   LinkButton,
   SemanticColors,
   TextContent,

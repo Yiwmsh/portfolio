@@ -3,7 +3,7 @@ import React from "react";
 import { BlogPostProps } from "../../../admin";
 import {
   calculateReadingTime,
-  displayTimestamp,
+  fancyDisplayTimestamp,
 } from "../../../blog/BlogPost/BlogPost";
 import { TextContent } from "@chrisellis/react-carpentry";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
@@ -68,7 +68,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
                 <>
                   {"·"}
                   <BigPreviewPublishedDate>
-                    {displayTimestamp(post.publishedDate)}
+                    {fancyDisplayTimestamp(post.publishedDate)}
                   </BigPreviewPublishedDate>
                 </>
               ) : (

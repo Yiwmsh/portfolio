@@ -1,2 +1,2 @@
-export * from "./BlogHome"
+export * from "../Blog"
 export * from "./BlogHomeHeader"

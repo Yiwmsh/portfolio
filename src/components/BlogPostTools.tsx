@@ -6,14 +6,42 @@ import {
   query,
   QuerySnapshot,
   DocumentData,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase";
+
+const blogPosts = collection(db, "blog-posts");
+
+export const GetAllBlogPosts = async (): Promise<BlogPostProps[]> => {
+  return await GetBlogPostsByQuery();
+};
+
+export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
+  const allPublishedPosts: BlogPostProps[] = [];
+
+  const q = query(
+    collection(db, "blog-posts"),
+    where("publishedDate", "!=", "null")
+  );
+  const response = await getDocs(q);
+
+  for (let i = 0; i < response.size; i++) {
+    try {
+      const docData = (await response.docs[i].data()) as BlogPostProps;
+      console.log(docData);
+      allPublishedPosts.push(docData);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  return allPublishedPosts;
+};
 
 export const GetBlogPostsByQuery = async (
   searchString?: string
 ): Promise<BlogPostProps[]> => {
   const allMatchingPosts: BlogPostProps[] = [];
-  const blogPosts = collection(db, "blog-posts");
 
   const addDocsToReturnArray = async (
     firestoreResponse: QuerySnapshot<DocumentData>
@@ -68,4 +96,9 @@ export const SortBlogPosts = (
     const bProp = b[field];
     return !aProp || !bProp ? 0 : aProp > bProp ? -1 : 1;
   });
+};
+
+export const removeTags = (content: string) => {
+  const tagPattern = /(<[^<>]*>)/gm;
+  return content.replaceAll(tagPattern, "");
 };

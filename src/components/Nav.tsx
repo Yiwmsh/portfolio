@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
-import { Star, StarData, Coordinate } from "./Star";
+import { Star, StarData } from "./Star";
 import { SessionContext } from "../pages/site";
 
 const Sun = styled(motion.circle)``;

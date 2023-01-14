@@ -17,7 +17,7 @@ import {
   CenteringButtonBank,
   Row,
 } from "../../home/home sections/WelcomeModal";
-import { displayTimestamp } from "../../blog/BlogPost/BlogPost";
+import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {
@@ -195,11 +195,12 @@ export const BlogPostEditor: React.FC<{
         <Row>
           <p>
             Post Created:{" "}
-            {post?.createdDate ? displayTimestamp(post?.createdDate) : ""}
+            {post?.createdDate ? fancyDisplayTimestamp(post?.createdDate) : ""}
           </p>
           <p>·</p>
           <p>
-            Last Updated: {lastUpdated ? displayTimestamp(lastUpdated) : ""}
+            Last Updated:{" "}
+            {lastUpdated ? fancyDisplayTimestamp(lastUpdated) : ""}
           </p>
         </Row>
         <TextField

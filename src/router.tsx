@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { Home, SignInManager } from "./pages";
 import { db } from "./firebase";
-import { BlogHome } from "./pages/blog/BlogHome/BlogHome";
+import { Blog } from "./pages/blog/Blog";
 import { BlogPost } from "./pages/blog/BlogPost/BlogPost";
 import { ThemeContext } from "@chrisellis/react-carpentry";
 import { DarkTheme, LightTheme, TransparentTheme } from "./consts";
@@ -31,11 +31,11 @@ export const routs = [
     children: [
       {
         path: "/",
-        element: <BlogHome />,
+        element: <Blog />,
       },
       {
         path: ":blogSlug",
-        element: <BlogHome />,
+        element: <Blog />,
       },
     ],
   },

@@ -10,11 +10,6 @@ export const Home: React.FC = () => {
     <ScrollSnapper hideOverflow>
       <SplashSection />
       <BioSection />
-      {/* <StickyNav>
-                <Button onPress={() => localStorage.clear()}>
-                  Clear Local Storage (dev)
-                </Button>
-              </StickyNav> */}
       <MusicSection />
       <BlogSection />
     </ScrollSnapper>

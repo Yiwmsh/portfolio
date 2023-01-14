@@ -48,7 +48,16 @@ const PostContent = styled.div``;
 
 const ReadingTime = styled.div``;
 
-export const displayTimestamp = (timestamp: Timestamp): string => {
+export const displayTimestampAsDate = (timestamp: Timestamp): string => {
+  const date = timestamp.toDate();
+  const timeAgo = new Date().getTime() - date.getTime();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+export const fancyDisplayTimestamp = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();
   const timeAgo = new Date().getTime() - date.getTime();
   const month = date.getMonth() + 1;
@@ -103,12 +112,12 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
             <DateData>
               <PublishedDate>
                 Published{" "}
-                {displayTimestamp(post.publishedDate ?? Timestamp.now())}
+                {fancyDisplayTimestamp(post.publishedDate ?? Timestamp.now())}
               </PublishedDate>
               <li>&#183;</li>
               <UpdatedDate>
                 Last Updated{" "}
-                {displayTimestamp(post.lastUpdated ?? Timestamp.now())}
+                {fancyDisplayTimestamp(post.lastUpdated ?? Timestamp.now())}
               </UpdatedDate>
             </DateData>
             <ReadingTime>{calculateReadingTime(post.content)}</ReadingTime>
