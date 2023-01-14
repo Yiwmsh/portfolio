@@ -27,6 +27,8 @@ export const Blog: React.FC = () => {
     params: { blogSlug },
   } = useMatch();
 
+  console.log(blogSlug);
+
   const [blogPost, setBlogPost] = React.useState<BlogPostProps | undefined>(
     undefined
   );
@@ -47,14 +49,14 @@ export const Blog: React.FC = () => {
   return (
     <ThemeContext theme={LightTheme}>
       <BlogNavbar />
-      {blogPost === undefined ? (
-        <>
-          <BlogHome />
-        </>
-      ) : (
+      {blogSlug === undefined ? (
+        <BlogHome />
+      ) : blogPost ? (
         <BlogContainer>
           <BlogPost post={blogPost} />
         </BlogContainer>
+      ) : (
+        "No matching blog was found."
       )}
     </ThemeContext>
   );
