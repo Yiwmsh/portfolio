@@ -38,6 +38,31 @@ export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   return allPublishedPosts;
 };
 
+export const GetRecentPublishedBlogPosts = async (): Promise<
+  BlogPostProps[]
+> => {
+  const allPublishedPosts: BlogPostProps[] = [];
+
+  const q = query(
+    collection(db, "blog-posts"),
+    where("publishedDate", "!=", "null"),
+    orderBy("publishedDate", "desc")
+  );
+  const response = await getDocs(q);
+
+  for (let i = 0; i < response.size; i++) {
+    try {
+      const docData = (await response.docs[i].data()) as BlogPostProps;
+      console.log(docData);
+      allPublishedPosts.push(docData);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  return allPublishedPosts;
+};
+
 export const GetBlogPostsByQuery = async (
   searchString?: string
 ): Promise<BlogPostProps[]> => {

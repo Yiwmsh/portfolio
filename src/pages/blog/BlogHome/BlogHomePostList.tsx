@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { BlogPostProps } from "../../admin";
-import { BlogSnippet } from "../BlogSnippet";
+import { BlogPostList } from "../BlogPostList";
 
 export const PostListGrid = styled.div`
   display: grid;
@@ -17,13 +17,7 @@ export const BlogHomePosts: React.FC<{ allPosts: BlogPostProps[] }> = ({
 }) => {
   return (
     <PostListGrid>
-      <BlogHomePostList posts={allPosts} />
+      <BlogPostList posts={allPosts} />
     </PostListGrid>
   );
-};
-
-export const BlogHomePostList: React.FC<{ posts: BlogPostProps[] }> = ({
-  posts,
-}) => {
-  return <>{posts ? posts.map((post) => <BlogSnippet post={post} />) : ""}</>;
 };

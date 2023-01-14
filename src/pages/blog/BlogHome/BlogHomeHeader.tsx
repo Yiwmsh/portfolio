@@ -65,15 +65,18 @@ const BlogHomeBannerPortrait = styled.img`
   border-radius: 20px;
 `;
 
-const defaultTags = [
+const defaultTags: string[] = [
   "stuff",
   "whatever I want",
   "anything",
+  "everything",
   "my favourite things",
   "things I like",
 ];
 
-export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
+export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
+  tags,
+}) => {
   const allTags = [tags, defaultTags].flat();
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);

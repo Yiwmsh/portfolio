@@ -6,6 +6,7 @@ import { BlogPost } from "./pages/blog/BlogPost/BlogPost";
 import { ThemeContext } from "@chrisellis/react-carpentry";
 import { DarkTheme, LightTheme, TransparentTheme } from "./consts";
 import { Site } from "./pages/site";
+import { About } from "./pages/about";
 
 export const routs = [
   {
@@ -38,5 +39,9 @@ export const routs = [
         element: <Blog />,
       },
     ],
+  },
+  {
+    path: "about",
+    element: <About />,
   },
 ];

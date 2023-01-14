@@ -1,21 +1,27 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePosts } from "./BlogHomePostList";
-import { GetAllPublishedBlogPosts } from "../../../components";
+import { GetRecentPublishedBlogPosts } from "../../../components";
 import { BlogPostProps } from "../../admin";
 
 export const BlogHome: React.FC = () => {
   const [allPosts, setAllPosts] = React.useState<BlogPostProps[]>([]);
   React.useEffect(() => {
     const fetchPosts = async () => {
-      setAllPosts(await GetAllPublishedBlogPosts());
+      setAllPosts(await GetRecentPublishedBlogPosts());
     };
     fetchPosts();
   }, []);
+
+  const tags = allPosts
+    .map((post) => post.tags)
+    .flat()
+    .filter((tag) => {
+      return tag !== undefined;
+    });
   return (
     <>
-      <BlogHomeHeader tags={[]} />
+      <BlogHomeHeader tags={tags} />
       <BlogHomePosts allPosts={allPosts} />
     </>
   );

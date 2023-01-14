@@ -62,7 +62,7 @@ const NavbarElement: React.FC<{ label: string; href: string }> = ({
   );
 };
 
-export const BlogNavbar: React.FC = () => {
+export const Navbar: React.FC = () => {
   return (
     <NavbarContainer>
       <WhimsyLink

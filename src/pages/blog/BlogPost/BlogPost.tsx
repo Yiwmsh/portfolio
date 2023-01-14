@@ -6,12 +6,12 @@ import { Timestamp } from "firebase/firestore";
 import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
 import { Helmet } from "react-helmet";
 
-const BlogPostCardHeader = styled(CardHeader)`
-  margin: 30px 0;
+const BlogPostStyle = styled.article`
+  margin: 0 5vw;
 `;
 
-const BlogPostCard = styled.article`
-  padding: 0px 20px;
+const BlogPostCardHeader = styled(CardHeader)`
+  margin: 30px 0;
 `;
 
 const Row = styled.div`
@@ -44,7 +44,9 @@ const PublishedDate = styled.li``;
 
 const UpdatedDate = styled.li``;
 
-const PostContent = styled.div``;
+const PostContent = styled.div`
+  margin: 0 25vw;
+`;
 
 const ReadingTime = styled.div``;
 
@@ -96,7 +98,7 @@ export const calculateReadingTime = (content: string): string => {
 
 export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   return (
-    <BlogPostCard>
+    <BlogPostStyle>
       <Helmet>
         <title>{post.title}</title>
         <meta name="description" content={post.content.slice(0, 600)} />
@@ -130,6 +132,6 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
         </PostContent>
       </CardBody>
       <CardFooter></CardFooter>
-    </BlogPostCard>
+    </BlogPostStyle>
   );
 };

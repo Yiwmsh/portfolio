@@ -4,23 +4,10 @@ import { BlogPostProps } from "../admin";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { BlogPost } from "./BlogPost/BlogPost";
-import styled from "@emotion/styled";
-import { BlogHomeHeader } from "./BlogHome/BlogHomeHeader";
 import { ThemeContext } from "@chrisellis/react-carpentry";
 import { LightTheme } from "../../consts";
-import { BlogNavbar } from "./BlogNavbar";
-import { BlogHomePosts } from "./BlogHome/BlogHomePostList";
+import { Navbar } from "./Navbar";
 import { BlogHome } from "./BlogHome/BlogHome";
-
-const BlogContainer = styled.section`
-  height: 100vh;
-  width: 100vw;
-  background-color: white;
-  top: 0;
-  left: 0;
-  overflow-y: scroll;
-  overflow-x: auto;
-`;
 
 export const Blog: React.FC = () => {
   const {
@@ -48,15 +35,13 @@ export const Blog: React.FC = () => {
   }, []);
   return (
     <ThemeContext theme={LightTheme}>
-      <BlogNavbar />
+      <Navbar />
       {blogSlug === undefined ? (
         <BlogHome />
       ) : blogPost ? (
-        <BlogContainer>
-          <BlogPost post={blogPost} />
-        </BlogContainer>
+        <BlogPost post={blogPost} />
       ) : (
-        "No matching blog was found."
+        ""
       )}
     </ThemeContext>
   );
