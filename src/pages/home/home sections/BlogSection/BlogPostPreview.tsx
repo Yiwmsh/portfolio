@@ -49,7 +49,7 @@ export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
   return (
     <BlogPostPreviewContainer
       onClick={() => {
-        window.location.assign(`/blog/${post.slug}`);
+        window.location.assign(`/blog/post/${post.slug}`);
       }}
       whileHover={{ scale: 1.05 }}
     >

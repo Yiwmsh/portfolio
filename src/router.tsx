@@ -1,12 +1,9 @@
-import { doc, getDoc } from "firebase/firestore";
 import { Home, SignInManager } from "./pages";
-import { db } from "./firebase";
 import { Blog } from "./pages/blog/Blog";
-import { BlogPost } from "./pages/blog/BlogPost/BlogPost";
 import { ThemeContext } from "@chrisellis/react-carpentry";
-import { DarkTheme, LightTheme, TransparentTheme } from "./consts";
+import { LightTheme, TransparentTheme } from "./consts";
 import { Site } from "./pages/site";
-import { About } from "./pages/about";
+import { BlogPosts } from "./pages/blog/BlogPosts/BlogPosts";
 
 export const routs = [
   {
@@ -34,14 +31,14 @@ export const routs = [
         path: "/",
         element: <Blog />,
       },
+      // {
+      //   path: "posts",
+      //   element: <BlogPosts />,
+      // },
       {
-        path: ":blogSlug",
+        path: "post/:blogSlug",
         element: <Blog />,
       },
     ],
-  },
-  {
-    path: "about",
-    element: <About />,
   },
 ];

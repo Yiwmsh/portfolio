@@ -52,7 +52,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
       {post ? (
         <BigPreviewContainer
           onClick={() => {
-            window.location.assign(`/blog/${post.slug}`);
+            window.location.assign(`/blog/post/${post.slug}`);
           }}
         >
           <TextContent>

@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { TextContent } from "@chrisellis/react-carpentry";
+import { DarkTheme } from "../../consts";
 
 enum RichTextDecoration {
   content = "<>",
@@ -16,6 +18,8 @@ enum RichTextDecoration {
   literal = "<lit>",
   code = "```",
   link = "<a>",
+  borderedSection = "<border>",
+  centered = "<center>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -41,9 +45,15 @@ const minLookaheadLength = shortestTagLength() + 1;
 
 const RichTextBold = styled.b``;
 const RichTextItalic = styled.i``;
-const RichTextH1 = styled.h1``;
-const RichTextH2 = styled.h2``;
-const RichTextH3 = styled.h3``;
+const RichTextH1 = styled.h1`
+  margin: 0;
+`;
+const RichTextH2 = styled.h2`
+  margin: 0;
+`;
+const RichTextH3 = styled.h3`
+  margin: 0;
+`;
 const RichTextP = styled.p``;
 const RichTextImg = styled.img``;
 const RichTextVid = styled.iframe``;
@@ -52,6 +62,13 @@ const RichTextCode = styled.div`
   color: white;
 `;
 const RichTextLink = styled.a``;
+const RichTextBorderedSection = styled.div`
+  border: 1px solid black;
+`;
+const RichTextCentered = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 interface Tag {
   tag: string;
@@ -131,6 +148,10 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.centered:
+      return <RichTextCentered>{innerContent}</RichTextCentered>;
+    case RichTextDecoration.borderedSection:
+      return <RichTextBorderedSection>{innerContent}</RichTextBorderedSection>;
     case RichTextDecoration.link:
       const linkValues = parseLink(content);
       return (
@@ -224,5 +245,5 @@ const parseRichText = (content: string): React.ReactNode => {
 };
 
 export const RichTextDisplay: React.FC<{ content: string }> = ({ content }) => {
-  return <>{parseRichText(content)}</>;
+  return <TextContent>{parseRichText(content)}</TextContent>;
 };

@@ -45,7 +45,7 @@ const PublishedDate = styled.li``;
 const UpdatedDate = styled.li``;
 
 const PostContent = styled.div`
-  margin: 0 25vw;
+  margin: 0 20vw;
 `;
 
 const ReadingTime = styled.div``;
@@ -101,7 +101,10 @@ export const BlogPost: React.FC<{ post: BlogPostProps }> = ({ post }) => {
     <BlogPostStyle>
       <Helmet>
         <title>{post.title}</title>
-        <meta name="description" content={post.content.slice(0, 600)} />
+        <meta
+          name="description"
+          content={post.summary ?? post.content.slice(0, 600)}
+        />
       </Helmet>
       <BlogPostCardHeader>
         <Row>

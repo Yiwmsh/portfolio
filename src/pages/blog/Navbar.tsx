@@ -75,11 +75,11 @@ export const Navbar: React.FC = () => {
       </WhimsyLink>
       <NavbarUL layout>
         <NavbarElement label="Blog" href="/blog" />
-        <NavbarElement label="Posts" href="/posts" />
-        <NavbarElement label="About" href="/about" />
-        <NavbarLI>
+        {/* <NavbarElement label="Posts" href="/blog/posts" /> */}
+        <NavbarElement label="About" href="/#Bio" />
+        {/* <NavbarLI>
           <BlogSearch onSearch={(value) => {}} />
-        </NavbarLI>
+        </NavbarLI> */}
       </NavbarUL>
     </NavbarContainer>
   );

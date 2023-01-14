@@ -48,7 +48,7 @@ export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   return (
     <SnippetContainer
       onClick={() => {
-        window.location.assign(`/blog/${post.slug}`);
+        window.location.assign(`/blog/post/${post.slug}`);
       }}
     >
       <BlogPostMetaLine>
