@@ -1,8 +1,22 @@
 import { Theme } from "@chrisellis/react-carpentry";
 
-export const LightTheme = new Theme({
+export const TransparentTheme = new Theme({
   background: "#FFFFFF",
   foreground: "rgba(255, 255, 255, 0.1)",
+  shadow: "rgba(0, 0, 0, 0.15)",
+  primary: "#b05251",
+  primaryActive: "#c44a3d",
+  primaryDisabled: "#683939",
+  secondary: "#87CEEB",
+  secondaryActive: "#99d5ee",
+  secondaryDisabled: "#3d5d6a",
+  text: "#FFFFFF",
+  altText: "#FFFFFF",
+  error: "#ED6767",
+});
+
+export const LightTheme = new Theme({
+  background: "#FFFFFF",
   shadow: "rgba(0, 0, 0, 0.15)",
   primary: "#b05251",
   primaryActive: "#c44a3d",
@@ -10,7 +24,7 @@ export const LightTheme = new Theme({
   secondary: "#0047AB",
   secondaryActive: "#0047d9",
   secondaryDisabled: "#002e6f",
-  text: "#FFFFFF",
+  text: "#000000",
   altText: "#FFFFFF",
   error: "#ED6767",
 });

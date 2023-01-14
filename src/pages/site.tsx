@@ -1,16 +1,17 @@
 import styled from "@emotion/styled";
-import { Button, Navbar, ScrollSnapper } from "@chrisellis/react-carpentry";
+import { Button, Navbar } from "@chrisellis/react-carpentry";
 import React from "react";
-import { BioSection } from "./home sections/BioSection";
-import { SplashSection } from "./home sections/SplashSection";
-import { WelcomeModal } from "./home sections/WelcomeModal";
-import { MusicSection } from "./home sections/MusicSection";
 import { motion } from "framer-motion";
+import { WelcomeModal } from "./home/home sections/WelcomeModal";
 import { Nav } from "../components/Nav";
 
 export const NameContext = React.createContext({
   name: localStorage.getItem("name") ?? "Friend",
   setName: (value: string) => {},
+});
+
+export const SessionContext = React.createContext({
+  session: sessionStorage.getItem("stars") ? true : false,
 });
 
 const StickyNav = styled(Navbar)`
@@ -32,16 +33,16 @@ const BackgroundAnimation = styled(motion.div)`
   );
 `;
 
-export const Home: React.FC = () => {
+export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [name, setName] = React.useState(
     localStorage.getItem("name") ?? "Friend"
   );
 
   document.body.style.overflow = "hidden";
   document.body.style.backgroundColor = `linear-gradient(
-    rgba(39, 36, 57, 1) 0%,
-    rgba(13, 15, 30, 1) 10%
-  )`;
+      rgba(39, 36, 57, 1) 0%,
+      rgba(13, 15, 30, 1) 10%
+    )`;
 
   const SVGCanvas = styled(motion.svg)`
     position: fixed;
@@ -74,26 +75,21 @@ export const Home: React.FC = () => {
           welcomeModalOpen={welcomeModalOpen}
         />
         {!welcomeModalOpen && (
-          <>
-            <BackgroundAnimation
-              initial={{ top: "-100vh" }}
-              animate={{ top: 0 }}
-              transition={BACKGROUND_TRANSITION}
-            />
-            <SVGCanvas>
-              <Nav />
-            </SVGCanvas>
-            <ScrollSnapper hideOverflow>
-              <SplashSection />
-              <BioSection />
-              {/* <StickyNav>
-                <Button onPress={() => localStorage.clear()}>
-                  Clear Local Storage (dev)
-                </Button>
-              </StickyNav> */}
-              <MusicSection />
-            </ScrollSnapper>
-          </>
+          <SessionContext.Consumer>
+            {({ session }) => (
+              <>
+                <BackgroundAnimation
+                  initial={{ top: session ? 0 : "-100vh" }}
+                  animate={{ top: 0 }}
+                  transition={BACKGROUND_TRANSITION}
+                />
+                <SVGCanvas>
+                  <Nav />
+                </SVGCanvas>
+                {children}
+              </>
+            )}
+          </SessionContext.Consumer>
         )}
       </NameContext.Provider>
     </>

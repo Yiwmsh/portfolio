@@ -8,15 +8,14 @@ import {
 } from "@chrisellis/react-carpentry";
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
-import { Modal } from "../../components/Modal";
-import { WhatsYourName } from "../../components/WhatsYourName";
 import styled from "@emotion/styled";
+import { Modal, WhatsYourName } from "../../../components";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;
 `;
 
-const Row = styled.div`
+export const Row = styled.div`
   display: flex;
   flex-direction: row;
   vertical-align: middle;
@@ -27,7 +26,7 @@ const Row = styled.div`
   }
 `;
 
-const CenteringButtonBank = styled(ButtonBank)`
+export const CenteringButtonBank = styled(ButtonBank)`
   justify-content: center;
 `;
 

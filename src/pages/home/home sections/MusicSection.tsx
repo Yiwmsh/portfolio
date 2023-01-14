@@ -2,9 +2,9 @@ import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import musicPic from "../../resources/musicPic.png";
-import { CenteringSection } from "../../components/CenteringSection";
-import { ScrollButton } from "../../components/ScrollButton";
+import musicPic from "../../../resources/musicPic.webp";
+import { CenteringSection } from "../../../components/CenteringSection";
+import { ScrollButton } from "../../../components/ScrollButton";
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
   "https://www.googleapis.com/youtube/v3/playlistItems";
@@ -21,8 +21,8 @@ const MusicSectionGrid = styled.div`
   width: 90%;
   grid-template-columns: 1fr 3fr 1fr;
   align-items: center;
-  grid-gap: 10px;
-  margin: 0px 5%;
+  grid-column-gap: 10px;
+  margin: 10px 5%;
 
   @media screen and (max-width: 1700px) and (min-width: 600px) {
     width: 98%;
@@ -123,7 +123,7 @@ const MusicPic = styled(motion.img)<{ focussed: boolean }>`
       ? "calc((var(--GridColumnWidth) * 2) - 10px)"
       : "calc(var(--GridColumnWidth) - 20px)"};
   aspect-ratio: 10 / 13;
-  margin: 5px auto;
+  margin: ${({ focussed }) => (focussed ? "0 0 0 5px" : "5px auto")};
 
   @media screen and (max-width: 600px) {
     max-height: 90%;
@@ -312,6 +312,7 @@ export const MusicSection: React.FC = () => {
           )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
+      <ScrollButton direction="down" target="Blog" />
     </CenteringSection>
   );
 };

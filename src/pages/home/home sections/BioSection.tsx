@@ -1,21 +1,18 @@
 import {
   ButtonBank,
   Card,
-  CardBody,
-  CardFooter,
   CardHeader,
-  CardImage,
   LinkButton,
   SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
 import React from "react";
-import { CenteringSection } from "../../components/CenteringSection";
 import styled from "@emotion/styled";
 import moment from "moment";
-import { NameContext } from "../home";
-import { ScrollButton } from "../../components/ScrollButton";
-import portrait from "../../resources/portrait.jpg";
+import portrait from "../../../resources/portrait.jpg";
+import { CenteringSection } from "../../../components/CenteringSection";
+import { ScrollButton } from "../../../components/ScrollButton";
+import { NameContext } from "../../site";
 
 const PortraitOfMe = styled.img`
   border-radius: 10px;
