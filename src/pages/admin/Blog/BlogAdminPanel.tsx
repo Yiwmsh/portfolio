@@ -27,7 +27,7 @@ export const BlogAdminPanel: React.FC = () => {
   };
 
   const getAndSetBlogPosts = async () => {
-    const allBlogPosts = await GetBlogPostsByQuery(query);
+    const allBlogPosts = await GetBlogPostsByQuery(false, query);
     setPostTitles(
       SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map(
         (post) => post.title

@@ -70,6 +70,7 @@ export const BlogSection: React.FC = () => {
     const getRecentPosts = async () => {
       const q = query(
         collection(db, "blog-posts"),
+        where("publish", "==", "true"),
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),
         limit(5)
