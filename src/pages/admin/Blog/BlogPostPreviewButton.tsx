@@ -59,7 +59,7 @@ export const BlogPostPreviewButton: React.FC<{
               x
             </CloseButton>
             <Navbar />
-            {post ? <BlogPost post={post} /> : ""}
+            {post ? <BlogPost post={post} withoutHelmet /> : ""}
           </PreviewContainer>
         </ThemeContext>
       </Modal>
