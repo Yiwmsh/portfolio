@@ -5,6 +5,7 @@ import {
   TextField,
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { BlogPostID } from "./blogPostProps";
 
 const PostList = styled.div`
   overflow-y: auto;
@@ -24,16 +25,11 @@ const SearchButton = styled(Button)`
 `;
 
 export const BlogPostList: React.FC<{
-  postTitles: string[];
-  setCurrentPost: (title: string) => void;
+  postIDs: BlogPostID[];
+  setCurrentPost: (uid: string) => void;
   searchFieldChanged: (value: string) => void;
   searchButtonClicked: () => void;
-}> = ({
-  postTitles,
-  setCurrentPost,
-  searchButtonClicked,
-  searchFieldChanged,
-}) => {
+}> = ({ postIDs, setCurrentPost, searchButtonClicked, searchFieldChanged }) => {
   return (
     <Card width="10vw" height="80vh">
       <TextContent>
@@ -49,14 +45,14 @@ export const BlogPostList: React.FC<{
         >
           New Post
         </Post>
-        {postTitles.map((title) =>
-          title ? (
+        {postIDs.map((ID) =>
+          ID ? (
             <Post
               onClick={() => {
-                setCurrentPost(title);
+                setCurrentPost(ID.uid);
               }}
             >
-              {title}
+              {ID.title}
             </Post>
           ) : (
             ""

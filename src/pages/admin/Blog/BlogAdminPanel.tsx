@@ -4,7 +4,7 @@ import { db } from "../../../firebase";
 import { BlogPostList } from "./BlogPostList";
 import { BlogPostEditor } from "./BlogPostEditor";
 import { Row } from "../../home/home sections/WelcomeModal";
-import { BlogPostProps } from "./blogPostProps";
+import { BlogPostID, BlogPostProps } from "./blogPostProps";
 import {
   GetBlogPostsByQuery,
   SortBlogPosts,
@@ -12,7 +12,7 @@ import {
 
 export const BlogAdminPanel: React.FC = () => {
   const [query, setQuery] = React.useState("");
-  const [postTitles, setPostTitles] = React.useState([""]);
+  const [postTitles, setPostTitles] = React.useState<BlogPostID[]>([]);
   const [currentPost, setCurrentPost] = React.useState<
     BlogPostProps | undefined
   >(undefined);
@@ -29,9 +29,9 @@ export const BlogAdminPanel: React.FC = () => {
   const getAndSetBlogPosts = async () => {
     const allBlogPosts = await GetBlogPostsByQuery(false, query);
     setPostTitles(
-      SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map(
-        (post) => post.title
-      )
+      SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map((post) => {
+        return { title: post.title, uid: post.uid };
+      })
     );
   };
 
@@ -42,7 +42,7 @@ export const BlogAdminPanel: React.FC = () => {
   return (
     <Row>
       <BlogPostList
-        postTitles={postTitles}
+        postIDs={postTitles}
         setCurrentPost={handleSetCurrentPost}
         searchFieldChanged={setQuery}
         searchButtonClicked={getAndSetBlogPosts}
