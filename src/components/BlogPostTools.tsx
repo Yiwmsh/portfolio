@@ -11,6 +11,7 @@ import {
 import { db } from "../firebase";
 
 const blogPosts = collection(db, "blog-posts");
+export const wherePublished = where("publish", "==", true);
 
 export const GetAllBlogPosts = async (
   published: boolean
@@ -21,7 +22,7 @@ export const GetAllBlogPosts = async (
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   const allPublishedPosts: BlogPostProps[] = [];
 
-  const q = query(collection(db, "blog-posts"), where("publish", "==", "true"));
+  const q = query(blogPosts, wherePublished);
   const response = await getDocs(q);
 
   for (let i = 0; i < response.size; i++) {
@@ -42,8 +43,8 @@ export const GetRecentPublishedBlogPosts = async (): Promise<
   const allPublishedPosts: BlogPostProps[] = [];
 
   const q = query(
-    collection(db, "blog-posts"),
-    where("publish", "==", "true"),
+    blogPosts,
+    wherePublished,
     where("publishedDate", "!=", "null"),
     orderBy("publishedDate", "desc")
   );
@@ -87,18 +88,14 @@ export const GetBlogPostsByQuery = async (
     await addDocsToReturnArray(response);
   } else {
     const titleQuery = published
-      ? query(
-          blogPosts,
-          where("publish", "==", "true"),
-          where("title", ">=", searchString)
-        )
+      ? query(blogPosts, wherePublished, where("title", ">=", searchString))
       : query(blogPosts, where("title", ">=", searchString));
     const titleRes = await getDocs(titleQuery);
     await addDocsToReturnArray(titleRes);
     const tagQuery = published
       ? query(
           blogPosts,
-          where("publish", "==", "true"),
+          wherePublished,
           where("tags", "array-contains", searchString)
         )
       : query(blogPosts, where("tags", "array-contains", searchString));
@@ -107,7 +104,7 @@ export const GetBlogPostsByQuery = async (
     const seriesQuery = published
       ? query(
           blogPosts,
-          where("publish", "==", "true"),
+          wherePublished,
           where("series", "array-contains", searchString)
         )
       : query(blogPosts, where("series", "array-contains", searchString));
