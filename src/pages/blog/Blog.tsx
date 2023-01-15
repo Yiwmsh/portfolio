@@ -8,6 +8,7 @@ import { ThemeContext } from "@chrisellis/react-carpentry";
 import { LightTheme } from "../../consts";
 import { Navbar } from "./Navbar";
 import { BlogHome } from "./BlogHome/BlogHome";
+import { wherePublished } from "../../components";
 
 export const Blog: React.FC = () => {
   const {
@@ -22,7 +23,7 @@ export const Blog: React.FC = () => {
     const getPost = async () => {
       const q = query(
         collection(db, "blog-posts"),
-        where("publish", "==", "true"),
+        wherePublished,
         where("slug", "==", blogSlug)
       );
       const response = await getDocs(q);

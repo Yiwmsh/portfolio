@@ -15,6 +15,7 @@ import { db } from "../../../../firebase";
 import { BlogPostProps } from "../../../admin";
 import { BlogPostPreviewList } from "./BlogPostPreviewList";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
+import { wherePublished } from "../../../../components";
 
 export const StyledLink = styled.a`
   &:link,
@@ -70,7 +71,7 @@ export const BlogSection: React.FC = () => {
     const getRecentPosts = async () => {
       const q = query(
         collection(db, "blog-posts"),
-        where("publish", "==", "true"),
+        wherePublished,
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),
         limit(5)
