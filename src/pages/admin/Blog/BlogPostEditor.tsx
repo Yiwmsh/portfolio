@@ -117,7 +117,6 @@ export const BlogPostEditor: React.FC<{
         summary: summary,
         publish: publish,
         publishedDate: publish ? pubDate ?? null : null,
-        views: postData?.views ?? 0,
         series: series,
         related: related,
         tags: tags,
