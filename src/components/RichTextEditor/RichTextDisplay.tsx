@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { TextContent } from "@chrisellis/react-carpentry";
-import { DarkTheme } from "../../consts";
+import { TextContent, SemanticColors } from "@chrisellis/react-carpentry";
 
 enum RichTextDecoration {
   content = "<>",
@@ -20,6 +19,9 @@ enum RichTextDecoration {
   link = "<a>",
   borderedSection = "<border>",
   centered = "<center>",
+  shadowedSection = "<shadow>",
+  paddedSection = "<pad>",
+  card = "<card>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -38,6 +40,9 @@ const shortestTagLength = () => {
   );
   return sortedDecorations[0].length;
 };
+
+const defaultPadding = 10;
+const defaultBoxShadow = `0.125em 0.25em 1.25em var(${SemanticColors.shadow});`;
 
 const maxLookaheadLength = longestTagLength() + 1;
 const minLookaheadLength = shortestTagLength() + 1;
@@ -67,6 +72,18 @@ const RichTextBorderedSection = styled.div`
 const RichTextCentered = styled.div`
   display: flex;
   justify-content: center;
+`;
+const RichTextPaddedSection = styled.div<{ padding?: number }>`
+  padding: ${({ padding }) => padding ?? defaultPadding}px;
+`;
+const RichTextShadowedSection = styled.div`
+  box-shadow: ${defaultBoxShadow};
+`;
+
+const RichTextCard = styled.div`
+  box-shadow: ${defaultBoxShadow};
+  padding: ${defaultPadding}px;
+  border-radius: 10px;
 `;
 
 interface Tag {
@@ -146,6 +163,12 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.shadowedSection:
+      return <RichTextShadowedSection>{innerContent}</RichTextShadowedSection>;
+    case RichTextDecoration.paddedSection:
+      return <RichTextPaddedSection>{innerContent}</RichTextPaddedSection>;
+    case RichTextDecoration.card:
+      return <RichTextCard>{innerContent}</RichTextCard>;
     case RichTextDecoration.centered:
       return <RichTextCentered>{innerContent}</RichTextCentered>;
     case RichTextDecoration.borderedSection:
