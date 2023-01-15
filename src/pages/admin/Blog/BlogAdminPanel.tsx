@@ -17,11 +17,11 @@ export const BlogAdminPanel: React.FC = () => {
     BlogPostProps | undefined
   >(undefined);
 
-  const handleSetCurrentPost = async (title: string) => {
-    if (title === "") {
+  const handleSetCurrentPost = async (uid: string) => {
+    if (uid === "") {
       setCurrentPost(undefined);
     } else {
-      const response = await getDoc(doc(db, "blog-posts", title));
+      const response = await getDoc(doc(db, "blog-posts", uid));
       setCurrentPost(await (response.data() as BlogPostProps));
     }
   };
