@@ -10,7 +10,7 @@ import {
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
-import { BlogPostProps } from "./blogPostProps";
+import { BlogPostID, BlogPostProps } from "./blogPostProps";
 import { setDoc, getDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import {
@@ -19,6 +19,7 @@ import {
 } from "../../home/home sections/WelcomeModal";
 import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
 import { v4 as uuidv4 } from "uuid";
+import { BlogPostPreviewButton } from "./BlogPostPreviewButton";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {
@@ -68,7 +69,8 @@ const slugifyTitle = (title: string): string => {
 
 export const BlogPostEditor: React.FC<{
   post?: BlogPostProps;
-}> = ({ post }) => {
+  changesMade: () => void;
+}> = ({ post, changesMade }) => {
   const postData = { ...post };
   const [uid, setUid] = React.useState(postData?.uid ?? uuidv4());
   const [title, setTitle] = React.useState(postData?.title ?? "");
@@ -122,26 +124,46 @@ export const BlogPostEditor: React.FC<{
         tags: tags,
         featuredPriority: featuredPriority,
       });
-      checkUploadSuccess();
+      const uploadedSuccessfully = await checkUploadSuccess();
+      if (uploadedSuccessfully) {
+        changesMade();
+      }
     }
   };
 
-  const checkUploadSuccess = async () => {
+  const compilePreview = (): BlogPostProps => {
+    return {
+      uid: uid,
+      title: title,
+      metaTitle: metaTitle,
+      slug: slug,
+      authors: authors,
+      content: content,
+      summary: summary,
+      publish: false,
+      featuredPriority: 0,
+    };
+  };
+
+  const checkUploadSuccess = async (): Promise<boolean> => {
     const response = await getDoc(doc(db, "blog-posts", uid));
     try {
       const serverLastUpdatedPost = ((await response.data()) as BlogPostProps)
         .lastUpdated;
       if (serverLastUpdatedPost !== lastUpdated) {
         setLastUpdated(serverLastUpdatedPost);
+        return true;
       }
     } catch (e) {
       console.log(e);
     }
+    return false;
   };
 
   const deleteBlogPost = async () => {
     if (uid) {
       await deleteDoc(doc(db, "blog-posts", uid));
+      changesMade();
     }
   };
 
@@ -304,6 +326,7 @@ export const BlogPostEditor: React.FC<{
           ""
         )}
         <CenteringButtonBank>
+          <BlogPostPreviewButton onPress={compilePreview} />
           <Button onPress={() => submitBlogPost()}>Submit</Button>
           <Button onPress={() => deleteBlogPost()}>Delete</Button>
         </CenteringButtonBank>

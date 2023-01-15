@@ -26,6 +26,13 @@ export const BlogAdminPanel: React.FC = () => {
     }
   };
 
+  const newPostAdded = (newPost: BlogPostID) => {
+    console.log("Post Added");
+    setPostTitles((postTitles) => [newPost, ...postTitles]);
+  };
+
+  const titleChangeSaved = (uid: string, newTitle: string) => {};
+
   const getAndSetBlogPosts = async () => {
     const allBlogPosts = await GetBlogPostsByQuery(false, query);
     setPostTitles(
@@ -47,7 +54,7 @@ export const BlogAdminPanel: React.FC = () => {
         searchFieldChanged={setQuery}
         searchButtonClicked={getAndSetBlogPosts}
       />
-      <BlogPostEditor post={currentPost} />
+      <BlogPostEditor post={currentPost} changesMade={getAndSetBlogPosts} />
     </Row>
   );
 };
