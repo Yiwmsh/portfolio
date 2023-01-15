@@ -31,6 +31,7 @@ const PreviewContainer = styled.div`
   max-width: 100%;
   background: var(${SemanticColors.background});
   overflow: scroll;
+  text-align: left;
 `;
 
 export const BlogPostPreviewButton: React.FC<{
