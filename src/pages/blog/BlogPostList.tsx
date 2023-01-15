@@ -11,17 +11,10 @@ export const BlogPostList: React.FC<{ posts: BlogPostProps[] }> = ({
 }) => {
   return (
     <>
-      {posts
-        ? posts.map((post) => (
-            <>
-              <BlogSnippet post={post} />
-              <ThatsAllForNow>
-                It looks like that's it for the time being - check back later
-                for more!
-              </ThatsAllForNow>
-            </>
-          ))
-        : ""}
+      {posts ? posts.map((post) => <BlogSnippet post={post} />) : ""}
+      <ThatsAllForNow>
+        It looks like that's it for the time being - check back later for more!
+      </ThatsAllForNow>
     </>
   );
 };
