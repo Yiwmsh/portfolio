@@ -39,6 +39,9 @@ export const routs = [
         path: "post/:blogSlug",
         element: <Blog />,
       },
+      // {
+      //   path: "preview/:blogSlug"
+      // }
     ],
   },
 ];
