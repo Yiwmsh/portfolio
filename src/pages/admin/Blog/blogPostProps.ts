@@ -1,6 +1,12 @@
 import { Timestamp } from "firebase/firestore";
 
+export interface BlogPostID {
+    uid: string;
+    title: string;
+}
+
 export interface BlogPostProps {
+    uid: string;
     title: string;
     metaTitle?: string;
     slug?: string;

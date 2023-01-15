@@ -18,6 +18,7 @@ import {
   Row,
 } from "../../home/home sections/WelcomeModal";
 import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
+import { v4 as uuidv4 } from "uuid";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {
@@ -69,6 +70,7 @@ export const BlogPostEditor: React.FC<{
   post?: BlogPostProps;
 }> = ({ post }) => {
   const postData = { ...post };
+  const [uid, setUid] = React.useState(postData?.uid ?? uuidv4());
   const [title, setTitle] = React.useState(postData?.title ?? "");
   const [metaTitle, setMetaTitle] = React.useState(postData?.metaTitle ?? "");
   const [slug, setSlug] = React.useState(postData?.slug ?? "");
@@ -103,7 +105,8 @@ export const BlogPostEditor: React.FC<{
       if (publish && (publishedDate === undefined || publishedDate === null)) {
         pubDate = Timestamp.now();
       }
-      await setDoc(doc(db, "blog-posts", title), {
+      await setDoc(doc(db, "blog-posts", uid), {
+        uid: uid,
         title: title,
         createdDate: postData?.createdDate ?? Timestamp.now(),
         lastUpdated: Timestamp.now(),
@@ -125,7 +128,7 @@ export const BlogPostEditor: React.FC<{
   };
 
   const checkUploadSuccess = async () => {
-    const response = await getDoc(doc(db, "blog-posts", title));
+    const response = await getDoc(doc(db, "blog-posts", uid));
     try {
       const serverLastUpdatedPost = ((await response.data()) as BlogPostProps)
         .lastUpdated;
@@ -138,8 +141,8 @@ export const BlogPostEditor: React.FC<{
   };
 
   const deleteBlogPost = async () => {
-    if (title) {
-      await deleteDoc(doc(db, "blog-posts", title));
+    if (uid) {
+      await deleteDoc(doc(db, "blog-posts", uid));
     }
   };
 
@@ -154,6 +157,7 @@ export const BlogPostEditor: React.FC<{
   };
 
   React.useEffect(() => {
+    setUid(post?.uid ?? uuidv4());
     setTitle(post?.title ?? "");
     setMetaTitle(post?.metaTitle ?? "");
     setSlug(post?.slug ?? "slug");
