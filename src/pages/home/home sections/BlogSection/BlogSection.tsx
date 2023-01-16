@@ -25,6 +25,8 @@ export const StyledLink = styled.a`
   }
 `;
 
+const ScreenWidthBreakPoint = 1000;
+
 const BlogGrid = styled.div`
   display: grid;
   height: 60vh;
@@ -33,6 +35,10 @@ const BlogGrid = styled.div`
   grid-template-columns: 1fr 2fr;
   column-gap: 5px;
   row-gap: 5px;
+
+  @media screen and (max-width: ${ScreenWidthBreakPoint}px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const BlogDescription = styled.div`
@@ -55,6 +61,10 @@ const LatestPost = styled.div`
   background-color: var(${SemanticColors.foreground});
   border-radius: 0.375em;
   overflow: hidden;
+
+  @media screen and (max-width: ${ScreenWidthBreakPoint}px) {
+    display: none;
+  }
 `;
 
 const MorePosts = styled.div`
@@ -62,6 +72,31 @@ const MorePosts = styled.div`
   grid-row: 2;
   background-color: var(${SemanticColors.foreground});
   border-radius: 0.375em;
+
+  @media screen and (max-width: ${ScreenWidthBreakPoint}px) {
+    display: none;
+  }
+`;
+
+const SmallScreenPostList = styled.div`
+  grid-column: 1;
+  grid-row: 2;
+  background-color: var(${SemanticColors.foreground});
+  border-radius: 0.375em;
+
+  @media screen and (min-width: ${ScreenWidthBreakPoint}px) {
+    display: none;
+  }
+`;
+
+const BlogBlurbExtra = styled.p`
+  @media screen and (max-width: ${ScreenWidthBreakPoint}px) {
+    display: none;
+  }
+
+  @media screen and (max-height: 1000px) {
+    display: none;
+  }
 `;
 
 export const BlogSection: React.FC = () => {
@@ -106,11 +141,12 @@ export const BlogSection: React.FC = () => {
                 features and more breathing room for all my little words, can be
                 found <StyledLink href="/blog">here</StyledLink>.
               </p>
-              <p>
-                I like to write about the things I do, from music, to writing,
-                to coding. I also occasionally try my hand at philosophy. And,
-                of course, sometimes I just want to share my thoughts.
-              </p>
+              <BlogBlurbExtra>
+                I like to write about my interests; from music, to writing, to
+                coding, and more!. I even occasionally try my hand at
+                philosophy. And, of course, sometimes I just want to share my
+                thoughts.
+              </BlogBlurbExtra>
             </BlogDescriptionBody>
           </TextContent>
         </BlogDescription>
@@ -118,8 +154,11 @@ export const BlogSection: React.FC = () => {
           <BlogPostBigPreview post={recentPosts[0]} />
         </LatestPost>
         <MorePosts>
-          <BlogPostPreviewList posts={recentPosts} />
+          <BlogPostPreviewList posts={recentPosts.slice(1)} />
         </MorePosts>
+        <SmallScreenPostList>
+          <BlogPostPreviewList posts={recentPosts} />
+        </SmallScreenPostList>
       </BlogGrid>
       {/* <ScrollButton direction="down" target="" /> */}
     </CenteringSection>

@@ -1,23 +1,39 @@
 import React from "react";
 import { BlogPostProps } from "../../admin";
-import { CardBody, CardFooter, CardHeader } from "@chrisellis/react-carpentry";
+import { CardFooter, CardHeader } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
 import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
 import { Helmet } from "react-helmet";
+import { ScreenMaxWidth } from "../../../components/MediaQueries";
+import { DateData } from "./DateData";
+
+const ScreenWidthBreakpoints = {
+  dateData: 630,
+  content: 420,
+};
 
 const BlogPostStyle = styled.article`
   margin: 0 5vw;
+
+  ${ScreenMaxWidth(ScreenWidthBreakpoints.content, `margin: 10px;`)}
 `;
 
 const BlogPostCardHeader = styled(CardHeader)`
   margin: 30px 0;
 `;
 
-const Row = styled.div`
+const PostInformation = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  ${ScreenMaxWidth(
+    ScreenWidthBreakpoints.dateData,
+    `
+ flex-direction: column;
+ `
+  )}
 `;
 
 const Title = styled.h1`
@@ -30,22 +46,13 @@ const Authors = styled.p`
   font-size: 0.8em;
 `;
 
-const DateData = styled.ul`
-  font-size: 0.8em;
-  list-style: none;
-  display: inline-flex;
-
-  & > li {
-    margin: 5px;
-  }
-`;
-
-const PublishedDate = styled.li``;
-
-const UpdatedDate = styled.li``;
-
 const PostContent = styled.div`
-  margin: 0 20vw;
+  width: clamp(0px, calc(100% - 10px), 800px);
+  margin: auto;
+
+  @media screen and (max-width: ${ScreenWidthBreakpoints.content}px) {
+    margin: 0;
+  }
 `;
 
 const ReadingTime = styled.div``;
@@ -114,33 +121,29 @@ export const BlogPost: React.FC<{
         </Helmet>
       )}
       <BlogPostCardHeader>
-        <Row>
+        <PostInformation>
+          <DateData
+            publishedDate={post.publishedDate}
+            lastUpdated={post.lastUpdated}
+            smallScreen
+          />
           <div>
             <Title>{post.title}</Title>
             <Authors>{post.authors.join(", ")}</Authors>
           </div>
 
           <div>
-            <DateData>
-              <PublishedDate>
-                Published{" "}
-                {fancyDisplayTimestamp(post.publishedDate ?? Timestamp.now())}
-              </PublishedDate>
-              <li>&#183;</li>
-              <UpdatedDate>
-                Last Updated{" "}
-                {fancyDisplayTimestamp(post.lastUpdated ?? Timestamp.now())}
-              </UpdatedDate>
-            </DateData>
+            <DateData
+              publishedDate={post.publishedDate}
+              lastUpdated={post.lastUpdated}
+            />
             <ReadingTime>{calculateReadingTime(post.content)}</ReadingTime>
           </div>
-        </Row>
+        </PostInformation>
       </BlogPostCardHeader>
-      <CardBody>
-        <PostContent>
-          <RichTextDisplay content={post.content} />
-        </PostContent>
-      </CardBody>
+      <PostContent>
+        <RichTextDisplay content={post.content} />
+      </PostContent>
       <CardFooter></CardFooter>
     </BlogPostStyle>
   );
