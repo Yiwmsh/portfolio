@@ -4,6 +4,10 @@ import { motion } from "framer-motion";
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import { BlogSearch } from "./BlogSearch";
 
+const ScreenWidthBreakpoints = {
+  iconsFit: 370,
+};
+
 const NavbarContainer = styled.div`
   background-color: var(${SemanticColors.foreground});
   display: flex;
@@ -42,6 +46,11 @@ const NavbarLink = styled(motion.a)`
 const WhimsyLink = styled(NavbarLink)`
   font-size: 40px;
   margin-left: 5vw;
+
+  @media screen and (max-width: ${ScreenWidthBreakpoints.iconsFit}px) {
+    font-size: 30px;
+    margin: auto;
+  }
 `;
 
 const NavbarElement: React.FC<{ label: string; href: string }> = ({
