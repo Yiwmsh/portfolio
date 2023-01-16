@@ -4,6 +4,13 @@ import { Color, SemanticColors } from "@chrisellis/react-carpentry";
 import portrait from "../../../resources/portrait.jpg";
 
 const aboutBackgroundColor: Color = "#f4edfc";
+const TitleRowMinWidth = 353;
+
+const ScreenWidthBreakPoints = {
+  TitleRow: 1029,
+  Banner: 850,
+  BioBlurb: 405,
+};
 
 const HeaderContainer = styled.div`
   grid-row: 1;
@@ -13,18 +20,37 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  padding: 0 50px;
+  padding: 0 clamp(5px, calc(100vw - ${TitleRowMinWidth}), 50px);
 `;
 
 const BlogHomeTitleRow = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+
+  @media screen and (max-width: ${ScreenWidthBreakPoints.TitleRow}px) {
+    grid-template-columns: auto;
+  }
+
+  @media screen and (min-width: ${TitleRowMinWidth}px) {
+    min-width: ${TitleRowMinWidth}px;
+  }
+
+  @media screen and (max-width: ${TitleRowMinWidth}px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const HeaderPreTitle = styled.p`
   grid-column: 1;
   justify-self: end;
   align-self: end;
+
+  @media screen and (max-width: ${TitleRowMinWidth}px) {
+    align-self: center;
+  }
 `;
 
 const HeaderTitle = styled.h1`
@@ -45,15 +71,25 @@ const HeaderTitle = styled.h1`
   -webkit-text-fill-color: transparent;
 `;
 
-const BlogHomePreTags = styled.p`
+const BlogHomePreTag = styled.p`
   margin-top: 30px;
   text-align: center;
   display: flex;
   flex-direction: row;
   gap: 4px;
+
+  @media screen and (max-width: ${ScreenWidthBreakPoints.BioBlurb}px) {
+    margin: 0 auto;
+  }
 `;
 
-const BlogHomeBannerTextContainer = styled.div``;
+const BlogHomeBannerTextContainer = styled.div`
+  @media screen and (max-width: ${ScreenWidthBreakPoints.Banner}px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+`;
 
 const Tag = styled.div`
   color: var(${SemanticColors.secondary});
@@ -62,7 +98,34 @@ const Tag = styled.div`
 const BlogHomeBannerPortrait = styled.img`
   max-height: 30vh;
   margin: 10px 0;
-  border-radius: 20px;
+  border-radius: 10px;
+
+  @media screen and (max-width: 787px) {
+    max-width: calc(100vw - ${TitleRowMinWidth}px - 100px);
+  }
+
+  @media screen and (max-width: ${ScreenWidthBreakPoints.Banner}px) {
+    display: none;
+  }
+`;
+
+const SmallScreenBlogHomeBannerPortrait = styled.img`
+  border-radius: 10px;
+  max-height: 30vh;
+  max-width: 90vw;
+  margin: 0 auto;
+
+  @media screen and (min-width: ${ScreenWidthBreakPoints.Banner}px) {
+    display: none;
+  }
+`;
+
+const BioBlurb = styled.p`
+  @media screen and (max-width: ${ScreenWidthBreakPoints.BioBlurb}px) {
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+  }
 `;
 
 const defaultTags: string[] = [
@@ -88,11 +151,14 @@ export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
           <HeaderPreTitle>Hi there, my name is </HeaderPreTitle>
           <HeaderTitle>Whimsy</HeaderTitle>
         </BlogHomeTitleRow>
-        <p>I am a queer, non-binary author, musician, and programmer.</p>
-        <BlogHomePreTags>
+        <SmallScreenBlogHomeBannerPortrait src={portrait} />
+        <BioBlurb>
+          I am a queer, non-binary author, musician, and programmer.
+        </BioBlurb>
+        <BlogHomePreTag>
           This is where I talk about
           <Tag>{allTags[getRandomArrayIndex(allTags)]}</Tag>
-        </BlogHomePreTags>
+        </BlogHomePreTag>
       </BlogHomeBannerTextContainer>
       <BlogHomeBannerPortrait src={portrait} />
     </HeaderContainer>
