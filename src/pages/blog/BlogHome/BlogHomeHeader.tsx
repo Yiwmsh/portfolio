@@ -31,7 +31,7 @@ const BlogHomeTitleRow = styled.div`
     grid-template-columns: auto;
   }
 
-  @media screen and (min-width: ${TitleRowMinWidth}px) {
+  @media screen and (min-width: ${TitleRowMinWidth - 1}px) {
     min-width: ${TitleRowMinWidth}px;
   }
 
@@ -115,7 +115,7 @@ const SmallScreenBlogHomeBannerPortrait = styled.img`
   max-width: 90vw;
   margin: 0 auto;
 
-  @media screen and (min-width: ${ScreenWidthBreakPoints.Banner}px) {
+  @media screen and (min-width: ${ScreenWidthBreakPoints.Banner - 1}px) {
     display: none;
   }
 `;
