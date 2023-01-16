@@ -18,6 +18,11 @@ const PortraitOfMe = styled.img`
   border-radius: 10px;
   box-shadow: 5px 5px 2px var(${SemanticColors.shadow});
   aspect-ratio: 1.332 / 1;
+
+  @media screen and (max-width: 1136px) {
+    max-height: 70%;
+  }
+
   @media screen and (max-width: 850px) {
     max-height: 40%;
   }
