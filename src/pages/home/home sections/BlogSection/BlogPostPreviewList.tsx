@@ -22,7 +22,7 @@ export const BlogPostPreviewList: React.FC<{ posts: BlogPostProps[] }> = ({
 }) => {
   return (
     <BlogPostPreviewListGrid>
-      {posts.slice(1).map((post) => (
+      {posts.map((post) => (
         <BlogPostPreview post={post} />
       ))}
       {posts.length < 5 ? (
