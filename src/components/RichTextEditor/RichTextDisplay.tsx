@@ -22,6 +22,9 @@ enum RichTextDecoration {
   shadowedSection = "<shadow>",
   paddedSection = "<pad>",
   card = "<card>",
+  strikethrough = "<s>",
+  subscript = "<sub>",
+  superscript = "<sup>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -59,6 +62,9 @@ const RichTextH3 = styled.h3`
   margin: 0;
 `;
 const RichTextP = styled.p``;
+const RichTextStrikeThrough = styled.del``;
+const RichTextSubscript = styled.sub``;
+const RichTextSuperscript = styled.sup``;
 const RichTextImg = styled.img``;
 const RichTextVid = styled.iframe``;
 const RichTextCode = styled.div`
@@ -163,6 +169,12 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.subscript:
+      return <RichTextSubscript>{innerContent}</RichTextSubscript>;
+    case RichTextDecoration.superscript:
+      return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
+    case RichTextDecoration.strikethrough:
+      return <RichTextStrikeThrough>{innerContent}</RichTextStrikeThrough>;
     case RichTextDecoration.shadowedSection:
       return <RichTextShadowedSection>{innerContent}</RichTextShadowedSection>;
     case RichTextDecoration.paddedSection:
