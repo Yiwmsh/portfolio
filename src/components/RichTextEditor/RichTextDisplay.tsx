@@ -62,7 +62,7 @@ const RichTextH3 = styled.h3`
   margin: 0;
 `;
 const RichTextP = styled.p``;
-const RichTextStrikeThrough = styled.del``;
+const RichTextStrikeThrough = styled.s``;
 const RichTextSubscript = styled.sub``;
 const RichTextSuperscript = styled.sup``;
 const RichTextImg = styled.img``;
