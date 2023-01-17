@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
 import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { CenteringSection } from "../../../components/CenteringSection";
@@ -144,7 +144,10 @@ export const SplashSection: React.FC = () => {
               delay: session ? 5 : 10,
             }}
           >
-            <ScrollButton direction="down" target={"Bio"} />
+            <ScrollButton
+              direction="down"
+              target={"Bio"}
+            />
           </motion.div>
         </CenteringSection>
       )}

@@ -1,14 +1,14 @@
-import { getDoc, doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import React from "react";
-import { db } from "../../../firebase";
-import { BlogPostList } from "./BlogPostList";
-import { BlogPostEditor } from "./BlogPostEditor";
-import { Row } from "../../home/home sections/WelcomeModal";
-import { BlogPostID, BlogPostProps } from "./blogPostProps";
 import {
   GetBlogPostsByQuery,
   SortBlogPosts,
 } from "../../../components/BlogPostTools";
+import { db } from "../../../firebase";
+import { Row } from "../../home/home sections/WelcomeModal";
+import { BlogPostEditor } from "./BlogPostEditor";
+import { BlogPostList } from "./BlogPostList";
+import { BlogPostID, BlogPostProps } from "./blogPostProps";
 
 export const BlogAdminPanel: React.FC = () => {
   const [query, setQuery] = React.useState("");
@@ -54,7 +54,10 @@ export const BlogAdminPanel: React.FC = () => {
         searchFieldChanged={setQuery}
         searchButtonClicked={getAndSetBlogPosts}
       />
-      <BlogPostEditor post={currentPost} changesMade={getAndSetBlogPosts} />
+      <BlogPostEditor
+        post={currentPost}
+        changesMade={getAndSetBlogPosts}
+      />
     </Row>
   );
 };

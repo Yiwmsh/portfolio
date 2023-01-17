@@ -1,14 +1,14 @@
-import { BlogPostProps } from "../pages/admin";
 import {
-  collection,
-  where,
-  getDocs,
-  query,
-  QuerySnapshot,
   DocumentData,
+  QuerySnapshot,
+  collection,
+  getDocs,
   orderBy,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { BlogPostProps } from "../pages/admin";
 
 const blogPosts = collection(db, "blog-posts");
 export const wherePublished = where("publish", "==", true);

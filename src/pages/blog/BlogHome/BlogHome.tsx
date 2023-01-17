@@ -1,8 +1,8 @@
 import React from "react";
-import { BlogHomeHeader } from "./BlogHomeHeader";
-import { BlogHomePosts } from "./BlogHomePostList";
 import { GetRecentPublishedBlogPosts } from "../../../components";
 import { BlogPostProps } from "../../admin";
+import { BlogHomeHeader } from "./BlogHomeHeader";
+import { BlogHomePosts } from "./BlogHomePostList";
 
 export const BlogHome: React.FC = () => {
   const [allPosts, setAllPosts] = React.useState<BlogPostProps[]>([]);

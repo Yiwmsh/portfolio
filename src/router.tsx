@@ -1,9 +1,8 @@
-import { Home, SignInManager } from "./pages";
-import { Blog } from "./pages/blog/Blog";
 import { ThemeContext } from "@chrisellis/react-carpentry";
 import { LightTheme, TransparentTheme } from "./consts";
+import { Home, SignInManager } from "./pages";
+import { Blog } from "./pages/blog/Blog";
 import { Site } from "./pages/site";
-import { BlogPosts } from "./pages/blog/BlogPosts/BlogPosts";
 
 export const routs = [
   {

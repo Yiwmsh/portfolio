@@ -6,12 +6,12 @@ import {
   SemanticColors,
   TextContent,
 } from "@chrisellis/react-carpentry";
-import React from "react";
 import styled from "@emotion/styled";
 import moment from "moment";
-import portrait from "../../../resources/portrait.jpg";
+import React from "react";
 import { CenteringSection } from "../../../components/CenteringSection";
 import { ScrollButton } from "../../../components/ScrollButton";
+import portrait from "../../../resources/portrait.jpg";
 import { NameContext } from "../../site";
 
 const PortraitOfMe = styled.img`
@@ -74,7 +74,10 @@ export const BioSection: React.FC = () => {
 
   return (
     <CenteringSection id="Bio">
-      <ScrollButton target="Splash" direction="up" />
+      <ScrollButton
+        target="Splash"
+        direction="up"
+      />
       <BioCard>
         <CardHeader>
           <NameContext.Consumer>
@@ -86,7 +89,10 @@ export const BioSection: React.FC = () => {
           </NameContext.Consumer>
         </CardHeader>
         <BioCardBody>
-          <PortraitOfMe src={portrait} alt="Whimsy, staring off to the side." />
+          <PortraitOfMe
+            src={portrait}
+            alt="Whimsy, staring off to the side."
+          />
           <Bio>
             <p>I am a queer, non-binary author, musician, and programmer.</p>
             <p>
@@ -154,7 +160,10 @@ export const BioSection: React.FC = () => {
           />
         </Socials>
       </BioCard>
-      <ScrollButton direction="down" target="Music" />
+      <ScrollButton
+        direction="down"
+        target="Music"
+      />
     </CenteringSection>
   );
 };

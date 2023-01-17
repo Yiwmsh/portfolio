@@ -4,22 +4,22 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  SemanticColors,
   TextContent,
   TextField,
-  SemanticColors,
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
-import { BlogPostID, BlogPostProps } from "./blogPostProps";
-import { setDoc, getDoc, doc, Timestamp, deleteDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../firebase";
+import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
 import {
   CenteringButtonBank,
   Row,
 } from "../../home/home sections/WelcomeModal";
-import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
-import { v4 as uuidv4 } from "uuid";
 import { BlogPostPreviewButton } from "./BlogPostPreviewButton";
+import { BlogPostProps } from "./blogPostProps";
 
 const BlogPostEditorCard = styled(Card)`
   @media screen and (min-width: 500px) {

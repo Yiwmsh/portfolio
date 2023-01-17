@@ -1,9 +1,9 @@
-import React from "react";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import React from "react";
+import { removeTags } from "../../components";
 import { BlogPostProps } from "../admin";
 import { calculateReadingTime, displayTimestampAsDate } from "./BlogPost";
-import { SemanticColors } from "@chrisellis/react-carpentry";
-import { removeTags } from "../../components";
 
 const SnippetContainer = styled.button`
   display: flex;

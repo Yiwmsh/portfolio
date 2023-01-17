@@ -1,6 +1,6 @@
+import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
-import styled from "@emotion/styled";
 
 const StarStyle = styled(motion.path)`
   z-index: -2;

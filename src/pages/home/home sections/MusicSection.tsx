@@ -1,10 +1,10 @@
 import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
-import React from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import musicPic from "../../../resources/musicPic.webp";
+import React from "react";
 import { CenteringSection } from "../../../components/CenteringSection";
 import { ScrollButton } from "../../../components/ScrollButton";
+import musicPic from "../../../resources/musicPic.webp";
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
   "https://www.googleapis.com/youtube/v3/playlistItems";
@@ -209,7 +209,10 @@ export const MusicSection: React.FC = () => {
 
   return (
     <CenteringSection id="Music">
-      <ScrollButton direction="up" target="Bio" />
+      <ScrollButton
+        direction="up"
+        target="Bio"
+      />
       <MusicSectionGrid>
         <MusicBioContainer
           layout
@@ -234,7 +237,10 @@ export const MusicSection: React.FC = () => {
             src={musicPic}
             focussed={bioFocussed}
           />
-          <MusicBio focussed={bioFocussed} layout>
+          <MusicBio
+            focussed={bioFocussed}
+            layout
+          >
             <TextContent>
               <p>
                 I've been playing music for a really long time. I started with
@@ -312,7 +318,10 @@ export const MusicSection: React.FC = () => {
           )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
-      <ScrollButton direction="down" target="Blog" />
+      <ScrollButton
+        direction="down"
+        target="Blog"
+      />
     </CenteringSection>
   );
 };

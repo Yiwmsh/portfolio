@@ -1,8 +1,8 @@
-import React from "react";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+import React from "react";
 import searchIcon from "../../resources/search-icon-png-9969.png";
-import { SemanticColors } from "@chrisellis/react-carpentry";
 
 export interface BlogSearchProps {
   onSearch: (value: string) => void;
@@ -68,7 +68,10 @@ export const BlogSearch: React.FC<BlogSearchProps> = ({ onSearch }) => {
       variants={containerAnimations}
     >
       <BlogSearchButton>
-        <BlogSearchButtonImage src={searchIcon} alt="Search" />
+        <BlogSearchButtonImage
+          src={searchIcon}
+          alt="Search"
+        />
       </BlogSearchButton>
       <BlogSearchInput variants={inputAnimations} />
     </BlogSearchContainer>

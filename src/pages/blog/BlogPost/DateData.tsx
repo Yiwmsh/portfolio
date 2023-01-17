@@ -1,11 +1,8 @@
-import React from "react";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
+import React from "react";
+import { ScreenMaxWidth } from "../../../components/MediaQueries";
 import { fancyDisplayTimestamp } from "./BlogPost";
-import {
-  ScreenMaxWidth,
-  ScreenMinWidth,
-} from "../../../components/MediaQueries";
 
 const ScreenWidthBreakpoints = {
   dateData: 630,

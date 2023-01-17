@@ -31,11 +31,17 @@ export const BlogPostList: React.FC<{
   searchButtonClicked: () => void;
 }> = ({ postIDs, setCurrentPost, searchButtonClicked, searchFieldChanged }) => {
   return (
-    <Card width="10vw" height="80vh">
+    <Card
+      width="10vw"
+      height="80vh"
+    >
       <TextContent>
         <h3>Blog Posts</h3>
       </TextContent>
-      <TextField label="Search" onChange={searchFieldChanged} />
+      <TextField
+        label="Search"
+        onChange={searchFieldChanged}
+      />
       <SearchButton onPress={searchButtonClicked}>Search</SearchButton>
       <PostList>
         <Post

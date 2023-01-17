@@ -1,7 +1,4 @@
 import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
-import { CenteringSection } from "../../../../components/CenteringSection";
-import { ScrollButton } from "../../../../components/ScrollButton";
-import React from "react";
 import styled from "@emotion/styled";
 import {
   collection,
@@ -11,11 +8,14 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import React from "react";
+import { wherePublished } from "../../../../components";
+import { CenteringSection } from "../../../../components/CenteringSection";
+import { ScrollButton } from "../../../../components/ScrollButton";
 import { db } from "../../../../firebase";
 import { BlogPostProps } from "../../../admin";
-import { BlogPostPreviewList } from "./BlogPostPreviewList";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
-import { wherePublished } from "../../../../components";
+import { BlogPostPreviewList } from "./BlogPostPreviewList";
 
 export const StyledLink = styled.a`
   &:link,
@@ -128,7 +128,10 @@ export const BlogSection: React.FC = () => {
   }, []);
   return (
     <CenteringSection id="Blog">
-      <ScrollButton direction="up" target="Music" />
+      <ScrollButton
+        direction="up"
+        target="Music"
+      />
       <BlogGrid>
         <BlogDescription>
           <TextContent>

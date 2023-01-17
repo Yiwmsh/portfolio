@@ -1,6 +1,6 @@
-import React from "react";
-import { TextFieldProps } from "@react-types/textfield";
 import styled from "@emotion/styled";
+import { TextFieldProps } from "@react-types/textfield";
+import React from "react";
 
 const RichTextInput = styled.textarea`
   min-height: 20vh;

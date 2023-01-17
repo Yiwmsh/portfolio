@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
 import { Button, Navbar } from "@chrisellis/react-carpentry";
-import React from "react";
+import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { WelcomeModal } from "./home/home sections/WelcomeModal";
+import React from "react";
 import { Nav } from "../components/Nav";
+import { WelcomeModal } from "./home/home sections/WelcomeModal";
 
 export const NameContext = React.createContext({
   name: localStorage.getItem("name") ?? "Friend",

@@ -1,14 +1,14 @@
+import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 import React from "react";
+import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
+import { Row } from "../../../../components/Row";
 import { BlogPostProps } from "../../../admin";
 import {
   calculateReadingTime,
   fancyDisplayTimestamp,
 } from "../../../blog/BlogPost/BlogPost";
-import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
-import { motion } from "framer-motion";
-import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
-import { Row } from "../../../../components/Row";
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;

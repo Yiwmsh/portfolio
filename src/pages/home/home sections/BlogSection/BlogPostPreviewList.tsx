@@ -1,8 +1,8 @@
+import { TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "../../../admin";
 import { BlogPostPreview } from "./BlogPostPreview";
-import { TextContent } from "@chrisellis/react-carpentry";
 import { StyledLink } from "./BlogSection";
 
 const BlogPostPreviewListGrid = styled.div`
