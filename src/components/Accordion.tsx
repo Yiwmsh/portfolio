@@ -1,15 +1,18 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
+import { defaultBoxShadow } from "../consts";
 
 export interface AccordionProps {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
 }
 
-const AccordionContainer = styled(motion.div)``;
+const AccordionContainer = styled(motion.div)`
+  box-shadow: ${defaultBoxShadow};
+`;
 
-const AccordionButton = styled.button``;
+const AccordionHeader = styled.div``;
 
 const AccordionContentDisplay = styled(motion.div)``;
 
@@ -32,14 +35,14 @@ export const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
     <AccordionContainer layout>
-      <AccordionButton
+      <AccordionHeader
         onClick={() => {
           setIsOpen(!isOpen);
           console.log(isOpen);
         }}
       >
         {title}
-      </AccordionButton>
+      </AccordionHeader>
       <AccordionContent
         children={children}
         isOpen={isOpen}
