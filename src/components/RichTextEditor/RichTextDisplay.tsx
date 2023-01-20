@@ -1,6 +1,25 @@
+import { TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
-import styled from "@emotion/styled";
-import { TextContent, SemanticColors } from "@chrisellis/react-carpentry";
+import {
+  RichTextBold,
+  RichTextBorderedSection,
+  RichTextCard,
+  RichTextCentered,
+  RichTextCode,
+  RichTextH1,
+  RichTextH2,
+  RichTextH3,
+  RichTextImg,
+  RichTextItalic,
+  RichTextLink,
+  RichTextP,
+  RichTextPaddedSection,
+  RichTextShadowedSection,
+  RichTextStrikeThrough,
+  RichTextSubscript,
+  RichTextSuperscript,
+  RichTextVid,
+} from "./richTextStyledComponents";
 
 enum RichTextDecoration {
   content = "<>",
@@ -25,6 +44,7 @@ enum RichTextDecoration {
   strikethrough = "<s>",
   subscript = "<sub>",
   superscript = "<sup>",
+  collapse = "<collapse>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -44,53 +64,8 @@ const shortestTagLength = () => {
   return sortedDecorations[0].length;
 };
 
-const defaultPadding = 10;
-const defaultBoxShadow = `0.125em 0.25em 1.25em var(${SemanticColors.shadow});`;
-
 const maxLookaheadLength = longestTagLength() + 1;
 const minLookaheadLength = shortestTagLength() + 1;
-
-const RichTextBold = styled.b``;
-const RichTextItalic = styled.i``;
-const RichTextH1 = styled.h1`
-  margin: 0;
-`;
-const RichTextH2 = styled.h2`
-  margin: 0;
-`;
-const RichTextH3 = styled.h3`
-  margin: 0;
-`;
-const RichTextP = styled.p``;
-const RichTextStrikeThrough = styled.s``;
-const RichTextSubscript = styled.sub``;
-const RichTextSuperscript = styled.sup``;
-const RichTextImg = styled.img``;
-const RichTextVid = styled.iframe``;
-const RichTextCode = styled.div`
-  background-color: #708090;
-  color: white;
-`;
-const RichTextLink = styled.a``;
-const RichTextBorderedSection = styled.div`
-  border: 1px solid black;
-`;
-const RichTextCentered = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-const RichTextPaddedSection = styled.div<{ padding?: number }>`
-  padding: ${({ padding }) => padding ?? defaultPadding}px;
-`;
-const RichTextShadowedSection = styled.div`
-  box-shadow: ${defaultBoxShadow};
-`;
-
-const RichTextCard = styled.div`
-  box-shadow: ${defaultBoxShadow};
-  padding: ${defaultPadding}px;
-  border-radius: 10px;
-`;
 
 interface Tag {
   tag: string;
