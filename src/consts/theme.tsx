@@ -1,4 +1,6 @@
-import { Theme } from "@chrisellis/react-carpentry";
+import { SemanticColors, Theme } from "@chrisellis/react-carpentry";
+
+export const defaultBoxShadow = `0.125em 0.25em 1.25em var(${SemanticColors.shadow});`;
 
 export const TransparentTheme = new Theme({
   background: "#FFFFFF",

@@ -1,8 +1,7 @@
-import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { defaultBoxShadow } from "../../consts";
 
 const defaultPadding = 10;
-const defaultBoxShadow = `0.125em 0.25em 1.25em var(${SemanticColors.shadow});`;
 
 export const RichTextBold = styled.b``;
 export const RichTextItalic = styled.i``;

@@ -1,5 +1,6 @@
 import { TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
+import { Accordion } from "../Accordion";
 import {
   RichTextBold,
   RichTextBorderedSection,
@@ -122,11 +123,15 @@ const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
   return false;
 };
 
-const parseLink = (innerContent: string): { link: string; text: string } => {
-  const urlRegex = /(?:{(.*)})/gm;
-  const link = innerContent.match(urlRegex)?.[0].replaceAll(/[{}]/gm, "");
-  const text = innerContent.replace(urlRegex, "").replaceAll(/[{}]/gm, "");
-  return { link: link ?? "", text: text };
+const parseVariableTag = (
+  innerContent: string
+): { variable: string; text: string } => {
+  const variableRegex = /(?:{([^}]*)})/gm;
+  const variable = innerContent
+    .match(variableRegex)?.[0]
+    .replaceAll(/[{}]/gm, "");
+  const text = innerContent.replace(variableRegex, "").replaceAll(/[{}]/gm, "");
+  return { variable: variable ?? "", text: text };
 };
 
 const taggedContentToReactNode = (
@@ -146,6 +151,13 @@ const taggedContentToReactNode = (
   switch (tag) {
     case RichTextDecoration.subscript:
       return <RichTextSubscript>{innerContent}</RichTextSubscript>;
+    case RichTextDecoration.collapse:
+      const collapseValues = parseVariableTag(content);
+      return (
+        <Accordion title={recursiveParser(collapseValues.variable)}>
+          {recursiveParser(collapseValues.text)}
+        </Accordion>
+      );
     case RichTextDecoration.superscript:
       return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
     case RichTextDecoration.strikethrough:
@@ -161,9 +173,11 @@ const taggedContentToReactNode = (
     case RichTextDecoration.borderedSection:
       return <RichTextBorderedSection>{innerContent}</RichTextBorderedSection>;
     case RichTextDecoration.link:
-      const linkValues = parseLink(content);
+      const linkValues = parseVariableTag(content);
       return (
-        <RichTextLink href={linkValues.link}>{linkValues.text}</RichTextLink>
+        <RichTextLink href={linkValues.variable}>
+          {linkValues.text}
+        </RichTextLink>
       );
     case RichTextDecoration.bold:
       return <RichTextBold>{innerContent}</RichTextBold>;
