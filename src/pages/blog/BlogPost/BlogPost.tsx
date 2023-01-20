@@ -137,7 +137,7 @@ export const BlogPost: React.FC<{
               publishedDate={post.publishedDate}
               lastUpdated={post.lastUpdated}
             />
-            <ReadingTime>{calculateReadingTime(post.content)}</ReadingTime>
+            <ReadingTime>{post.readingTime}</ReadingTime>
           </div>
         </PostInformation>
       </BlogPostCardHeader>

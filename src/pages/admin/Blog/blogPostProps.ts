@@ -21,4 +21,5 @@ export interface BlogPostProps {
   series?: string[];
   tags?: string[];
   featuredPriority: number;
+  readingTime: string;
 }

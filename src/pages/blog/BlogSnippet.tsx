@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import { removeTags } from "../../components";
 import { BlogPostProps } from "../admin";
-import { calculateReadingTime, displayTimestampAsDate } from "./BlogPost";
+import { displayTimestampAsDate } from "./BlogPost";
 
 const SnippetContainer = styled.button`
   display: flex;
@@ -44,7 +44,7 @@ const BlogPostSummary = styled.p`
 `;
 
 export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
-  const readTime = calculateReadingTime(post.content);
+  const readTime = post.readingTime;
   return (
     <SnippetContainer
       onClick={() => {

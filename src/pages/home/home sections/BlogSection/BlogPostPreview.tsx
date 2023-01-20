@@ -5,10 +5,7 @@ import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { Row } from "../../../../components/Row";
 import { BlogPostProps } from "../../../admin";
-import {
-  calculateReadingTime,
-  fancyDisplayTimestamp,
-} from "../../../blog/BlogPost/BlogPost";
+import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;
@@ -45,7 +42,7 @@ const BlogPostPreviewPublishedDate = styled.div``;
 export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
   post,
 }) => {
-  const readingTime = calculateReadingTime(post.content);
+  const readingTime = post.readingTime;
   return (
     <BlogPostPreviewContainer
       onClick={() => {
