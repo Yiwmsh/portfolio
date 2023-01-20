@@ -348,6 +348,13 @@ export const BlogPostEditor: React.FC<{
   );
 };
 
+const DeleteDialog = styled.dialog`
+  background-color: var(${SemanticColors.foreground});
+  position: fixed;
+  top: 0;
+  left: 0;
+`;
+
 const DeletePostDialog: React.FC<{
   isOpen: boolean;
   closeDialog: () => void;
@@ -355,7 +362,7 @@ const DeletePostDialog: React.FC<{
   deletePost: (uid: string) => void;
 }> = ({ isOpen, closeDialog, postID, deletePost }) => {
   return (
-    <dialog open={isOpen}>
+    <DeleteDialog open={isOpen}>
       <p>Are you sure you want to delete this post?</p>
       <button onClick={() => closeDialog()}>Woops, Don't Delete It</button>
       <button
@@ -366,7 +373,7 @@ const DeletePostDialog: React.FC<{
       >
         Delete It
       </button>
-    </dialog>
+    </DeleteDialog>
   );
 };
 
