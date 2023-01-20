@@ -14,7 +14,9 @@ const AccordionContainer = styled(motion.div)`
   overflow: hidden;
 `;
 
-const AccordionHeader = styled(motion.div)``;
+const AccordionHeader = styled(motion.div)`
+  cursor: pointer;
+`;
 
 const AccordionContentDisplay = styled(motion.section)``;
 
