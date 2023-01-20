@@ -75,6 +75,7 @@ export const BlogPostEditor: React.FC<{
   post?: BlogPostProps;
   changesMade: () => void;
 }> = ({ post, changesMade }) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const postData = { ...post };
   const [uid, setUid] = React.useState(postData?.uid ?? uuidv4());
   const [title, setTitle] = React.useState(postData?.title ?? "");
@@ -166,7 +167,7 @@ export const BlogPostEditor: React.FC<{
     return false;
   };
 
-  const deleteBlogPost = async () => {
+  const deleteBlogPost = async (uid: string) => {
     if (uid) {
       await deleteDoc(doc(db, "blog-posts", uid));
       changesMade();
@@ -202,6 +203,12 @@ export const BlogPostEditor: React.FC<{
 
   return (
     <BlogPostEditorCard>
+      <DeletePostDialog
+        isOpen={deleteDialogOpen}
+        closeDialog={() => setDeleteDialogOpen(false)}
+        postID={uid}
+        deletePost={deleteBlogPost}
+      />
       <TitleCardHeader>
         <TitleField>
           <TextField
@@ -334,10 +341,39 @@ export const BlogPostEditor: React.FC<{
         <CenteringButtonBank>
           <BlogPostPreviewButton onPress={compilePreview} />
           <Button onPress={() => submitBlogPost()}>Submit</Button>
-          <Button onPress={() => deleteBlogPost()}>Delete</Button>
+          <Button onPress={() => setDeleteDialogOpen(true)}>Delete</Button>
         </CenteringButtonBank>
       </CardFooter>
     </BlogPostEditorCard>
+  );
+};
+
+const DeleteDialog = styled.dialog`
+  background-color: var(${SemanticColors.foreground});
+  position: fixed;
+  top: 0;
+  left: 0;
+`;
+
+const DeletePostDialog: React.FC<{
+  isOpen: boolean;
+  closeDialog: () => void;
+  postID: string;
+  deletePost: (uid: string) => void;
+}> = ({ isOpen, closeDialog, postID, deletePost }) => {
+  return (
+    <DeleteDialog open={isOpen}>
+      <p>Are you sure you want to delete this post?</p>
+      <button onClick={() => closeDialog()}>Woops, Don't Delete It</button>
+      <button
+        onClick={() => {
+          deletePost(postID);
+          closeDialog();
+        }}
+      >
+        Delete It
+      </button>
+    </DeleteDialog>
   );
 };
 
