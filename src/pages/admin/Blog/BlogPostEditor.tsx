@@ -12,8 +12,12 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { removeTags } from "../../../components";
 import { db } from "../../../firebase";
-import { fancyDisplayTimestamp } from "../../blog/BlogPost/BlogPost";
+import {
+  calculateReadingTime,
+  fancyDisplayTimestamp,
+} from "../../blog/BlogPost/BlogPost";
 import {
   CenteringButtonBank,
   Row,
@@ -123,6 +127,7 @@ export const BlogPostEditor: React.FC<{
         related: related,
         tags: tags,
         featuredPriority: featuredPriority,
+        readingTime: calculateReadingTime(removeTags(content)),
       });
       const uploadedSuccessfully = await checkUploadSuccess();
       if (uploadedSuccessfully) {
@@ -142,6 +147,7 @@ export const BlogPostEditor: React.FC<{
       summary: summary,
       publish: false,
       featuredPriority: 0,
+      readingTime: "placeholder",
     };
   };
 

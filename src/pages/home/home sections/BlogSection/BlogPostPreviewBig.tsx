@@ -3,10 +3,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin";
-import {
-  calculateReadingTime,
-  fancyDisplayTimestamp,
-} from "../../../blog/BlogPost/BlogPost";
+import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
 import { BottomBlur } from "./BlogPostPreview";
 
 const BigPreviewContainer = styled.button`
@@ -62,7 +59,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
                 By{post.authors.length > 1 ? ":" : ""} {post.authors.join(", ")}
               </div>
               {"·"}
-              <div>{calculateReadingTime(post.content)}</div>
+              <div>{post.readingTime}</div>
               {post.publishedDate !== null &&
               post.publishedDate !== undefined ? (
                 <>
