@@ -91,8 +91,14 @@ export const Nav: React.FC = () => {
         <>
           <defs>
             <radialGradient id="sun">
-              <stop offset="0%" stop-color="rgba(208, 124, 80, 1)" />
-              <stop offset="100%" stop-color="#f4f812" />
+              <stop
+                offset="0%"
+                stop-color="rgba(208, 124, 80, 1)"
+              />
+              <stop
+                offset="100%"
+                stop-color="#f4f812"
+              />
             </radialGradient>
           </defs>
           <Sun
@@ -183,7 +189,12 @@ const Stars: React.FC<{ session: boolean }> = ({ session }) => {
   return (
     <>
       {stars.map((star: StarData) => {
-        return <Star {...star} session={session} />;
+        return (
+          <Star
+            {...star}
+            session={session}
+          />
+        );
       })}
     </>
   );

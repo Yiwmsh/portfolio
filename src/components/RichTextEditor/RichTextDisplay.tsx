@@ -1,6 +1,26 @@
+import { TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
-import styled from "@emotion/styled";
-import { TextContent, SemanticColors } from "@chrisellis/react-carpentry";
+import { Accordion } from "../Accordion";
+import {
+  RichTextBold,
+  RichTextBorderedSection,
+  RichTextCard,
+  RichTextCentered,
+  RichTextCode,
+  RichTextH1,
+  RichTextH2,
+  RichTextH3,
+  RichTextImg,
+  RichTextItalic,
+  RichTextLink,
+  RichTextP,
+  RichTextPaddedSection,
+  RichTextShadowedSection,
+  RichTextStrikeThrough,
+  RichTextSubscript,
+  RichTextSuperscript,
+  RichTextVid,
+} from "./richTextStyledComponents";
 
 enum RichTextDecoration {
   content = "<>",
@@ -25,6 +45,7 @@ enum RichTextDecoration {
   strikethrough = "<s>",
   subscript = "<sub>",
   superscript = "<sup>",
+  collapse = "<collapse>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -44,53 +65,8 @@ const shortestTagLength = () => {
   return sortedDecorations[0].length;
 };
 
-const defaultPadding = 10;
-const defaultBoxShadow = `0.125em 0.25em 1.25em var(${SemanticColors.shadow});`;
-
 const maxLookaheadLength = longestTagLength() + 1;
 const minLookaheadLength = shortestTagLength() + 1;
-
-const RichTextBold = styled.b``;
-const RichTextItalic = styled.i``;
-const RichTextH1 = styled.h1`
-  margin: 0;
-`;
-const RichTextH2 = styled.h2`
-  margin: 0;
-`;
-const RichTextH3 = styled.h3`
-  margin: 0;
-`;
-const RichTextP = styled.p``;
-const RichTextStrikeThrough = styled.s``;
-const RichTextSubscript = styled.sub``;
-const RichTextSuperscript = styled.sup``;
-const RichTextImg = styled.img``;
-const RichTextVid = styled.iframe``;
-const RichTextCode = styled.div`
-  background-color: #708090;
-  color: white;
-`;
-const RichTextLink = styled.a``;
-const RichTextBorderedSection = styled.div`
-  border: 1px solid black;
-`;
-const RichTextCentered = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-const RichTextPaddedSection = styled.div<{ padding?: number }>`
-  padding: ${({ padding }) => padding ?? defaultPadding}px;
-`;
-const RichTextShadowedSection = styled.div`
-  box-shadow: ${defaultBoxShadow};
-`;
-
-const RichTextCard = styled.div`
-  box-shadow: ${defaultBoxShadow};
-  padding: ${defaultPadding}px;
-  border-radius: 10px;
-`;
 
 interface Tag {
   tag: string;
@@ -147,11 +123,15 @@ const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
   return false;
 };
 
-const parseLink = (innerContent: string): { link: string; text: string } => {
-  const urlRegex = /(?:{(.*)})/gm;
-  const link = innerContent.match(urlRegex)?.[0].replaceAll(/[{}]/gm, "");
-  const text = innerContent.replace(urlRegex, "").replaceAll(/[{}]/gm, "");
-  return { link: link ?? "", text: text };
+const parseVariableTag = (
+  innerContent: string
+): { variable: string; text: string } => {
+  const variableRegex = /(?:{([^}]*)})/gm;
+  const variable = innerContent
+    .match(variableRegex)?.[0]
+    .replaceAll(/[{}]/gm, "");
+  const text = innerContent.replace(variableRegex, "").replaceAll(/[{}]/gm, "");
+  return { variable: variable ?? "", text: text };
 };
 
 const taggedContentToReactNode = (
@@ -171,6 +151,13 @@ const taggedContentToReactNode = (
   switch (tag) {
     case RichTextDecoration.subscript:
       return <RichTextSubscript>{innerContent}</RichTextSubscript>;
+    case RichTextDecoration.collapse:
+      const collapseValues = parseVariableTag(content);
+      return (
+        <Accordion title={recursiveParser(collapseValues.variable)}>
+          {recursiveParser(collapseValues.text)}
+        </Accordion>
+      );
     case RichTextDecoration.superscript:
       return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
     case RichTextDecoration.strikethrough:
@@ -186,9 +173,11 @@ const taggedContentToReactNode = (
     case RichTextDecoration.borderedSection:
       return <RichTextBorderedSection>{innerContent}</RichTextBorderedSection>;
     case RichTextDecoration.link:
-      const linkValues = parseLink(content);
+      const linkValues = parseVariableTag(content);
       return (
-        <RichTextLink href={linkValues.link}>{linkValues.text}</RichTextLink>
+        <RichTextLink href={linkValues.variable}>
+          {linkValues.text}
+        </RichTextLink>
       );
     case RichTextDecoration.bold:
       return <RichTextBold>{innerContent}</RichTextBold>;

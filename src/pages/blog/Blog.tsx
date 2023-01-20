@@ -1,14 +1,14 @@
-import { useMatch } from "@tanstack/react-location";
-import React from "react";
-import { BlogPostProps } from "../admin";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../firebase";
-import { BlogPost } from "./BlogPost/BlogPost";
 import { ThemeContext } from "@chrisellis/react-carpentry";
-import { LightTheme } from "../../consts";
-import { Navbar } from "./Navbar";
-import { BlogHome } from "./BlogHome/BlogHome";
+import { useMatch } from "@tanstack/react-location";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import React from "react";
 import { wherePublished } from "../../components";
+import { LightTheme } from "../../consts";
+import { db } from "../../firebase";
+import { BlogPostProps } from "../admin";
+import { BlogHome } from "./BlogHome/BlogHome";
+import { BlogPost } from "./BlogPost/BlogPost";
+import { Navbar } from "./Navbar";
 
 export const Blog: React.FC = () => {
   const {

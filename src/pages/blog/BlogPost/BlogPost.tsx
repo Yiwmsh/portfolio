@@ -1,11 +1,11 @@
-import React from "react";
-import { BlogPostProps } from "../../admin";
 import { CardFooter, CardHeader } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { Timestamp } from "firebase/firestore";
-import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
+import React from "react";
 import { Helmet } from "react-helmet";
 import { ScreenMaxWidth } from "../../../components/MediaQueries";
+import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
+import { BlogPostProps } from "../../admin";
 import { DateData } from "./DateData";
 
 const ScreenWidthBreakpoints = {

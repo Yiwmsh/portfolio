@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "@emotion/styled";
 import { Color, SemanticColors } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
+import React from "react";
 import portrait from "../../../resources/portrait.jpg";
 
 const aboutBackgroundColor: Color = "#f4edfc";

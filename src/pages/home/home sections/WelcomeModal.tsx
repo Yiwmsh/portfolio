@@ -6,9 +6,9 @@ import {
   CardHeader,
   TextContent,
 } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
-import styled from "@emotion/styled";
 import { Modal, WhatsYourName } from "../../../components";
 
 const AdjustedTextContent = styled(TextContent)`

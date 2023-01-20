@@ -5,17 +5,13 @@ import {
   CardFooter,
   CardHeader,
 } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
 import { getAuth, signOut } from "firebase/auth";
 import React from "react";
-import { SignInButton } from "./SignIn";
-import { BlogPostEditor } from "./Blog/BlogPostEditor";
 import { CenteringSection } from "../../components/CenteringSection";
-import styled from "@emotion/styled";
-import { BlogPostList } from "./Blog/BlogPostList";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase";
-import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
 import { RichTextEditor } from "../../components/RichTextEditor/RichTextEditor";
+import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
+import { SignInButton } from "./SignIn";
 
 const SignOutButton = styled(Button)`
   position: fixed;
@@ -43,7 +39,11 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
 
 const TestSegment: React.FC = () => {
   return (
-    <Card centered="both" width="80%" height="80%">
+    <Card
+      centered="both"
+      width="80%"
+      height="80%"
+    >
       <CardHeader />
       <CardBody>
         <RichTextEditor />

@@ -1,7 +1,7 @@
-import React from "react";
-import { motion } from "framer-motion";
-import styled from "@emotion/styled";
 import { SemanticColors } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
+import { motion } from "framer-motion";
+import React from "react";
 
 const YoutubeVideoContainerStyle = styled(motion.div)<{ focussed: boolean }>`
   height: 70vh;
@@ -48,7 +48,10 @@ export const YoutubeVideoContainer: React.FC<{
   onClick: () => void;
 }> = ({ children, focussed, onClick }) => {
   return (
-    <YoutubeVideoContainerStyle onClick={() => onClick} focussed={focussed}>
+    <YoutubeVideoContainerStyle
+      onClick={() => onClick}
+      focussed={focussed}
+    >
       {children}
     </YoutubeVideoContainerStyle>
   );

@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { BlogPostProps } from "./blogPostProps";
-import { Modal } from "../../../components";
 import {
   Button,
-  ThemeContext,
   SemanticColors,
+  ThemeContext,
 } from "@chrisellis/react-carpentry";
+import styled from "@emotion/styled";
+import React from "react";
+import { Modal } from "../../../components";
 import { LightTheme } from "../../../consts";
 import { BlogPost, Navbar } from "../../blog";
+import { BlogPostProps } from "./blogPostProps";
 
 const CloseButton = styled.button`
   position: fixed;
@@ -60,7 +60,14 @@ export const BlogPostPreviewButton: React.FC<{
               x
             </CloseButton>
             <Navbar />
-            {post ? <BlogPost post={post} withoutHelmet /> : ""}
+            {post ? (
+              <BlogPost
+                post={post}
+                withoutHelmet
+              />
+            ) : (
+              ""
+            )}
           </PreviewContainer>
         </ThemeContext>
       </Modal>

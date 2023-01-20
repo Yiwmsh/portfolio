@@ -1,12 +1,12 @@
+import { TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
+import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin";
 import {
   calculateReadingTime,
   fancyDisplayTimestamp,
 } from "../../../blog/BlogPost/BlogPost";
-import { TextContent } from "@chrisellis/react-carpentry";
-import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BottomBlur } from "./BlogPostPreview";
 
 const BigPreviewContainer = styled.button`

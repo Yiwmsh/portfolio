@@ -1,6 +1,6 @@
+import styled from "@emotion/styled";
 import { BlogPostProps } from "../admin";
 import { BlogSnippet } from "./BlogSnippet";
-import styled from "@emotion/styled";
 
 const ThatsAllForNow = styled.div`
   padding: 50px;

@@ -1,7 +1,7 @@
-import React from "react";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { SemanticColors } from "@chrisellis/react-carpentry";
+import React from "react";
 
 const ScrollButtonStyle = styled.button<{ direction: "up" | "down" }>`
   padding: 15px;
@@ -21,7 +21,10 @@ export const ScrollButton: React.FC<{
   target: string;
 }> = ({ direction, target }) => {
   return (
-    <motion.div initial={{ opacity: 0.5 }} whileHover={{ opacity: 1 }}>
+    <motion.div
+      initial={{ opacity: 0.5 }}
+      whileHover={{ opacity: 1 }}
+    >
       <motion.div
         style={{ margin: "0 auto" }}
         animate={{

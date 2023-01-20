@@ -1,10 +1,9 @@
-import { Card, Button } from "@chrisellis/react-carpentry";
-import { signInWithGoogle } from "../../firebase";
+import { Button } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDoc, doc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { db, signInWithGoogle } from "../../firebase";
 import { AdminDashboard } from "./AdminDashboard";
 
 const SignInContainer = styled.div`

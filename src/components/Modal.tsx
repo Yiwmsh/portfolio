@@ -1,6 +1,6 @@
-import React from "react";
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
 
 const Underlay = styled(motion.div)`
   position: fixed;
