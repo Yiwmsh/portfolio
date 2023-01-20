@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { defaultBoxShadow } from "../consts";
 
@@ -10,43 +10,41 @@ export interface AccordionProps {
 
 const AccordionContainer = styled(motion.div)`
   box-shadow: ${defaultBoxShadow};
+  padding: 10px;
+  overflow: hidden;
 `;
 
-const AccordionHeader = styled.div``;
+const AccordionHeader = styled(motion.div)``;
 
-const AccordionContentDisplay = styled(motion.div)``;
-
-export const AccordionContent: React.FC<{
-  children: React.ReactNode;
-  isOpen: boolean;
-}> = ({ children, isOpen }) => {
-  return (
-    <>
-      {isOpen ? (
-        <AccordionContentDisplay>{children}</AccordionContentDisplay>
-      ) : (
-        ""
-      )}
-    </>
-  );
-};
+const AccordionContentDisplay = styled(motion.section)``;
 
 export const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
-    <AccordionContainer layout>
+    <AccordionContainer>
       <AccordionHeader
-        onClick={() => {
-          setIsOpen(!isOpen);
-          console.log(isOpen);
-        }}
+        initial={false}
+        onClick={() => setIsOpen(!isOpen)}
       >
         {title}
       </AccordionHeader>
-      <AccordionContent
-        children={children}
-        isOpen={isOpen}
-      ></AccordionContent>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <AccordionContentDisplay
+            key="content"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: "auto" },
+              collapsed: { opacity: 0, height: 0 },
+            }}
+            transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
+          >
+            {children}
+          </AccordionContentDisplay>
+        )}
+      </AnimatePresence>
     </AccordionContainer>
   );
 };
