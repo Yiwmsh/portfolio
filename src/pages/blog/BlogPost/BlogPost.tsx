@@ -14,7 +14,7 @@ const ScreenWidthBreakpoints = {
 };
 
 const BlogPostStyle = styled.article`
-  margin: 0 5vw;
+  margin: 0 5vw 5vw;
 
   ${ScreenMaxWidth(ScreenWidthBreakpoints.content, `margin: 10px;`)}
 `;
