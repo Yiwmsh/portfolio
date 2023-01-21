@@ -1,6 +1,7 @@
 import { TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import { Accordion } from "../Accordion";
+import { RichTextQuote } from "./RichTextQuote";
 import {
   RichTextBold,
   RichTextBorderedSection,
@@ -48,6 +49,7 @@ enum RichTextDecoration {
   subscript = "<sub>",
   superscript = "<sup>",
   collapse = "<collapse>",
+  quote = "<q>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -132,7 +134,7 @@ const parseVariableTag = (
   const variable = innerContent
     .match(variableRegex)?.[0]
     .replaceAll(/[{}]/gm, "");
-  const text = innerContent.replace(variableRegex, "").replaceAll(/[{}]/gm, "");
+  const text = innerContent.slice(variable ? variable.length + 2 : 0);
   return { variable: variable ?? "", text: text };
 };
 
@@ -159,6 +161,15 @@ const taggedContentToReactNode = (
         <Accordion title={recursiveParser(collapseValues.variable)}>
           {recursiveParser(collapseValues.text)}
         </Accordion>
+      );
+    case RichTextDecoration.quote:
+      const quoteContents = parseVariableTag(content);
+      console.log(quoteContents.variable);
+      return (
+        <RichTextQuote
+          quote={quoteContents.text}
+          quoteSource={quoteContents.variable}
+        />
       );
     case RichTextDecoration.h4:
       return <RichTextH4>{innerContent}</RichTextH4>;
