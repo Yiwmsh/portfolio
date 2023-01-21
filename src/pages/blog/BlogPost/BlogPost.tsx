@@ -43,7 +43,6 @@ const Title = styled.h1`
 
 const Authors = styled.p`
   font-style: italic;
-  font-size: 0.8em;
 `;
 
 const PostContent = styled.div`
