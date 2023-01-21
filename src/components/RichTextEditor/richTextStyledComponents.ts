@@ -14,6 +14,9 @@ export const RichTextH2 = styled.h2`
 export const RichTextH3 = styled.h3`
   margin: 0;
 `;
+export const RichTextH4 = styled.h4`
+  margin: 0;
+`;
 export const RichTextP = styled.p``;
 export const RichTextStrikeThrough = styled.s``;
 export const RichTextSubscript = styled.sub``;

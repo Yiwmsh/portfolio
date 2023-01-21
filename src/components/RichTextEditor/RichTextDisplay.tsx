@@ -10,6 +10,7 @@ import {
   RichTextH1,
   RichTextH2,
   RichTextH3,
+  RichTextH4,
   RichTextImg,
   RichTextItalic,
   RichTextLink,
@@ -29,6 +30,7 @@ enum RichTextDecoration {
   h1 = "<h1>",
   h2 = "<h2>",
   h3 = "<h3>",
+  h4 = "<h4>",
   break = "<br/>",
   p = "<p>",
   image = "<img>",
@@ -158,6 +160,8 @@ const taggedContentToReactNode = (
           {recursiveParser(collapseValues.text)}
         </Accordion>
       );
+    case RichTextDecoration.h4:
+      return <RichTextH4>{innerContent}</RichTextH4>;
     case RichTextDecoration.superscript:
       return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
     case RichTextDecoration.strikethrough:
@@ -259,7 +263,7 @@ const autoAddParagraphs = (content: string): string => {
     (substring) => `<p>${substring.trim()}</p>`
   );
 
-  return paragraphs.replaceAll("\n", "<br/>");
+  return content.replaceAll("\n", "<br/>");
 };
 
 const parseRichText = (content: string): React.ReactNode => {

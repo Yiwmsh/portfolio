@@ -144,6 +144,15 @@ export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);
   };
+  const getRandomTag = () => {
+    return allTags[getRandomArrayIndex(allTags)];
+  };
+  const [displayTag, setDisplayTag] = React.useState(getRandomTag());
+
+  setInterval(() => {
+    setDisplayTag(getRandomTag());
+    console.log("Tag changed");
+  }, 5000);
   return (
     <HeaderContainer>
       <BlogHomeBannerTextContainer>
@@ -157,7 +166,7 @@ export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
         </BioBlurb>
         <BlogHomePreTag>
           This is where I talk about
-          <Tag>{allTags[getRandomArrayIndex(allTags)]}</Tag>
+          <Tag>{displayTag}</Tag>
         </BlogHomePreTag>
       </BlogHomeBannerTextContainer>
       <BlogHomeBannerPortrait src={portrait} />
