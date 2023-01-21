@@ -21,7 +21,9 @@ export const RichTextP = styled.p``;
 export const RichTextStrikeThrough = styled.s``;
 export const RichTextSubscript = styled.sub``;
 export const RichTextSuperscript = styled.sup``;
-export const RichTextImg = styled.img``;
+export const RichTextImg = styled.img`
+  max-width: 100%;
+`;
 export const RichTextVid = styled.iframe``;
 export const RichTextCode = styled.div`
   background-color: #708090;
