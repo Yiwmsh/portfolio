@@ -149,10 +149,10 @@ export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
   };
   const [displayTag, setDisplayTag] = React.useState(getRandomTag());
 
-  setInterval(() => {
-    setDisplayTag(getRandomTag());
-    console.log("Tag changed");
-  }, 5000);
+  // setInterval(() => {
+  //   setDisplayTag(getRandomTag());
+  //   console.log("Tag changed");
+  // }, 5000);
   return (
     <HeaderContainer>
       <BlogHomeBannerTextContainer>
