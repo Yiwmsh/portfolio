@@ -10,7 +10,7 @@ import { getAuth, signOut } from "firebase/auth";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";
 import { RichTextEditor } from "../../components/RichTextEditor/RichTextEditor";
-import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
+import { BlogAdminPanel } from "./Blog";
 import { SignInButton } from "./SignIn";
 
 const SignOutButton = styled(Button)`
@@ -38,6 +38,7 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
 };
 
 const TestSegment: React.FC = () => {
+  const [text, setText] = React.useState("");
   return (
     <Card
       centered="both"
@@ -46,7 +47,10 @@ const TestSegment: React.FC = () => {
     >
       <CardHeader />
       <CardBody>
-        <RichTextEditor />
+        <RichTextEditor
+          onChange={setText}
+          value={text}
+        />
       </CardBody>
       <CardFooter />
     </Card>

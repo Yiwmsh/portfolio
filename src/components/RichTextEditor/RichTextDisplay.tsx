@@ -24,7 +24,7 @@ import {
   RichTextVid,
 } from "./richTextStyledComponents";
 
-enum RichTextDecoration {
+export enum RichTextDecoration {
   content = "<>",
   bold = "<b>",
   italic = "<i>",
@@ -55,6 +55,21 @@ enum RichTextDecoration {
 const decorations = Object.values(RichTextDecoration);
 const openingSymbols = new Set(decorations.map((decoration) => decoration[0]));
 
+export const tagIsVariable = (tag: string) => {
+  switch (tag) {
+    case RichTextDecoration.image:
+    case RichTextDecoration.picture:
+    case RichTextDecoration.video:
+    case RichTextDecoration.link:
+    case RichTextDecoration.paddedSection:
+    case RichTextDecoration.collapse:
+    case RichTextDecoration.quote:
+      return true;
+    default:
+      return false;
+  }
+};
+
 const longestTagLength = () => {
   const sortedDecorations = Object.values(RichTextDecoration).sort(
     (a, b) => b.length - a.length
@@ -72,7 +87,7 @@ const shortestTagLength = () => {
 const maxLookaheadLength = longestTagLength() + 1;
 const minLookaheadLength = shortestTagLength() + 1;
 
-interface Tag {
+export interface Tag {
   tag: string;
   tagStart: number;
   tagEnd: number;
@@ -82,7 +97,7 @@ const isSelfClosing = (tag: Tag): boolean => {
   return tag.tag === RichTextDecoration.break;
 };
 
-const getExpectedClosingTag = (tag: Tag): string => {
+export const getExpectedClosingTag = (tag: Tag): string => {
   if (tag.tag === "```") {
     return "```";
   }
@@ -230,7 +245,7 @@ const taggedContentToReactNode = (
 };
 
 const recursiveParser = (content: string): React.ReactNode => {
-  let retVal: React.ReactNode[] = [<></>];
+  let retVal: React.ReactNode[] = [];
   let lastTagEnd = 0;
   for (let cursor = 0; cursor < content.length; cursor++) {
     if (openingSymbols.has(content[cursor])) {

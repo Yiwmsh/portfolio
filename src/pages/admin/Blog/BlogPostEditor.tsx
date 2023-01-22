@@ -12,7 +12,7 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { removeTags } from "../../../components";
+import { RichTextEditor, removeTags } from "../../../components";
 import { db } from "../../../firebase";
 import {
   calculateReadingTime,
@@ -285,12 +285,9 @@ export const BlogPostEditor: React.FC<{
         <TextContent>
           <label htmlFor="content">Content</label>
         </TextContent>
-        <BlogPostContentInput
-          name="content"
+        <RichTextEditor
           value={content}
-          onChange={(event) => {
-            setContent(event.target.value);
-          }}
+          onChange={setContent}
         />
         <PublishRow
           publish={publish}
