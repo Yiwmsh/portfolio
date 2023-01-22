@@ -85,7 +85,7 @@ const shortestTagLength = () => {
 };
 
 const maxLookaheadLength = longestTagLength() + 1;
-const minLookaheadLength = shortestTagLength() + 1;
+const minLookaheadLength = shortestTagLength();
 
 export interface Tag {
   tag: string;
@@ -120,21 +120,37 @@ const checkTag = (content: string, cursor: number): Tag | false => {
 };
 
 const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
+  debugger;
   const expectedClosingTag = getExpectedClosingTag(openingTag);
+  let openingTagCount = 1;
+  let closingTagCount = 0;
+  let lastClosingTagFound: Tag;
   for (let cursor = openingTag.tagEnd; cursor < content.length; cursor++) {
-    if (content[cursor] === expectedClosingTag[0]) {
+    if (
+      content[cursor] === expectedClosingTag[0] ||
+      content[cursor] === openingTag.tag[0]
+    ) {
       for (
-        let lookaheadCursor = 0;
+        let lookaheadCursor = minLookaheadLength;
         lookaheadCursor < maxLookaheadLength + 1;
         lookaheadCursor++
       ) {
         const slice = content.slice(cursor, lookaheadCursor + cursor);
         if (slice === expectedClosingTag) {
-          return {
+          closingTagCount++;
+          lastClosingTagFound = {
             tag: slice,
             tagStart: cursor,
             tagEnd: cursor + lookaheadCursor,
           };
+
+          if (closingTagCount === openingTagCount) {
+            return lastClosingTagFound;
+          }
+        }
+
+        if (slice === openingTag.tag) {
+          openingTagCount++;
         }
       }
     }
