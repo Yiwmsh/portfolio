@@ -35,7 +35,11 @@ export const RichTextQuote: React.FC<{
   return (
     <RichTextQuoteContainer>
       <RichTextQuoteContent>{quote}</RichTextQuoteContent>
-      <RichTextQuoteSource>- {quoteSource}</RichTextQuoteSource>
+      {quoteSource ? (
+        <RichTextQuoteSource>- {quoteSource}</RichTextQuoteSource>
+      ) : (
+        ""
+      )}
     </RichTextQuoteContainer>
   );
 };
