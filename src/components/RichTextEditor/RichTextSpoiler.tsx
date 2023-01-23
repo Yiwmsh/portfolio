@@ -7,6 +7,8 @@ const Spoiler = styled.p<{ revealed: boolean }>`
   color: var(${SemanticColors.text});
   background-color: ${({ revealed }) =>
     revealed ? `var(${SemanticColors.shadow})` : `var(${SemanticColors.text})`};
+
+  ${({ revealed }) => (revealed ? `` : `cursor: pointer;`)}
 `;
 
 export const RichTextSpoiler: React.FC<{ children?: React.ReactNode }> = ({
