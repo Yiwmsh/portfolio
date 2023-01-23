@@ -48,11 +48,11 @@ export const RichTextEditor: React.FC<TextFieldProps> = ({
       variable ? "{}" : ""
     }${selectedText}${closingTag}${postText}`;
     onChange?.(newValue);
-    inputRef.current?.focus();
-    inputRef.current?.setSelectionRange(
-      selectionStart ? selectionStart + openingTag.length : null,
-      selectionEnd ? selectionEnd + openingTag.length : null
-    );
+    // inputRef.current?.focus();
+    // inputRef.current?.setSelectionRange(
+    //   selectionStart ? selectionStart + openingTag.length : null,
+    //   selectionEnd ? selectionEnd + openingTag.length : null
+    // );
   };
 
   return (
