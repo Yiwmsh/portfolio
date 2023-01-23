@@ -2,6 +2,7 @@ import { TextContent } from "@chrisellis/react-carpentry";
 import React from "react";
 import { Accordion } from "../Accordion";
 import { RichTextQuote } from "./RichTextQuote";
+import { RichTextSpoiler } from "./RichTextSpoiler";
 import {
   RichTextBold,
   RichTextBorderedSection,
@@ -50,6 +51,7 @@ export enum RichTextDecoration {
   superscript = "<sup>",
   collapse = "<collapse>",
   quote = "<q>",
+  spoiler = "<spoiler>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -117,7 +119,6 @@ const checkTag = (content: string, cursor: number): Tag | false => {
 };
 
 const findClosingTag = (openingTag: Tag, content: string): Tag | false => {
-  debugger;
   const expectedClosingTag = getExpectedClosingTag(openingTag);
   let openingTagCount = 1;
   let closingTagCount = 0;
@@ -181,6 +182,8 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.spoiler:
+      return <RichTextSpoiler>{innerContent}</RichTextSpoiler>;
     case RichTextDecoration.subscript:
       return <RichTextSubscript>{innerContent}</RichTextSubscript>;
     case RichTextDecoration.collapse:
