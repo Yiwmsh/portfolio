@@ -57,9 +57,6 @@ const openingSymbols = new Set(decorations.map((decoration) => decoration[0]));
 
 export const tagIsVariable = (tag: string) => {
   switch (tag) {
-    case RichTextDecoration.image:
-    case RichTextDecoration.picture:
-    case RichTextDecoration.video:
     case RichTextDecoration.link:
     case RichTextDecoration.paddedSection:
     case RichTextDecoration.collapse:
