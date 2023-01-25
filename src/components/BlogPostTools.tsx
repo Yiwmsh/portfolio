@@ -10,7 +10,10 @@ import {
 import { db } from "../firebase";
 import { BlogPostProps } from "../pages/admin";
 
-const blogPosts = collection(db, "blog-posts");
+const blogPosts = collection(
+  db,
+  process.env.REACT_APP_blogPostCollection ?? "blog-posts"
+);
 export const wherePublished = where("publish", "==", true);
 
 export const GetAllBlogPosts = async (

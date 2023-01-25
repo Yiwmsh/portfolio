@@ -22,7 +22,9 @@ export const BlogAdminPanel: React.FC = () => {
     if (uid === "") {
       setCurrentPost(undefined);
     } else {
-      const response = await getDoc(doc(db, "blog-posts", uid));
+      const response = await getDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+      );
       setCurrentPost(await (response.data() as BlogPostProps));
     }
   };

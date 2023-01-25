@@ -112,24 +112,45 @@ export const BlogPostEditor: React.FC<{
       if (publish && (publishedDate === undefined || publishedDate === null)) {
         pubDate = Timestamp.now();
       }
-      await setDoc(doc(db, "blog-posts", uid), {
-        uid: uid,
-        title: title,
-        createdDate: postData?.createdDate ?? Timestamp.now(),
-        lastUpdated: Timestamp.now(),
-        metaTitle: metaTitle === "" ? title : metaTitle,
-        slug: slugifyTitle(slug === "" ? title : slug),
-        authors: authors,
-        content: content,
-        summary: summary,
-        publish: publish,
-        publishedDate: publish ? pubDate ?? null : null,
-        series: series,
-        related: related,
-        tags: tags,
-        featuredPriority: featuredPriority,
-        readingTime: calculateReadingTime(removeTags(content)),
-      });
+      await setDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid),
+        {
+          uid: uid,
+          title: title,
+          createdDate: postData?.createdDate ?? Timestamp.now(),
+          lastUpdated: Timestamp.now(),
+          metaTitle: metaTitle === "" ? title : metaTitle,
+          slug: slugifyTitle(slug === "" ? title : slug),
+          authors: authors,
+          content: content,
+          summary: summary,
+          publish: publish,
+          publishedDate: publish ? pubDate ?? null : null,
+          series: series,
+          related: related,
+          tags: tags,
+          featuredPriority: featuredPriority,
+          readingTime: calculateReadingTime(removeTags(content)),
+        }
+      );
+      debugger;
+      const tagsCollection = process.env.REACT_APP_blogPostTagsCollection;
+      if (tagsCollection && publish) {
+        tags.forEach((tag) => {
+          setDoc(doc(db, tagsCollection, tag), {
+            tag: tag,
+          });
+        });
+      }
+      const seriesCollection = process.env.REACT_APP_blogPostSeriesCollection;
+      if (seriesCollection && publish) {
+        series.forEach((series) => {
+          setDoc(doc(db, seriesCollection, series), {
+            series: series,
+          });
+        });
+      }
+
       const uploadedSuccessfully = await checkUploadSuccess();
       if (uploadedSuccessfully) {
         changesMade();
@@ -153,7 +174,9 @@ export const BlogPostEditor: React.FC<{
   };
 
   const checkUploadSuccess = async (): Promise<boolean> => {
-    const response = await getDoc(doc(db, "blog-posts", uid));
+    const response = await getDoc(
+      doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+    );
     try {
       const serverLastUpdatedPost = ((await response.data()) as BlogPostProps)
         .lastUpdated;
@@ -169,7 +192,9 @@ export const BlogPostEditor: React.FC<{
 
   const deleteBlogPost = async (uid: string) => {
     if (uid) {
-      await deleteDoc(doc(db, "blog-posts", uid));
+      await deleteDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+      );
       changesMade();
     }
   };
