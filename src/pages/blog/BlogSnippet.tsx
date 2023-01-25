@@ -47,6 +47,17 @@ const BlogPostSummary = styled.p`
   text-align: start;
 `;
 
+const BlogSnippetRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const BlogSnippetSeries = styled.h3`
+  margin: 0;
+  filter: opacity(50%);
+`;
+
 export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   const readTime = post.readingTime;
   return (
@@ -63,7 +74,14 @@ export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
         <BlogPostMetaEntry>·</BlogPostMetaEntry>
         <BlogPostMetaEntry>{readTime}</BlogPostMetaEntry>
       </BlogPostMetaLine>
-      <BlogPostTitle>{post.title}</BlogPostTitle>
+      <BlogSnippetRow>
+        <BlogPostTitle>{post.title}</BlogPostTitle>
+        {post.series && post.series.length > 0 ? (
+          <BlogSnippetSeries>{post.series[0]}</BlogSnippetSeries>
+        ) : (
+          ""
+        )}
+      </BlogSnippetRow>
       <BlogPostAuthors>{post.authors.join(", ")}</BlogPostAuthors>
       <BlogPostSummary>
         {post.summary !== ""
