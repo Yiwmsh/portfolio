@@ -5,7 +5,7 @@ import { removeTags } from "../../components";
 import { BlogPostProps } from "../admin";
 import { displayTimestampAsDate } from "./BlogPost";
 
-const SnippetContainer = styled.button`
+const SnippetContainer = styled.button<{ featuredPriority: number }>`
   display: flex;
   flex-direction: column;
   background-color: var(${SemanticColors.background});
@@ -15,6 +15,10 @@ const SnippetContainer = styled.button`
   overflow: hidden;
   justify-content: flex-start;
   font-family: "Arima", cursive;
+  ${({ featuredPriority }) =>
+    featuredPriority
+      ? `box-shadow: 0 0 10px 5px var(${SemanticColors.primary});`
+      : ""}
 `;
 
 const BlogPostMetaLine = styled.div`
@@ -47,6 +51,7 @@ export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   const readTime = post.readingTime;
   return (
     <SnippetContainer
+      featuredPriority={post.featuredPriority}
       onClick={() => {
         window.location.assign(`/blog/post/${post.slug}`);
       }}
