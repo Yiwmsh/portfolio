@@ -169,7 +169,7 @@ export const GetBlogPostsByQuery = async (
   return allMatchingPosts;
 };
 
-export const SortBlogPosts = (
+export const sortBlogPosts = (
   posts: BlogPostProps[],
   field: keyof BlogPostProps,
   direction: "asc" | "desc"

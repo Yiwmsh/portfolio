@@ -5,6 +5,7 @@ import { defaultBoxShadow } from "../consts";
 
 export interface AccordionProps {
   title: React.ReactNode;
+  open?: boolean;
   children: React.ReactNode;
 }
 
@@ -20,8 +21,12 @@ const AccordionHeader = styled(motion.div)`
 
 const AccordionContentDisplay = styled(motion.section)``;
 
-export const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const Accordion: React.FC<AccordionProps> = ({
+  title,
+  children,
+  open,
+}) => {
+  const [isOpen, setIsOpen] = React.useState(open ?? false);
   return (
     <AccordionContainer>
       <AccordionHeader

@@ -8,6 +8,7 @@ import { db } from "../../firebase";
 import { BlogPostProps } from "../admin";
 import { BlogHome } from "./BlogHome/BlogHome";
 import { BlogPost } from "./BlogPost/BlogPost";
+import { BlogSeries } from "./BlogPost/BlogSeries";
 import { Navbar } from "./Navbar";
 
 export const Blog: React.FC = () => {
@@ -44,7 +45,14 @@ export const Blog: React.FC = () => {
       {blogSlug === undefined ? (
         <BlogHome />
       ) : blogPost ? (
-        <BlogPost post={blogPost} />
+        blogPost.series && blogPost.series.length > 0 ? (
+          <BlogSeries
+            post={blogPost}
+            series={blogPost.series[0]}
+          />
+        ) : (
+          <BlogPost post={blogPost} />
+        )
       ) : (
         ""
       )}

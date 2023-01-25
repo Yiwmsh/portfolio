@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import {
   GetBlogPostsByQuery,
-  SortBlogPosts,
+  sortBlogPosts,
 } from "../../../components/BlogPostTools";
 import { db } from "../../../firebase";
 import { Row } from "../../home/home sections/WelcomeModal";
@@ -45,7 +45,7 @@ export const BlogAdminPanel: React.FC = () => {
   const getAndSetBlogPosts = async () => {
     const allBlogPosts = await GetBlogPostsByQuery(false, query);
     setPostTitles(
-      SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map((post) => {
+      sortBlogPosts(allBlogPosts, "lastUpdated", "desc").map((post) => {
         return { title: post.title, uid: post.uid };
       })
     );

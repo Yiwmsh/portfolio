@@ -7,6 +7,7 @@ import { ScreenMaxWidth } from "../../../components/MediaQueries";
 import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../admin";
 import { DateData } from "./DateData";
+import { PostTags } from "./PostTags";
 
 const ScreenWidthBreakpoints = {
   dateData: 630,
@@ -36,6 +37,10 @@ const PostInformation = styled.div`
   )}
 `;
 
+const Series = styled.h2`
+  filter: opacity(50%);
+`;
+
 const Title = styled.h1`
   font-size: 2em;
   margin: auto 0;
@@ -58,7 +63,6 @@ const ReadingTime = styled.div``;
 
 export const displayTimestampAsDate = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();
-  const timeAgo = new Date().getTime() - date.getTime();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const year = date.getFullYear();
@@ -105,7 +109,8 @@ export const calculateReadingTime = (content: string): string => {
 export const BlogPost: React.FC<{
   post: BlogPostProps;
   withoutHelmet?: boolean;
-}> = ({ post, withoutHelmet }) => {
+  id?: string;
+}> = ({ post, withoutHelmet, id }) => {
   return (
     <BlogPostStyle>
       {withoutHelmet ? (
@@ -128,6 +133,7 @@ export const BlogPost: React.FC<{
           />
           <div>
             <Title>{post.title}</Title>
+            {post.series ? <Series>{post.series}</Series> : ""}
             <Authors>{post.authors.join(", ")}</Authors>
           </div>
 
@@ -137,6 +143,11 @@ export const BlogPost: React.FC<{
               lastUpdated={post.lastUpdated}
             />
             <ReadingTime>{post.readingTime}</ReadingTime>
+            {post.tags && post.tags.length > 0 ? (
+              <PostTags tags={post.tags} />
+            ) : (
+              ""
+            )}
           </div>
         </PostInformation>
       </BlogPostCardHeader>
