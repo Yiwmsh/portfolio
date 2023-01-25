@@ -22,6 +22,30 @@ export const GetAllBlogPosts = async (
   return await GetBlogPostsByQuery(published);
 };
 
+export const GetFrontPageBlogPosts = async (): Promise<BlogPostProps[]> => {
+  const frontPageBlogPosts: BlogPostProps[] = [];
+
+  const q = query(
+    blogPosts,
+    wherePublished,
+    where("featuredPriority", "!=", null),
+    orderBy("featuredPriority", "desc"),
+    orderBy("publishedDate", "desc")
+  );
+  const response = await getDocs(q);
+
+  for (let i = 0; i < response.size; i++) {
+    try {
+      const docData = (await response.docs[i].data()) as BlogPostProps;
+      frontPageBlogPosts.push(docData);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  return frontPageBlogPosts;
+};
+
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   const allPublishedPosts: BlogPostProps[] = [];
 

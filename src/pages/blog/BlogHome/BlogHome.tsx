@@ -1,5 +1,5 @@
 import React from "react";
-import { GetRecentPublishedBlogPosts } from "../../../components";
+import { GetFrontPageBlogPosts } from "../../../components";
 import { BlogPostProps } from "../../admin";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePosts } from "./BlogHomePostList";
@@ -8,7 +8,7 @@ export const BlogHome: React.FC = () => {
   const [allPosts, setAllPosts] = React.useState<BlogPostProps[]>([]);
   React.useEffect(() => {
     const fetchPosts = async () => {
-      setAllPosts(await GetRecentPublishedBlogPosts());
+      setAllPosts(await GetFrontPageBlogPosts());
     };
     fetchPosts();
   }, []);
