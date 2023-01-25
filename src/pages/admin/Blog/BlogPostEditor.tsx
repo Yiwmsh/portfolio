@@ -12,7 +12,7 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { RichTextEditor, removeTags } from "../../../components";
+import { RichTextEditor, blogPosts, removeTags } from "../../../components";
 import { db } from "../../../firebase";
 import {
   calculateReadingTime,
@@ -74,7 +74,8 @@ const slugifyTitle = (title: string): string => {
 export const BlogPostEditor: React.FC<{
   post?: BlogPostProps;
   changesMade: () => void;
-}> = ({ post, changesMade }) => {
+  onSubmit: (post: BlogPostProps) => void;
+}> = ({ post, changesMade, onSubmit }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const postData = { ...post };
   const [uid, setUid] = React.useState(postData?.uid ?? uuidv4());
@@ -154,6 +155,13 @@ export const BlogPostEditor: React.FC<{
       const uploadedSuccessfully = await checkUploadSuccess();
       if (uploadedSuccessfully) {
         changesMade();
+        const response = await getDoc(doc(blogPosts, uid));
+        try {
+          const post = (await response.data()) as BlogPostProps;
+          onSubmit(post);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
   };

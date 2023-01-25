@@ -29,6 +29,12 @@ export const BlogAdminPanel: React.FC = () => {
     }
   };
 
+  const handleBlogPostSubmit = (post: BlogPostProps) => {
+    if (!currentPost) {
+      setCurrentPost(post);
+    }
+  };
+
   const newPostAdded = (newPost: BlogPostID) => {
     console.log("Post Added");
     setPostTitles((postTitles) => [newPost, ...postTitles]);
@@ -60,6 +66,7 @@ export const BlogAdminPanel: React.FC = () => {
       <BlogPostEditor
         post={currentPost}
         changesMade={getAndSetBlogPosts}
+        onSubmit={handleBlogPostSubmit}
       />
     </Row>
   );
