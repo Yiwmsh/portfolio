@@ -1,16 +1,20 @@
 import {
   DocumentData,
+  DocumentSnapshot,
   QuerySnapshot,
   collection,
+  getCountFromServer,
   getDocs,
+  limit,
   orderBy,
   query,
+  startAfter,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { BlogPostProps } from "../pages/admin";
 
-const blogPosts = collection(
+export const blogPosts = collection(
   db,
   process.env.REACT_APP_blogPostCollection ?? "blog-posts"
 );
@@ -22,16 +26,39 @@ export const GetAllBlogPosts = async (
   return await GetBlogPostsByQuery(published);
 };
 
-export const GetFrontPageBlogPosts = async (): Promise<BlogPostProps[]> => {
+export const GetAllBlogPostsCount = async (
+  published: boolean
+): Promise<number> => {
+  const q = query(blogPosts, wherePublished);
+  const snapshot = await getCountFromServer(published ? q : blogPosts);
+  const count = await snapshot.data().count;
+  return count;
+};
+
+export const GetFrontPageBlogPosts = async (
+  pageLimit?: number,
+  startingPoint?: DocumentSnapshot
+): Promise<BlogPostProps[]> => {
   const frontPageBlogPosts: BlogPostProps[] = [];
 
-  const q = query(
-    blogPosts,
-    wherePublished,
-    where("featuredPriority", "!=", null),
-    orderBy("featuredPriority", "desc"),
-    orderBy("publishedDate", "desc")
-  );
+  const q = startingPoint
+    ? query(
+        blogPosts,
+        wherePublished,
+        where("featuredPriority", "!=", null),
+        orderBy("featuredPriority", "desc"),
+        orderBy("publishedDate", "desc"),
+        startAfter(startingPoint),
+        limit(pageLimit ?? 15)
+      )
+    : query(
+        blogPosts,
+        wherePublished,
+        where("featuredPriority", "!=", null),
+        orderBy("featuredPriority", "desc"),
+        orderBy("publishedDate", "desc"),
+        limit(pageLimit ?? 15)
+      );
   const response = await getDocs(q);
 
   for (let i = 0; i < response.size; i++) {

@@ -31,13 +31,19 @@ const NothingHereYet = styled.div`
   padding: 50px;
 `;
 
-export const BlogHomePosts: React.FC<{ allPosts: BlogPostProps[] }> = ({
-  allPosts,
-}) => {
+export const BlogHomePosts: React.FC<{
+  posts: BlogPostProps[];
+  maxPosts?: number;
+  loadNextPage: () => {};
+}> = ({ posts, maxPosts, loadNextPage }) => {
   return (
     <PostListGrid>
-      {allPosts.length > 0 ? (
-        <BlogPostList posts={allPosts} />
+      {posts.length > 0 ? (
+        <BlogPostList
+          posts={posts}
+          maxPosts={maxPosts}
+          loadNextPage={loadNextPage}
+        />
       ) : (
         <NothingHereYet>
           It looks like there's nothing here yet - check back later!

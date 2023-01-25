@@ -1,19 +1,38 @@
+import { doc, getDoc } from "firebase/firestore";
 import React from "react";
-import { GetFrontPageBlogPosts } from "../../../components";
+import {
+  GetAllBlogPostsCount,
+  GetFrontPageBlogPosts,
+  blogPosts,
+} from "../../../components";
 import { BlogPostProps } from "../../admin";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePosts } from "./BlogHomePostList";
 
 export const BlogHome: React.FC = () => {
-  const [allPosts, setAllPosts] = React.useState<BlogPostProps[]>([]);
+  const [frontPagePosts, setFrontPagePosts] = React.useState<BlogPostProps[]>(
+    []
+  );
+  const [allPostsCount, setAllPostsCount] = React.useState<number>();
   React.useEffect(() => {
     const fetchPosts = async () => {
-      setAllPosts(await GetFrontPageBlogPosts());
+      setFrontPagePosts(await GetFrontPageBlogPosts());
+      setAllPostsCount(await GetAllBlogPostsCount(true));
     };
     fetchPosts();
   }, []);
 
-  const tags = allPosts
+  const loadNextPage = async () => {
+    const nextPage = await GetFrontPageBlogPosts(
+      15,
+      await getDoc(
+        doc(blogPosts, frontPagePosts[frontPagePosts.length - 1].uid)
+      )
+    );
+    setFrontPagePosts([...frontPagePosts, ...nextPage]);
+  };
+
+  const tags = frontPagePosts
     .map((post) => post.tags)
     .flat()
     .filter((tag) => {
@@ -22,7 +41,11 @@ export const BlogHome: React.FC = () => {
   return (
     <>
       <BlogHomeHeader tags={tags} />
-      <BlogHomePosts allPosts={allPosts} />
+      <BlogHomePosts
+        loadNextPage={loadNextPage}
+        posts={frontPagePosts}
+        maxPosts={allPostsCount}
+      />
     </>
   );
 };
