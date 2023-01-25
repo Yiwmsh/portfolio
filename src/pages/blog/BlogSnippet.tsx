@@ -17,7 +17,7 @@ const SnippetContainer = styled.button<{ featuredPriority: number }>`
   font-family: "Arima", cursive;
   ${({ featuredPriority }) =>
     featuredPriority
-      ? `box-shadow: 0 0 10px 5px var(${SemanticColors.primary});`
+      ? `box-shadow: 0 0 5px 2px var(${SemanticColors.primary});`
       : ""}
 `;
 
