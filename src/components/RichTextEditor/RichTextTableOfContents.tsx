@@ -24,6 +24,10 @@ const AccordionHeader = styled(motion.div)`
   cursor: pointer;
 `;
 
+const AccordionTitle = styled.div`
+  display: inline-block;
+`;
+
 const AccordionHeaderArrow = styled(motion.div)`
   display: inline-block;
 `;
@@ -110,7 +114,27 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
       );
     } else {
       retVal.push(
-        <TableOfContentsAccordion title={headers[cursor].content}>
+        <TableOfContentsAccordion
+          title={
+            <AccordionTitle
+              onClick={() => {
+                document
+                  .getElementById(
+                    `header-${headers[cursor].content
+                      .replaceAll(" ", "-")
+                      .toLowerCase()}`
+                  )
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "nearest",
+                  });
+              }}
+            >
+              {headers[cursor].content}
+            </AccordionTitle>
+          }
+        >
           {recursiveParseHeaders(subHeaders)}
         </TableOfContentsAccordion>
       );
