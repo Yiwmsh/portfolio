@@ -16,7 +16,7 @@ const MoreContent = styled.div`
 export const BlogPostList: React.FC<{
   posts: BlogPostProps[];
   maxPosts?: number;
-  loadNextPage: () => {};
+  loadNextPage: () => void;
 }> = ({ posts, maxPosts, loadNextPage }) => {
   return (
     <>
