@@ -98,6 +98,9 @@ export const BlogPostEditor: React.FC<{
   const [featuredPriority, setFeaturedPriorty] = React.useState(
     post?.featuredPriority ?? 0
   );
+  const [tableOfContents, setTableOfContents] = React.useState(
+    post?.tableOfContents ?? false
+  );
 
   const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
 
@@ -132,6 +135,7 @@ export const BlogPostEditor: React.FC<{
           tags: tags,
           featuredPriority: featuredPriority,
           readingTime: calculateReadingTime(removeTags(content)),
+          tableOfContents: tableOfContents,
         }
       );
       debugger;
@@ -178,6 +182,7 @@ export const BlogPostEditor: React.FC<{
       publish: false,
       featuredPriority: 0,
       readingTime: "placeholder",
+      tableOfContents: tableOfContents ?? false,
     };
   };
 
@@ -232,6 +237,7 @@ export const BlogPostEditor: React.FC<{
     setTags(post?.tags ?? []);
     setLastUpdated(post?.lastUpdated);
     setFeaturedPriorty(post?.featuredPriority ?? 0);
+    setTableOfContents(post?.tableOfContents ?? false);
   }, [post]);
 
   return (
@@ -322,45 +328,49 @@ export const BlogPostEditor: React.FC<{
           value={content}
           onChange={setContent}
         />
-        <PublishRow
+        <BooleanRow
           publish={publish}
           setPublish={setPublish}
           publishedDate={publishedDate}
           setPublishedDate={setPublishedDate}
+          tableOfContents={tableOfContents}
+          setTableOfContents={setTableOfContents}
         />
-        <TextField
-          label="Tags"
-          value={tags.join(", ")}
-          onChange={(value) => {
-            setTags(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Related"
-          value={related.join(", ")}
-          onChange={(value) => {
-            setRelated(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Series"
-          value={series.join(", ")}
-          onChange={(value) => {
-            setSeries(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Featured Priority"
-          type="number"
-          value={`${featuredPriority}`}
-          onChange={(value) => {
-            try {
-              setFeaturedPriorty(parseInt(value));
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-        />
+        <Row>
+          <TextField
+            label="Tags"
+            value={tags.join(", ")}
+            onChange={(value) => {
+              setTags(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Related"
+            value={related.join(", ")}
+            onChange={(value) => {
+              setRelated(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Series"
+            value={series.join(", ")}
+            onChange={(value) => {
+              setSeries(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Featured Priority"
+            type="number"
+            value={`${featuredPriority}`}
+            onChange={(value) => {
+              try {
+                setFeaturedPriorty(parseInt(value));
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+          />
+        </Row>
       </CardBody>
       <CardFooter>
         {titleValidity === ValidationStateOption.Invalid ? (
@@ -407,15 +417,32 @@ const DeletePostDialog: React.FC<{
   );
 };
 
-const PublishRow: React.FC<{
+const BooleanRow: React.FC<{
   publish: boolean;
   setPublish: (value: boolean) => void;
   publishedDate: Timestamp | null;
   setPublishedDate: (value: Timestamp | null) => void;
-}> = ({ publish, setPublish, publishedDate, setPublishedDate }) => {
+  tableOfContents: boolean;
+  setTableOfContents: (value: boolean) => void;
+}> = ({
+  publish,
+  setPublish,
+  publishedDate,
+  setPublishedDate,
+  tableOfContents,
+  setTableOfContents,
+}) => {
   return (
     <Row>
       <TextContent>
+        <label htmlFor="table-of-contents">Enable Table of Contents?</label>
+        <input
+          name="table-of-contents"
+          type="checkbox"
+          checked={tableOfContents}
+          onChange={(event) => setTableOfContents(!tableOfContents)}
+        />
+        {" | "}
         <label htmlFor="publish">Publish?</label>
         <input
           name="publish"

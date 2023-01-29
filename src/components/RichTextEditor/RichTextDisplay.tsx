@@ -3,6 +3,7 @@ import React from "react";
 import { Accordion } from "../Accordion";
 import { RichTextQuote } from "./RichTextQuote";
 import { RichTextSpoiler } from "./RichTextSpoiler";
+import { Header, RichTextTableOfContents } from "./RichTextTableOfContents";
 import {
   RichTextBold,
   RichTextBorderedSection,
@@ -169,7 +170,8 @@ const parseVariableTag = (
 
 const taggedContentToReactNode = (
   tag: string,
-  content: string
+  content: string,
+  addHeader: (header: Header) => void
 ): React.ReactNode => {
   switch (tag) {
     case RichTextDecoration.literal:
@@ -180,7 +182,24 @@ const taggedContentToReactNode = (
   const containsInnerTags = decorations.some((decoration) =>
     content.includes(decoration)
   );
-  const innerContent = containsInnerTags ? recursiveParser(content) : content;
+  let tagIsHeader = false;
+  switch (tag) {
+    case RichTextDecoration.h1:
+    case RichTextDecoration.h2:
+    case RichTextDecoration.h3:
+    case RichTextDecoration.h4:
+      tagIsHeader = true;
+      break;
+    default:
+      break;
+  }
+
+  const innerContent = containsInnerTags
+    ? recursiveParser(content, tagIsHeader ? addHeader : () => {})
+    : content;
+
+  const headerText = innerContent ? innerContent.toString() : "";
+
   switch (tag) {
     case RichTextDecoration.spoiler:
       return <RichTextSpoiler>{innerContent}</RichTextSpoiler>;
@@ -189,8 +208,8 @@ const taggedContentToReactNode = (
     case RichTextDecoration.collapse:
       const collapseValues = parseVariableTag(content);
       return (
-        <Accordion title={recursiveParser(collapseValues.variable)}>
-          {recursiveParser(collapseValues.text)}
+        <Accordion title={recursiveParser(collapseValues.variable, addHeader)}>
+          {recursiveParser(collapseValues.text, addHeader)}
         </Accordion>
       );
     case RichTextDecoration.quote:
@@ -202,8 +221,6 @@ const taggedContentToReactNode = (
           quoteSource={quoteContents.variable}
         />
       );
-    case RichTextDecoration.h4:
-      return <RichTextH4>{innerContent}</RichTextH4>;
     case RichTextDecoration.superscript:
       return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
     case RichTextDecoration.strikethrough:
@@ -230,11 +247,53 @@ const taggedContentToReactNode = (
     case RichTextDecoration.content:
       return <>{innerContent}</>;
     case RichTextDecoration.h1:
-      return <RichTextH1>{innerContent}</RichTextH1>;
+      addHeader({
+        headerTier: 1,
+        content: headerText,
+      });
+      return (
+        <RichTextH1
+          id={`header-${headerText.replaceAll(" ", "-").toLowerCase()}`}
+        >
+          {innerContent}
+        </RichTextH1>
+      );
     case RichTextDecoration.h2:
-      return <RichTextH2>{innerContent}</RichTextH2>;
+      addHeader({
+        headerTier: 2,
+        content: headerText,
+      });
+      return (
+        <RichTextH2
+          id={`header-${headerText.replaceAll(" ", "-").toLowerCase()}`}
+        >
+          {innerContent}
+        </RichTextH2>
+      );
     case RichTextDecoration.h3:
-      return <RichTextH3>{innerContent}</RichTextH3>;
+      addHeader({
+        headerTier: 3,
+        content: headerText,
+      });
+      return (
+        <RichTextH3
+          id={`header-${headerText.replaceAll(" ", "-").toLowerCase()}`}
+        >
+          {innerContent}
+        </RichTextH3>
+      );
+    case RichTextDecoration.h4:
+      addHeader({
+        headerTier: 4,
+        content: headerText,
+      });
+      return (
+        <RichTextH4
+          id={`header-${headerText.replaceAll(" ", "-").toLowerCase()}`}
+        >
+          {innerContent}
+        </RichTextH4>
+      );
     case RichTextDecoration.picture:
     case RichTextDecoration.image:
       try {
@@ -260,7 +319,10 @@ const taggedContentToReactNode = (
   return <>{innerContent}</>;
 };
 
-const recursiveParser = (content: string): React.ReactNode => {
+const recursiveParser = (
+  content: string,
+  addHeader: (header: Header) => void
+): React.ReactNode => {
   let retVal: React.ReactNode[] = [];
   let lastTagEnd = 0;
   for (let cursor = 0; cursor < content.length; cursor++) {
@@ -285,7 +347,9 @@ const recursiveParser = (content: string): React.ReactNode => {
             );
             const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
             retVal.push(<>{preTagContent}</>);
-            retVal.push(taggedContentToReactNode(openTag.tag, innerContent));
+            retVal.push(
+              taggedContentToReactNode(openTag.tag, innerContent, addHeader)
+            );
             cursor = closeTag.tagEnd - 1;
             lastTagEnd = closeTag.tagEnd;
           }
@@ -308,10 +372,29 @@ const autoAddParagraphs = (content: string): string => {
   return content.replaceAll("\n", "<br/>");
 };
 
-const parseRichText = (content: string): React.ReactNode => {
-  return recursiveParser(autoAddParagraphs(content));
+const parseRichText = (
+  content: string
+): { parsedContent: React.ReactNode; headers: Header[] } => {
+  const headers: Header[] = [];
+  const addHeader = (header: Header) => {
+    headers.push(header);
+  };
+  const parsedContent = recursiveParser(autoAddParagraphs(content), addHeader);
+  return {
+    parsedContent: parsedContent,
+    headers: headers,
+  };
 };
 
-export const RichTextDisplay: React.FC<{ content: string }> = ({ content }) => {
-  return <TextContent>{parseRichText(content)}</TextContent>;
+export const RichTextDisplay: React.FC<{
+  content: string;
+  withTableOfContents?: boolean;
+}> = ({ content, withTableOfContents = false }) => {
+  const { parsedContent, headers } = parseRichText(content);
+  return (
+    <>
+      {withTableOfContents && <RichTextTableOfContents headers={headers} />}
+      <TextContent>{parsedContent}</TextContent>
+    </>
+  );
 };

@@ -152,7 +152,10 @@ export const BlogPost: React.FC<{
         </PostInformation>
       </BlogPostCardHeader>
       <PostContent>
-        <RichTextDisplay content={post.content} />
+        <RichTextDisplay
+          content={post.content}
+          withTableOfContents={post.tableOfContents}
+        />
       </PostContent>
       <CardFooter></CardFooter>
     </BlogPostStyle>
