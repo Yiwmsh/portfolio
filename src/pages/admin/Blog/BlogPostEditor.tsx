@@ -102,6 +102,11 @@ export const BlogPostEditor: React.FC<{
     post?.tableOfContents ?? false
   );
 
+  const [lastMajorUpdate, setLastMajorUpdate] = React.useState(
+    post?.lastMajorUpdate ?? post?.publishedDate ?? undefined
+  );
+  const [isMajorUpdate, setIsMajorUpdate] = React.useState(false);
+
   const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
 
   const [titleValidity, setTitleValidity] = React.useState<
@@ -136,9 +141,11 @@ export const BlogPostEditor: React.FC<{
           featuredPriority: featuredPriority,
           readingTime: calculateReadingTime(removeTags(content)),
           tableOfContents: tableOfContents,
+          lastMajorUpdate: isMajorUpdate
+            ? Timestamp.now()
+            : lastMajorUpdate ?? Timestamp.now(),
         }
       );
-      debugger;
       const tagsCollection = process.env.REACT_APP_blogPostTagsCollection;
       if (tagsCollection && publish) {
         tags.forEach((tag) => {
@@ -238,6 +245,9 @@ export const BlogPostEditor: React.FC<{
     setLastUpdated(post?.lastUpdated);
     setFeaturedPriorty(post?.featuredPriority ?? 0);
     setTableOfContents(post?.tableOfContents ?? false);
+    setLastMajorUpdate(
+      post?.lastMajorUpdate ?? post?.publishedDate ?? undefined
+    );
   }, [post]);
 
   return (
@@ -335,6 +345,8 @@ export const BlogPostEditor: React.FC<{
           setPublishedDate={setPublishedDate}
           tableOfContents={tableOfContents}
           setTableOfContents={setTableOfContents}
+          majorUpdate={isMajorUpdate}
+          setMajorUpdate={setIsMajorUpdate}
         />
         <Row>
           <TextField
@@ -424,6 +436,8 @@ const BooleanRow: React.FC<{
   setPublishedDate: (value: Timestamp | null) => void;
   tableOfContents: boolean;
   setTableOfContents: (value: boolean) => void;
+  majorUpdate: boolean;
+  setMajorUpdate: (value: boolean) => void;
 }> = ({
   publish,
   setPublish,
@@ -431,10 +445,20 @@ const BooleanRow: React.FC<{
   setPublishedDate,
   tableOfContents,
   setTableOfContents,
+  majorUpdate,
+  setMajorUpdate,
 }) => {
   return (
     <Row>
       <TextContent>
+        <label htmlFor="major-update">Major Update?</label>
+        <input
+          name="major-update"
+          type="checkbox"
+          checked={majorUpdate}
+          onChange={(event) => setMajorUpdate(!majorUpdate)}
+        />
+        {" | "}
         <label htmlFor="table-of-contents">Enable Table of Contents?</label>
         <input
           name="table-of-contents"
