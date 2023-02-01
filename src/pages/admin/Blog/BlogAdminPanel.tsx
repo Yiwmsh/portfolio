@@ -36,7 +36,6 @@ export const BlogAdminPanel: React.FC = () => {
   };
 
   const newPostAdded = (newPost: BlogPostID) => {
-    console.log("Post Added");
     setPostTitles((postTitles) => [newPost, ...postTitles]);
   };
 

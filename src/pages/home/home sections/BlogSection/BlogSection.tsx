@@ -112,7 +112,7 @@ export const BlogSection: React.FC = () => {
         wherePublished,
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),
-        limit(5)
+        limit(6)
       );
 
       const response = await getDocs(q);

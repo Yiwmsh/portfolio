@@ -22,9 +22,11 @@ export const BlogPostPreviewList: React.FC<{ posts: BlogPostProps[] }> = ({
 }) => {
   return (
     <BlogPostPreviewListGrid>
-      {posts.map((post) => (
-        <BlogPostPreview post={post} />
-      ))}
+      {posts.map((post, index) => {
+        if (index < 4) {
+          return <BlogPostPreview post={post} />;
+        }
+      })}
       {posts.length < 5 ? (
         <LastEntry>
           <TextContent>

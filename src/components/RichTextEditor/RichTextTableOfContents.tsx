@@ -14,6 +14,7 @@ const TableOfContentsContainer = styled.div`
 export interface Header {
   headerTier: number;
   content: string;
+  openContainer?: Array<(setIsOpen: boolean) => void>;
 }
 
 const AccordionContainer = styled(motion.div)`
@@ -36,8 +37,9 @@ const AccordionContentDisplay = styled(motion.section)`
   margin-left: 10px;
 `;
 
-const AccordionDeadEnd = styled.div`
+const TableOfContentsEntry = styled.div`
   margin-left: 10px;
+  cursor: pointer;
 `;
 
 const TableOfContentsAccordion: React.FC<{
@@ -48,13 +50,11 @@ const TableOfContentsAccordion: React.FC<{
   const [isOpen, setIsOpen] = React.useState<boolean>(open);
   return (
     <AccordionContainer>
-      <AccordionHeader
-        initial={false}
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <AccordionHeader initial={false}>
         <AccordionHeaderArrow
           animate={{ rotate: isOpen ? 90 : 0 }}
           transition={{ type: "ease" }}
+          onClick={() => setIsOpen(!isOpen)}
         >
           &#10148;
         </AccordionHeaderArrow>{" "}
@@ -94,8 +94,11 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
     const subHeaders = headers.slice(cursor + 1, lookahead);
     if (subHeaders.length === 0) {
       retVal.push(
-        <AccordionDeadEnd
+        <TableOfContentsEntry
           onClick={() => {
+            headers[cursor].openContainer?.forEach((openFunc) =>
+              openFunc(true)
+            );
             document
               .getElementById(
                 `header-${headers[cursor].content
@@ -110,7 +113,7 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
           }}
         >
           {headers[cursor].content}
-        </AccordionDeadEnd>
+        </TableOfContentsEntry>
       );
     } else {
       retVal.push(

@@ -65,7 +65,7 @@ export const BlogSeries: React.FC<{ post: BlogPostProps; series: string }> = ({
       <SeriesTitle>{stringToTitleCase(series)}</SeriesTitle>
       {seriesPosts?.map((seriesPost) => (
         <Accordion
-          open={seriesPost.uid === post.uid}
+          startOpen={seriesPost.uid === post.uid}
           title={<BlogPostTitle>{seriesPost.title}</BlogPostTitle>}
         >
           <BlogPost
