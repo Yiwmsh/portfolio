@@ -19,6 +19,10 @@ const SignOutButton = styled(Button)`
   right: 10px;
 `;
 
+const ScrollSection = styled.div`
+overflow-x: scroll
+`
+
 export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   authorized,
 }) => {
@@ -26,9 +30,11 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
 
   return authorized ? (
     <CenteringSection>
+      <ScrollSection>
       <BlogAdminPanel />
       {/* <TestSegment /> */}
       <SignOutButton onPress={() => signOut(auth)}>Sign Out</SignOutButton>
+      </ScrollSection>
     </CenteringSection>
   ) : (
     <>
