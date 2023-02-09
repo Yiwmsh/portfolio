@@ -13,8 +13,8 @@ const TableOfContentsContainer = styled.div`
 
 export interface Header {
   headerTier: number;
-  content: string;
-  openContainer?: Array<(setIsOpen: boolean) => void>;
+  title: string;
+  accordionID?: string;
 }
 
 const AccordionContainer = styled(motion.div)`
@@ -46,15 +46,46 @@ const TableOfContentsAccordion: React.FC<{
   title: React.ReactNode;
   children: React.ReactNode;
   open?: boolean;
-}> = ({ title, children, open = false }) => {
+  accordionID?: string;
+}> = ({ title, children, accordionID, open = false }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(open);
+  const tableAccordionClickedEventName = `table_${accordionID}_clicked`;
+  const tableAccordionClickedListener = (details: CustomEventInit<boolean>) => {
+    const detail = details.detail;
+    if (detail) {
+      setIsOpen(detail);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener(
+      tableAccordionClickedEventName,
+      tableAccordionClickedListener
+    );
+
+    return () => {
+      document.removeEventListener(
+        tableAccordionClickedEventName,
+        tableAccordionClickedListener
+      );
+    };
+  }, []);
   return (
     <AccordionContainer>
       <AccordionHeader initial={false}>
         <AccordionHeaderArrow
           animate={{ rotate: isOpen ? 90 : 0 }}
           transition={{ type: "ease" }}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            setIsOpen(!isOpen);
+            if (accordionID) {
+              const documentAccordionClickedEvent = new CustomEvent(
+                `document_${accordionID}_clicked`,
+                { detail: isOpen }
+              );
+              document.dispatchEvent(documentAccordionClickedEvent);
+            }
+          }}
         >
           &#10148;
         </AccordionHeaderArrow>{" "}
@@ -92,18 +123,15 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
       lookahead++;
     }
     const subHeaders = headers.slice(cursor + 1, lookahead);
+    const header = headers[cursor];
+
     if (subHeaders.length === 0) {
       retVal.push(
         <TableOfContentsEntry
           onClick={() => {
-            headers[cursor].openContainer?.forEach((openFunc) =>
-              openFunc(true)
-            );
             document
               .getElementById(
-                `header-${headers[cursor].content
-                  .replaceAll(" ", "-")
-                  .toLowerCase()}`
+                `header-${header.title.replaceAll(" ", "-").toLowerCase()}`
               )
               ?.scrollIntoView({
                 behavior: "smooth",
@@ -112,20 +140,19 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
               });
           }}
         >
-          {headers[cursor].content}
+          {header.title}
         </TableOfContentsEntry>
       );
     } else {
       retVal.push(
         <TableOfContentsAccordion
+          accordionID={header.accordionID ?? undefined}
           title={
             <AccordionTitle
               onClick={() => {
                 document
                   .getElementById(
-                    `header-${headers[cursor].content
-                      .replaceAll(" ", "-")
-                      .toLowerCase()}`
+                    `header-${header.title.replaceAll(" ", "-").toLowerCase()}`
                   )
                   ?.scrollIntoView({
                     behavior: "smooth",
@@ -134,7 +161,7 @@ const recursiveParseHeaders = (headers: Header[]): React.ReactNode[] => {
                   });
               }}
             >
-              {headers[cursor].content}
+              {header.title}
             </AccordionTitle>
           }
         >

@@ -1,4 +1,5 @@
 import { TextContent } from "@chrisellis/react-carpentry";
+import { uuidv4 } from "@firebase/util";
 import React, { useEffect } from "react";
 import { AccordionBase } from "../Accordion";
 import { RichTextQuote } from "./RichTextQuote";
@@ -171,10 +172,7 @@ const parseVariableTag = (
 const taggedContentToReactNode = (
   tag: string,
   content: string,
-  addHeader: (header: Header) => void,
-  accordions: {
-    [key: string]: { isOpen: boolean; setIsOpen: (value: boolean) => void };
-  }
+  addHeader: (header: Header) => void
 ): React.ReactNode => {
   switch (tag) {
     case RichTextDecoration.literal:
@@ -198,11 +196,7 @@ const taggedContentToReactNode = (
   }
 
   const innerContent = containsInnerTags
-    ? recursiveParser(
-        content,
-        tagIsHeader ? (header: Header) => {} : addHeader,
-        accordions
-      )
+    ? recursiveParser(content, tagIsHeader ? (header: Header) => {} : addHeader)
     : content;
 
   const headerText = innerContent ? innerContent.toString() : "";
@@ -215,32 +209,63 @@ const taggedContentToReactNode = (
     case RichTextDecoration.collapse:
       const collapseValues = parseVariableTag(content);
 
-      const RichTextAccordion: React.FC = () => {
+      let accordionHeader: Header = { title: "", headerTier: 1 };
+
+      const accordionTitle = recursiveParser(
+        collapseValues.variable,
+        (header: Header) => {
+          accordionHeader = header;
+        }
+      );
+
+      const accordionID = uuidv4();
+      accordionHeader.accordionID = accordionID;
+      addHeader(accordionHeader);
+
+      const RichTextAccordion: React.FC<{ accordionID: string }> = ({
+        accordionID,
+      }) => {
         const [isOpen, setIsOpen] = React.useState(false);
-
+        const documentAccordionClickedEventName = `document_${accordionID}_clicked`;
+        const documentAccordionClickedListener = (
+          details: CustomEventInit<boolean>
+        ) => {
+          const detail = details.detail;
+          if (detail) {
+            setIsOpen(detail);
+          }
+        };
         useEffect(() => {
-          // window.addEventListener();
-
+          document.addEventListener(
+            documentAccordionClickedEventName,
+            documentAccordionClickedListener
+          );
           return () => {
-            // window.removeEventListener();
+            document.removeEventListener(
+              documentAccordionClickedEventName,
+              documentAccordionClickedListener
+            );
           };
         }, []);
 
         return (
           <AccordionBase
-            title={recursiveParser(
-              collapseValues.variable,
-              addHeader,
-              accordions
-            )}
+            title={accordionTitle}
             isOpen={isOpen}
-            setIsOpen={setIsOpen}
+            setIsOpen={(value: boolean) => {
+              setIsOpen(value);
+              const tableAccordionClickedEvent = new CustomEvent(
+                `table_${accordionID}_clicked`,
+                { detail: value }
+              );
+              document.dispatchEvent(tableAccordionClickedEvent);
+            }}
           >
-            {recursiveParser(collapseValues.text, addHeader, accordions)}
+            {recursiveParser(collapseValues.text, addHeader)}
           </AccordionBase>
         );
       };
-      return <RichTextAccordion />;
+      return <RichTextAccordion accordionID={accordionID} />;
     case RichTextDecoration.quote:
       const quoteContents = parseVariableTag(content);
       return (
@@ -277,7 +302,7 @@ const taggedContentToReactNode = (
     case RichTextDecoration.h1:
       addHeader({
         headerTier: 1,
-        content: headerText,
+        title: headerText,
       });
       return (
         <RichTextH1
@@ -289,7 +314,7 @@ const taggedContentToReactNode = (
     case RichTextDecoration.h2:
       addHeader({
         headerTier: 2,
-        content: headerText,
+        title: headerText,
       });
       return (
         <RichTextH2
@@ -301,7 +326,7 @@ const taggedContentToReactNode = (
     case RichTextDecoration.h3:
       addHeader({
         headerTier: 3,
-        content: headerText,
+        title: headerText,
       });
       return (
         <RichTextH3
@@ -313,7 +338,7 @@ const taggedContentToReactNode = (
     case RichTextDecoration.h4:
       addHeader({
         headerTier: 4,
-        content: headerText,
+        title: headerText,
       });
       return (
         <RichTextH4
@@ -349,10 +374,7 @@ const taggedContentToReactNode = (
 
 const recursiveParser = (
   content: string,
-  addHeader: (header: Header) => void,
-  accordions: {
-    [key: string]: { isOpen: boolean; setIsOpen: (value: boolean) => void };
-  }
+  addHeader: (header: Header) => void
 ): React.ReactNode => {
   let retVal: React.ReactNode[] = [];
   let lastTagEnd = 0;
@@ -379,12 +401,7 @@ const recursiveParser = (
             const preTagContent = content.slice(lastTagEnd, openTag.tagStart);
             retVal.push(<>{preTagContent}</>);
             retVal.push(
-              taggedContentToReactNode(
-                openTag.tag,
-                innerContent,
-                addHeader,
-                accordions
-              )
+              taggedContentToReactNode(openTag.tag, innerContent, addHeader)
             );
             cursor = closeTag.tagEnd - 1;
             lastTagEnd = closeTag.tagEnd;
@@ -413,32 +430,19 @@ const parseRichText = (
 ): {
   parsedContent: React.ReactNode;
   headers: Header[];
-  accordions: {
-    [key: string]: { isOpen: boolean; setIsOpen: (value: boolean) => void };
-  };
 } => {
   const headers: Header[] = [];
   const addHeader = (header: Header) => {
     headers.push(header);
   };
-  const accordions: {
-    [key: string]: { isOpen: boolean; setIsOpen: (value: boolean) => void };
-  } = {};
   const test = true;
   const setTest = (value: boolean) => {};
-  const parsedContent = recursiveParser(
-    autoAddParagraphs(content),
-    addHeader,
-    accordions
-  );
-  console.log("Accordions:");
-  console.log(accordions);
+  const parsedContent = recursiveParser(autoAddParagraphs(content), addHeader);
   console.log("Headers:");
   console.log(headers);
   return {
     parsedContent: parsedContent,
     headers: headers,
-    accordions: accordions,
   };
 };
 
