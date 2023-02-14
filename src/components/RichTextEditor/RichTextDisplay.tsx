@@ -13,6 +13,7 @@ import {
   RichTextH2,
   RichTextH3,
   RichTextH4,
+  RichTextH5,
   RichTextImg,
   RichTextItalic,
   RichTextLink,
@@ -33,6 +34,7 @@ export enum RichTextDecoration {
   h2 = "<h2>",
   h3 = "<h3>",
   h4 = "<h4>",
+  h5 = "<h5>",
   break = "<br/>",
   p = "<p>",
   image = "<img>",
@@ -202,8 +204,6 @@ const taggedContentToReactNode = (
           quoteSource={quoteContents.variable}
         />
       );
-    case RichTextDecoration.h4:
-      return <RichTextH4>{innerContent}</RichTextH4>;
     case RichTextDecoration.superscript:
       return <RichTextSuperscript>{innerContent}</RichTextSuperscript>;
     case RichTextDecoration.strikethrough:
@@ -235,6 +235,10 @@ const taggedContentToReactNode = (
       return <RichTextH2>{innerContent}</RichTextH2>;
     case RichTextDecoration.h3:
       return <RichTextH3>{innerContent}</RichTextH3>;
+    case RichTextDecoration.h4:
+      return <RichTextH4>{innerContent}</RichTextH4>;
+    case RichTextDecoration.h5:
+      return <RichTextH5>{innerContent}</RichTextH5>;
     case RichTextDecoration.picture:
     case RichTextDecoration.image:
       try {
