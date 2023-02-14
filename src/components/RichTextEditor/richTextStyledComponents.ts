@@ -11,18 +11,18 @@ export const RichTextH1 = styled.h1`
 `;
 export const RichTextH2 = styled.h2`
   margin: 0;
-  font-size: 2.33em;
+  font-size: 2em;
 `;
 export const RichTextH3 = styled.h3`
   margin: 0;
-  font-size: 2em;
+  font-size: 1.75em;
 `;
 export const RichTextH4 = styled.h4`
   margin: 0;
-  font-size: 1.66em;
+  font-size: 1.5em;
 `;
 export const RichTextH5 = styled.h5`
-  font-size: 1.33em;
+  font-size: 1.25em;
 `;
 export const RichTextP = styled.p``;
 export const RichTextStrikeThrough = styled.s``;
