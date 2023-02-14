@@ -7,15 +7,22 @@ export const RichTextBold = styled.b``;
 export const RichTextItalic = styled.i``;
 export const RichTextH1 = styled.h1`
   margin: 0;
+  font-size: 4em;
 `;
 export const RichTextH2 = styled.h2`
   margin: 0;
+  font-size: 2.33em;
 `;
 export const RichTextH3 = styled.h3`
   margin: 0;
+  font-size: 2em;
 `;
 export const RichTextH4 = styled.h4`
   margin: 0;
+  font-size: 1.66em;
+`;
+export const RichTextH5 = styled.h5`
+  font-size: 1.33em;
 `;
 export const RichTextP = styled.p``;
 export const RichTextStrikeThrough = styled.s``;
