@@ -1,6 +1,6 @@
 {
   "name": "portfolio",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "private": true,
   "dependencies": {
     "@chrisellis/react-carpentry": "^0.4.1",

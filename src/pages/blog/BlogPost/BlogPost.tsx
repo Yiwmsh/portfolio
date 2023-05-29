@@ -42,7 +42,7 @@ const Series = styled.h2`
 `;
 
 const Title = styled.h1`
-  font-size: 2em;
+  font-size: 4em;
   margin: auto 0;
 `;
 

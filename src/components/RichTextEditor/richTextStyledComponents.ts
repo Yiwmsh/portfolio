@@ -7,15 +7,22 @@ export const RichTextBold = styled.b``;
 export const RichTextItalic = styled.i``;
 export const RichTextH1 = styled.h1`
   margin: 0;
+  font-size: 4em;
 `;
 export const RichTextH2 = styled.h2`
   margin: 0;
+  font-size: 2em;
 `;
 export const RichTextH3 = styled.h3`
   margin: 0;
+  font-size: 1.75em;
 `;
 export const RichTextH4 = styled.h4`
   margin: 0;
+  font-size: 1.5em;
+`;
+export const RichTextH5 = styled.h5`
+  font-size: 1.25em;
 `;
 export const RichTextP = styled.p``;
 export const RichTextStrikeThrough = styled.s``;
@@ -47,4 +54,8 @@ export const RichTextCard = styled.div`
   box-shadow: ${defaultBoxShadow};
   padding: ${defaultPadding}px;
   border-radius: 10px;
+`;
+
+export const RichTextColumn = styled.div<{ columnCount: number }>`
+  column-count: ${({ columnCount }) => columnCount};
 `;

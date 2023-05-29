@@ -11,10 +11,12 @@ import {
   RichTextCard,
   RichTextCentered,
   RichTextCode,
+  RichTextColumn,
   RichTextH1,
   RichTextH2,
   RichTextH3,
   RichTextH4,
+  RichTextH5,
   RichTextImg,
   RichTextItalic,
   RichTextLink,
@@ -35,6 +37,7 @@ export enum RichTextDecoration {
   h2 = "<h2>",
   h3 = "<h3>",
   h4 = "<h4>",
+  h5 = "<h5>",
   break = "<br/>",
   p = "<p>",
   image = "<img>",
@@ -54,6 +57,7 @@ export enum RichTextDecoration {
   collapse = "<collapse>",
   quote = "<q>",
   spoiler = "<spoiler>",
+  column = "<col>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -65,6 +69,7 @@ export const tagIsVariable = (tag: string) => {
     case RichTextDecoration.paddedSection:
     case RichTextDecoration.collapse:
     case RichTextDecoration.quote:
+    case RichTextDecoration.column:
       return true;
     default:
       return false;
@@ -202,6 +207,20 @@ const taggedContentToReactNode = (
   const headerText = innerContent ? innerContent.toString() : "";
 
   switch (tag) {
+    case RichTextDecoration.column:
+      const variableContent = parseVariableTag(content);
+      try {
+        return (
+          <RichTextColumn
+            columnCount={variableContent.variable as unknown as number}
+          >
+            {recursiveParser(variableContent.text, addHeader)}
+          </RichTextColumn>
+        );
+      } catch (e) {
+        console.log(e);
+        return <></>;
+      }
     case RichTextDecoration.spoiler:
       return <RichTextSpoiler>{innerContent}</RichTextSpoiler>;
     case RichTextDecoration.subscript:
@@ -346,6 +365,18 @@ const taggedContentToReactNode = (
         >
           {innerContent}
         </RichTextH4>
+      );
+    case RichTextDecoration.h5:
+      addHeader({
+        headerTier: 5,
+        title: headerText,
+      });
+      return (
+        <RichTextH5
+          id={`header-${headerText.replaceAll(" ", "-").toLowerCase()}`}
+        >
+          {innerContent}
+        </RichTextH5>
       );
     case RichTextDecoration.picture:
     case RichTextDecoration.image:
