@@ -55,3 +55,7 @@ export const RichTextCard = styled.div`
   padding: ${defaultPadding}px;
   border-radius: 10px;
 `;
+
+export const RichTextColumn = styled.div<{ columnCount: number }>`
+  column-count: ${({ columnCount }) => columnCount};
+`;

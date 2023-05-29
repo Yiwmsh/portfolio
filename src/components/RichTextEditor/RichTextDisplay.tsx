@@ -9,6 +9,7 @@ import {
   RichTextCard,
   RichTextCentered,
   RichTextCode,
+  RichTextColumn,
   RichTextH1,
   RichTextH2,
   RichTextH3,
@@ -54,6 +55,7 @@ export enum RichTextDecoration {
   collapse = "<collapse>",
   quote = "<q>",
   spoiler = "<spoiler>",
+  column = "<col>",
 }
 
 const decorations = Object.values(RichTextDecoration);
@@ -65,6 +67,7 @@ export const tagIsVariable = (tag: string) => {
     case RichTextDecoration.paddedSection:
     case RichTextDecoration.collapse:
     case RichTextDecoration.quote:
+    case RichTextDecoration.column:
       return true;
     default:
       return false;
@@ -184,6 +187,20 @@ const taggedContentToReactNode = (
   );
   const innerContent = containsInnerTags ? recursiveParser(content) : content;
   switch (tag) {
+    case RichTextDecoration.column:
+      const variableContent = parseVariableTag(content);
+      try {
+        return (
+          <RichTextColumn
+            columnCount={variableContent.variable as unknown as number}
+          >
+            {recursiveParser(variableContent.text)}
+          </RichTextColumn>
+        );
+      } catch (e) {
+        console.log(e);
+        return <></>;
+      }
     case RichTextDecoration.spoiler:
       return <RichTextSpoiler>{innerContent}</RichTextSpoiler>;
     case RichTextDecoration.subscript:
