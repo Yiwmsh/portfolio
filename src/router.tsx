@@ -26,11 +26,8 @@ export const routes = [
   },
   {
     path: "blog",
+    element: <Blog />,
     children: [
-      {
-        path: "/",
-        element: <Blog />,
-      },
       {
         path: "posts",
         element: <BlogPosts />,

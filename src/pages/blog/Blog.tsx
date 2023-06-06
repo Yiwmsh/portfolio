@@ -1,7 +1,7 @@
 import { ThemeContext } from "@chrisellis/react-carpentry";
-import { useMatch } from "@tanstack/react-location";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React from "react";
+import { useMatch } from "react-router-dom";
 import { wherePublished } from "../../components";
 import { LightTheme } from "../../consts";
 import { db } from "../../firebase";
@@ -12,10 +12,9 @@ import { BlogSeries } from "./BlogPost/BlogSeries";
 import { Navbar } from "./Navbar";
 
 export const Blog: React.FC = () => {
-  const {
-    params: { blogSlug },
-  } = useMatch();
+  const match = useMatch("blog/post/:blogSlug");
 
+  const blogSlug = match ? match.params.blogSlug : undefined;
   const [blogPost, setBlogPost] = React.useState<BlogPostProps | undefined>(
     undefined
   );

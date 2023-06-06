@@ -1,13 +1,11 @@
 import styled from "@emotion/styled";
-import { Outlet, ReactLocation, Router } from "@tanstack/react-location";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { routes } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
-const location = new ReactLocation();
 
 const FontContext = styled.div`
   font-family: "Arima", cursive;
@@ -17,12 +15,7 @@ const FontContext = styled.div`
 root.render(
   <React.StrictMode>
     <FontContext>
-      <Router
-        routes={routes}
-        location={location}
-      >
-        <Outlet />
-      </Router>
+      <RouterProvider router={createBrowserRouter(routes)} />
     </FontContext>
   </React.StrictMode>
 );
