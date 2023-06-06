@@ -3,7 +3,7 @@ import { Outlet, ReactLocation, Router } from "@tanstack/react-location";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import { routs } from "./router";
+import { routes } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -18,7 +18,7 @@ root.render(
   <React.StrictMode>
     <FontContext>
       <Router
-        routes={routs}
+        routes={routes}
         location={location}
       >
         <Outlet />

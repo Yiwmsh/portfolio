@@ -5,7 +5,7 @@ import { Blog } from "./pages/blog/Blog";
 import { BlogPosts } from "./pages/blog/BlogPosts/BlogPosts";
 import { Site } from "./pages/site";
 
-export const routs = [
+export const routes = [
   {
     path: "/",
     element: (
