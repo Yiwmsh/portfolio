@@ -59,6 +59,7 @@ const inputAnimations = {
 };
 
 export const BlogSearch: React.FC<BlogSearchProps> = ({ onSearch }) => {
+  const [value, setValue] = React.useState("");
   return (
     <BlogSearchContainer
       layout
@@ -67,13 +68,17 @@ export const BlogSearch: React.FC<BlogSearchProps> = ({ onSearch }) => {
       whileFocus="focus"
       variants={containerAnimations}
     >
-      <BlogSearchButton>
+      <BlogSearchButton onClick={() => onSearch(value)}>
         <BlogSearchButtonImage
           src={searchIcon}
           alt="Search"
         />
       </BlogSearchButton>
-      <BlogSearchInput variants={inputAnimations} />
+      <BlogSearchInput
+        variants={inputAnimations}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
     </BlogSearchContainer>
   );
 };

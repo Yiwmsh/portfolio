@@ -3,7 +3,7 @@ import React from "react";
 import {
   GetAllBlogPostsCount,
   GetFrontPageBlogPosts,
-  blogPosts,
+  blogPostsSource,
 } from "../../../components";
 import { BlogPostProps } from "../../admin";
 import { BlogHomeHeader } from "./BlogHomeHeader";
@@ -26,7 +26,7 @@ export const BlogHome: React.FC = () => {
     const nextPage = await GetFrontPageBlogPosts(
       15,
       await getDoc(
-        doc(blogPosts, frontPagePosts[frontPagePosts.length - 1].uid)
+        doc(blogPostsSource, frontPagePosts[frontPagePosts.length - 1].uid)
       )
     );
     setFrontPagePosts([...frontPagePosts, ...nextPage]);

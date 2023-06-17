@@ -2,6 +2,8 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
+import { Navigate } from "react-router-dom";
+import { BlogSearch } from "./BlogSearch";
 
 const ScreenWidthBreakpoints = {
   iconsFit: 370,
@@ -91,9 +93,13 @@ export const Navbar: React.FC = () => {
           label="About"
           href="/#Bio"
         />
-        {/* <NavbarLI>
-          <BlogSearch onSearch={(value) => {}} />
-        </NavbarLI> */}
+        <NavbarLI>
+          <BlogSearch
+            onSearch={(value) => {
+              Navigate({ to: `/blog/posts/?post=${value}` });
+            }}
+          />
+        </NavbarLI>
       </NavbarUL>
     </NavbarContainer>
   );

@@ -2,7 +2,11 @@ import styled from "@emotion/styled";
 import { getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Accordion, blogPosts, wherePublished } from "../../../components";
+import {
+  Accordion,
+  blogPostsSource,
+  wherePublished,
+} from "../../../components";
 import { BlogPostProps } from "../../admin";
 import { BlogPost } from "./BlogPost";
 
@@ -32,7 +36,7 @@ export const BlogSeries: React.FC<{ post: BlogPostProps; series: string }> = ({
   React.useEffect(() => {
     const getSeriesPosts = async () => {
       const q = query(
-        blogPosts,
+        blogPostsSource,
         wherePublished,
         where("series", "array-contains", series)
       );

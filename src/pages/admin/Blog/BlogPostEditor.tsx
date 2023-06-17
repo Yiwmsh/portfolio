@@ -12,7 +12,11 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { RichTextEditor, blogPosts, removeTags } from "../../../components";
+import {
+  RichTextEditor,
+  blogPostsSource,
+  removeTags,
+} from "../../../components";
 import { db } from "../../../firebase";
 import {
   calculateReadingTime,
@@ -166,7 +170,7 @@ export const BlogPostEditor: React.FC<{
       const uploadedSuccessfully = await checkUploadSuccess();
       if (uploadedSuccessfully) {
         changesMade();
-        const response = await getDoc(doc(blogPosts, uid));
+        const response = await getDoc(doc(blogPostsSource, uid));
         try {
           const post = (await response.data()) as BlogPostProps;
           onSubmit(post);

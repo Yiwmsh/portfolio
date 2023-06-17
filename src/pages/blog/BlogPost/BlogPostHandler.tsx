@@ -1,17 +1,13 @@
-import { ThemeContext } from "@chrisellis/react-carpentry";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { useMatch } from "react-router-dom";
-import { wherePublished } from "../../components";
-import { LightTheme } from "../../consts";
-import { db } from "../../firebase";
-import { BlogPostProps } from "../admin";
-import { BlogHome } from "./BlogHome/BlogHome";
-import { BlogPost } from "./BlogPost/BlogPost";
-import { BlogSeries } from "./BlogPost/BlogSeries";
-import { Navbar } from "./Navbar";
+import { wherePublished } from "../../../components";
+import { db } from "../../../firebase";
+import { BlogPostProps } from "../../admin";
+import { BlogPost } from "./BlogPost";
+import { BlogSeries } from "./BlogSeries";
 
-export const Blog: React.FC = () => {
+export const BlogPostHandler: React.FC = () => {
   const match = useMatch("blog/post/:blogSlug");
 
   const blogSlug = match ? match.params.blogSlug : undefined;
@@ -38,23 +34,22 @@ export const Blog: React.FC = () => {
       getPost();
     }
   }, []);
+
+  if (!blogPost) {
+    return null;
+  }
+
   return (
-    <ThemeContext theme={LightTheme}>
-      <Navbar />
-      {blogSlug === undefined ? (
-        <BlogHome />
-      ) : blogPost ? (
-        blogPost.series && blogPost.series.length > 0 ? (
-          <BlogSeries
-            post={blogPost}
-            series={blogPost.series[0]}
-          />
-        ) : (
-          <BlogPost post={blogPost} />
-        )
+    <>
+      {" "}
+      {blogPost.series && blogPost.series.length > 0 ? (
+        <BlogSeries
+          post={blogPost}
+          series={blogPost.series[0]}
+        />
       ) : (
-        ""
+        <BlogPost post={blogPost} />
       )}
-    </ThemeContext>
+    </>
   );
 };
