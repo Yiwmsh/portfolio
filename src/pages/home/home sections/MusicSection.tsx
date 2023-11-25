@@ -2,8 +2,6 @@ import { SemanticColors, TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
-import { CenteringSection } from "../../../components/CenteringSection";
-import { ScrollButton } from "../../../components/ScrollButton";
 import musicPic from "../../../resources/musicPic.webp";
 
 const YOUTUBE_PLAYLIST_ITEMS_API =
@@ -208,11 +206,7 @@ export const MusicSection: React.FC = () => {
   }, []);
 
   return (
-    <CenteringSection id="Music">
-      <ScrollButton
-        direction="up"
-        target="Bio"
-      />
+    <>
       <MusicSectionGrid>
         <MusicBioContainer
           layout
@@ -318,10 +312,6 @@ export const MusicSection: React.FC = () => {
           )}
         </YoutubeVideosContainer>
       </MusicSectionGrid>
-      <ScrollButton
-        direction="down"
-        target="Blog"
-      />
-    </CenteringSection>
+    </>
   );
 };

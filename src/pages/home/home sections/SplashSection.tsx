@@ -2,8 +2,6 @@ import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { CenteringSection } from "../../../components/CenteringSection";
-import { ScrollButton } from "../../../components/ScrollButton";
 import { NameContext, SessionContext } from "../../site";
 
 const newcomer = localStorage.getItem("name") ? true : false;
@@ -40,7 +38,7 @@ export const SplashSection: React.FC = () => {
   return (
     <SessionContext.Consumer>
       {({ session }) => (
-        <CenteringSection id="Splash">
+        <>
           <CenteringTextContent altColor>
             <NameContext.Consumer>
               {({ name }) => (
@@ -143,13 +141,8 @@ export const SplashSection: React.FC = () => {
             transition={{
               delay: session ? 5 : 10,
             }}
-          >
-            <ScrollButton
-              direction="down"
-              target={"Bio"}
-            />
-          </motion.div>
-        </CenteringSection>
+          ></motion.div>
+        </>
       )}
     </SessionContext.Consumer>
   );

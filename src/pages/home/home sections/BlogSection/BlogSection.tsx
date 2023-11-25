@@ -10,8 +10,6 @@ import {
 } from "firebase/firestore";
 import React from "react";
 import { wherePublished } from "../../../../components/BlogPostTools";
-import { CenteringSection } from "../../../../components/CenteringSection";
-import { ScrollButton } from "../../../../components/ScrollButton";
 import { db } from "../../../../firebase";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
@@ -130,11 +128,7 @@ export const BlogSection: React.FC = () => {
     getRecentPosts();
   }, []);
   return (
-    <CenteringSection id="Blog">
-      <ScrollButton
-        direction="up"
-        target="Music"
-      />
+    <>
       <BlogGrid>
         <BlogDescription>
           <TextContent>
@@ -166,7 +160,6 @@ export const BlogSection: React.FC = () => {
           <BlogPostPreviewList posts={recentPosts} />
         </SmallScreenPostList>
       </BlogGrid>
-      {/* <ScrollButton direction="down" target="" /> */}
-    </CenteringSection>
+    </>
   );
 };
