@@ -1,8 +1,8 @@
-import React from "react";
-import { motion } from "framer-motion";
 import styled from "@emotion/styled";
-import { Star, StarData } from "./Star";
+import { motion } from "framer-motion";
+import React from "react";
 import { SessionContext } from "../pages/site";
+import { Star, StarData } from "./Star";
 
 const Sun = styled(motion.circle)``;
 
@@ -84,7 +84,7 @@ const generateStars = (count: number): StarData[] => {
   return stars;
 };
 
-export const Nav: React.FC = () => {
+export const Skybox: React.FC = () => {
   return (
     <SessionContext.Consumer>
       {({ session }) => (

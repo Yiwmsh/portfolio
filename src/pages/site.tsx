@@ -2,7 +2,7 @@ import { Button, Navbar } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
-import { Nav } from "../components/Nav";
+import { Skybox } from "../components/Skybox";
 import { WelcomeModal } from "./home/home sections/WelcomeModal";
 
 export const NameContext = React.createContext({
@@ -84,7 +84,7 @@ export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   transition={BACKGROUND_TRANSITION}
                 />
                 <SVGCanvas>
-                  <Nav />
+                  <Skybox />
                 </SVGCanvas>
                 {children}
               </>
