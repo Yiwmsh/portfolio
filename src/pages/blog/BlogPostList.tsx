@@ -1,6 +1,6 @@
 import { Button } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { BlogPostProps } from "../admin";
+import { BlogPostProps } from "../admin/Blog/blogPostProps";
 import { BlogSnippet } from "./BlogSnippet";
 
 const ThatsAllForNow = styled.div``;

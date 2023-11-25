@@ -1,7 +1,7 @@
 import { TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
-import { BlogPostProps } from "../../../admin";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { BlogPostPreview } from "./BlogPostPreview";
 import { StyledLink } from "./BlogSection";
 

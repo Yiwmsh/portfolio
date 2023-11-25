@@ -9,11 +9,11 @@ import {
   where,
 } from "firebase/firestore";
 import React from "react";
-import { wherePublished } from "../../../../components";
+import { wherePublished } from "../../../../components/BlogPostTools";
 import { CenteringSection } from "../../../../components/CenteringSection";
 import { ScrollButton } from "../../../../components/ScrollButton";
 import { db } from "../../../../firebase";
-import { BlogPostProps } from "../../../admin";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
 import { BlogPostPreviewList } from "./BlogPostPreviewList";
 

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { defaultBoxShadow } from "../consts";
+import { defaultBoxShadow } from "../consts/theme";
 
 export interface AccordionProps {
   title: React.ReactNode;

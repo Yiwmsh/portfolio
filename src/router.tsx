@@ -1,10 +1,11 @@
 import { ThemeContext } from "@chrisellis/react-carpentry";
-import { LightTheme, TransparentTheme } from "./consts";
-import { Home, SignInManager } from "./pages";
-import { BlogHome } from "./pages/blog";
+import { LightTheme, TransparentTheme } from "./consts/theme";
+import { SignInManager } from "./pages/admin/SignIn";
+import { BlogHome } from "./pages/blog/BlogHome/BlogHome";
 import { BlogPostHandler } from "./pages/blog/BlogPost/BlogPostHandler";
 import { BlogPosts } from "./pages/blog/BlogPosts/BlogPosts";
 import { BlogRoot } from "./pages/blog/BlogRoot";
+import { Home } from "./pages/home/home";
 import { Site } from "./pages/site";
 
 export const routes = [

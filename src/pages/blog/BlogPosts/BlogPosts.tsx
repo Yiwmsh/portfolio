@@ -7,9 +7,9 @@ import {
   GetBlogPostsByQuery,
   GetFrontPageBlogPosts,
   blogPostsSource,
-} from "../../../components";
-import { LightTheme } from "../../../consts";
-import { BlogPostProps } from "../../admin";
+} from "../../../components/BlogPostTools";
+import { LightTheme } from "../../../consts/theme";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { BlogPostList } from "../BlogPostList";
 
 export const BlogPosts: React.FC = () => {

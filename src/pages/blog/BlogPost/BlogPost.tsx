@@ -5,7 +5,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { ScreenMaxWidth } from "../../../components/MediaQueries";
 import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
-import { BlogPostProps } from "../../admin";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { DateData } from "./DateData";
 import { PostTags } from "./PostTags";
 

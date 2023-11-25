@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { BlogPostProps } from "../../admin";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { BlogPostList } from "../BlogPostList";
 
 const ScreenWidthBreakpoints = {

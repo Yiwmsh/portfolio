@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
-import { BlogPostProps } from "../../../admin";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
 import { BottomBlur } from "./BlogPostPreview";
 

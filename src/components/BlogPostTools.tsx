@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { BlogPostProps } from "../pages/admin";
+import { BlogPostProps } from "../pages/admin/Blog/blogPostProps";
 
 export const blogPostsSource = collection(
   db,

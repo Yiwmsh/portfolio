@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { defaultBoxShadow } from "../../consts";
+import { defaultBoxShadow } from "../../consts/theme";
 
 const defaultPadding = 10;
 

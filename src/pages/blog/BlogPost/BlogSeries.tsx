@@ -2,12 +2,12 @@ import styled from "@emotion/styled";
 import { getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { Helmet } from "react-helmet";
+import { Accordion } from "../../../components/Accordion";
 import {
-  Accordion,
   blogPostsSource,
   wherePublished,
-} from "../../../components";
-import { BlogPostProps } from "../../admin";
+} from "../../../components/BlogPostTools";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { BlogPost } from "./BlogPost";
 
 const BlogPostTitle = styled.h2`

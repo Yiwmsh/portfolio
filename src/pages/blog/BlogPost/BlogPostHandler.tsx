@@ -1,9 +1,9 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { useMatch } from "react-router-dom";
-import { wherePublished } from "../../../components";
+import { wherePublished } from "../../../components/BlogPostTools";
 import { db } from "../../../firebase";
-import { BlogPostProps } from "../../admin";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { BlogPost } from "./BlogPost";
 import { BlogSeries } from "./BlogSeries";
 

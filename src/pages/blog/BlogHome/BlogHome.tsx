@@ -4,8 +4,8 @@ import {
   GetAllBlogPostsCount,
   GetFrontPageBlogPosts,
   blogPostsSource,
-} from "../../../components";
-import { BlogPostProps } from "../../admin";
+} from "../../../components/BlogPostTools";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePosts } from "./BlogHomePostList";
 

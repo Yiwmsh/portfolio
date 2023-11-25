@@ -12,11 +12,8 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  RichTextEditor,
-  blogPostsSource,
-  removeTags,
-} from "../../../components";
+import { blogPostsSource, removeTags } from "../../../components/BlogPostTools";
+import { RichTextEditor } from "../../../components/RichTextEditor/RichTextEditor";
 import { db } from "../../../firebase";
 import {
   calculateReadingTime,
