@@ -131,8 +131,6 @@ const BioBlurb = styled.p`
 const defaultTags: string[] = [
   "stuff",
   "whatever I want",
-  "anything",
-  "everything",
   "my favourite things",
   "things I like",
 ];
@@ -142,15 +140,25 @@ export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);
   };
-  const getRandomTag = () => {
-    return allTags[getRandomArrayIndex(allTags)];
+  const getNewRandomTag = (previousTag: string) => {
+    return allTags[
+      getRandomArrayIndex(allTags.filter((tag) => tag !== previousTag))
+    ];
   };
-  const [displayTag, setDisplayTag] = React.useState(getRandomTag());
+  const [displayTag, setDisplayTag] = React.useState(getNewRandomTag(""));
 
-  // setInterval(() => {
-  //   setDisplayTag(getRandomTag());
-  //   console.log("Tag changed");
-  // }, 5000);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setDisplayTag(getNewRandomTag(displayTag));
+      console.log("Tag changed");
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+      console.log("Interval cleared");
+    };
+  }, []);
+
   return (
     <HeaderContainer>
       <BlogHomeBannerTextContainer>
