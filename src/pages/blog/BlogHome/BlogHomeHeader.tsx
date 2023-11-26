@@ -150,12 +150,10 @@ export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       setDisplayTag(getNewRandomTag(displayTag));
-      console.log("Tag changed");
     }, 5000);
 
     return () => {
       clearInterval(interval);
-      console.log("Interval cleared");
     };
   }, []);
 

@@ -41,7 +41,6 @@ export const BlogHome: React.FC = () => {
     ) {
       return;
     }
-    console.log("Fetching next page");
     fetchNextPage();
   };
 
