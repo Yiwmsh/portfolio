@@ -2,7 +2,7 @@ import { ThemeContext } from "@chrisellis/react-carpentry";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { LightTheme } from "../../consts/theme";
-import { Navbar } from "./Navbar";
+import { Navbar } from "./BlogNavbar";
 
 export const BlogOutlet: React.FC = () => {
   return (
