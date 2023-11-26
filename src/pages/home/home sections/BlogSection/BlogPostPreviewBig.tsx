@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
-import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
+import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost/BlogPost";
 import { BottomBlur } from "./BlogPostPreview";
 
 const BigPreviewContainer = styled(motion.button)`

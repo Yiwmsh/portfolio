@@ -1,65 +1,21 @@
-import { CardFooter, CardHeader } from "@chrisellis/react-carpentry";
-import styled from "@emotion/styled";
+import { CardFooter } from "@chrisellis/react-carpentry";
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { Helmet } from "react-helmet";
-import { ScreenMaxWidth } from "../../../components/MediaQueries";
-import { RichTextDisplay } from "../../../components/RichTextEditor/RichTextDisplay";
-import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { DateData } from "./DateData";
-import { PostTags } from "./PostTags";
-
-const ScreenWidthBreakpoints = {
-  dateData: 630,
-  content: 420,
-};
-
-const BlogPostStyle = styled.article`
-  margin: 0 5vw 5vw;
-
-  ${ScreenMaxWidth(ScreenWidthBreakpoints.content, `margin: 10px;`)}
-`;
-
-const BlogPostCardHeader = styled(CardHeader)`
-  margin: 30px 0;
-`;
-
-const PostInformation = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  ${ScreenMaxWidth(
-    ScreenWidthBreakpoints.dateData,
-    `
- flex-direction: column;
- `
-  )}
-`;
-
-const Series = styled.h2`
-  filter: opacity(50%);
-`;
-
-const Title = styled.h1`
-  font-size: 4em;
-  margin: auto 0;
-`;
-
-const Authors = styled.p`
-  font-style: italic;
-`;
-
-const PostContent = styled.div`
-  width: clamp(0px, calc(100% - 10px), 800px);
-  margin: auto;
-
-  @media screen and (max-width: ${ScreenWidthBreakpoints.content}px) {
-    margin: 0;
-  }
-`;
-
-const ReadingTime = styled.div``;
+import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
+import { DateData } from "../DateData";
+import { PostTags } from "../PostTags";
+import {
+  Authors,
+  BlogPostCardHeader,
+  BlogPostStyle,
+  PostContent,
+  PostInformation,
+  ReadingTime,
+  Series,
+  Title,
+} from "./BlogPostStyle";
 
 export const displayTimestampAsDate = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();

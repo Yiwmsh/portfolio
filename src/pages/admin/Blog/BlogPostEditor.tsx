@@ -18,7 +18,7 @@ import { db } from "../../../firebase";
 import {
   calculateReadingTime,
   fancyDisplayTimestamp,
-} from "../../blog/BlogPost/BlogPost";
+} from "../../blog/BlogPost/BlogPost/BlogPost";
 import {
   CenteringButtonBank,
   Row,

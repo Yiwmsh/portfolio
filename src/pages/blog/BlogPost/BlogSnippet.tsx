@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import { removeTags } from "../../../components/BlogPostTools";
 import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { displayTimestampAsDate } from "./BlogPost";
+import { displayTimestampAsDate } from "./BlogPost/BlogPost";
 
 const SnippetContainer = styled.button<{ featuredPriority: number }>`
   display: flex;

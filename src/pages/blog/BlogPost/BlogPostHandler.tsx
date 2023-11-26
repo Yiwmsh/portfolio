@@ -1,10 +1,12 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { getDocs, query, where } from "firebase/firestore";
 import React from "react";
 import { useMatch } from "react-router-dom";
-import { wherePublished } from "../../../components/BlogPostTools";
-import { db } from "../../../firebase";
+import {
+  blogPostsSource,
+  wherePublished,
+} from "../../../components/BlogPostTools";
 import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { BlogPost } from "./BlogPost";
+import { BlogPost } from "./BlogPost/BlogPost";
 import { BlogSeries } from "./BlogSeries";
 
 export const BlogPostHandler: React.FC = () => {
@@ -18,10 +20,7 @@ export const BlogPostHandler: React.FC = () => {
   React.useEffect(() => {
     const getPost = async () => {
       const q = query(
-        collection(
-          db,
-          process.env.REACT_APP_blogPostCollection ?? "blog-posts"
-        ),
+        blogPostsSource,
         wherePublished,
         where("slug", "==", blogSlug)
       );

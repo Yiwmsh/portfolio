@@ -8,7 +8,7 @@ import {
   wherePublished,
 } from "../../../components/BlogPostTools";
 import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { BlogPost } from "./BlogPost";
+import { BlogPost } from "./BlogPost/BlogPost";
 
 const BlogPostTitle = styled.h2`
   text-align: center;
