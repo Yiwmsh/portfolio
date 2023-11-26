@@ -42,8 +42,8 @@ export const GetAllBlogPostsCount = async (
 
 export const getFrontPageBlogPosts = async (
   pageLimit?: number,
-  startingPoint?: number | DocumentSnapshot
-): Promise<BlogPostProps[]> => {
+  startingPoint?: DocumentSnapshot
+): Promise<{ posts: BlogPostProps[]; lastCursor: DocumentSnapshot }> => {
   const frontPageBlogPosts: BlogPostProps[] = [];
 
   const q = startingPoint
@@ -75,7 +75,10 @@ export const getFrontPageBlogPosts = async (
     }
   }
 
-  return frontPageBlogPosts;
+  return {
+    posts: frontPageBlogPosts,
+    lastCursor: response.docs[response.docs.length - 1],
+  };
 };
 
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {

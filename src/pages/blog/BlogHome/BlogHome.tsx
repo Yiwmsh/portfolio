@@ -16,19 +16,61 @@ const CenteringDiv = styled.div`
   margin: 10% 0;
 `;
 
+const ThatsAllForNow = styled.div`
+  margin: auto;
+  text-align: center;
+  font-size: medium;
+`;
+
 export const BlogHome: React.FC = () => {
-  const { data: posts, status: postQueryStatus } = useFrontPageBlogPosts();
+  const {
+    data,
+    status: postQueryStatus,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useFrontPageBlogPosts();
   const { data: tags, status: tagQueryStatus } = useBlogPostTags();
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      postQueryStatus === "loading" ||
+      !hasNextPage
+    ) {
+      return;
+    }
+    console.log("Fetching next page");
+    fetchNextPage();
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [postQueryStatus]);
+
+  const posts =
+    postQueryStatus === "success"
+      ? data.pages.flatMap((page) => page.posts)
+      : [];
 
   return (
     <>
       <BlogHomeHeader tags={tagQueryStatus === "success" ? tags : []} />
       {postQueryStatus === "success" ? (
-        <BlogHomePostList posts={posts.pages.flat()} />
-      ) : postQueryStatus === "loading" ? (
+        <BlogHomePostList posts={posts} />
+      ) : null}
+      {postQueryStatus === "loading" || isFetchingNextPage ? (
         <CenteringDiv>
           <TailSpin color="var(--primary-color)" />
         </CenteringDiv>
+      ) : null}
+      {postQueryStatus === "success" && !hasNextPage && posts.length > 0 ? (
+        <ThatsAllForNow>
+          Looks like that's it for now. Check back another time to see if
+          there's more!
+        </ThatsAllForNow>
       ) : null}
     </>
   );

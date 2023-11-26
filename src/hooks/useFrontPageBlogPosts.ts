@@ -4,10 +4,10 @@ import { getFrontPageBlogPosts } from "../components/BlogPostTools";
 export const useFrontPageBlogPosts = () =>
   useInfiniteQuery(
     "posts",
-    async ({ pageParam = undefined }) => {
+    async ({ pageParam = 0 }) => {
       return getFrontPageBlogPosts(15, pageParam);
     },
     {
-      getNextPageParam: (lastPage) => lastPage,
+      getNextPageParam: (lastPage) => lastPage.lastCursor,
     }
   );
