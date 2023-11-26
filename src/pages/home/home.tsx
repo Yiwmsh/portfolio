@@ -35,7 +35,9 @@ export const Home: React.FC = () => {
                 direction="up"
                 target={sections[index - 1].id}
               />
-            ) : null}
+            ) : (
+              <div aria-hidden />
+            )}
             {section.section}
             {index < sections.length - 1 ? (
               <ScrollButton
