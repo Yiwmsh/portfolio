@@ -137,9 +137,7 @@ const defaultTags: string[] = [
   "things I like",
 ];
 
-export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
-  tags,
-}) => {
+export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
   const allTags = [tags, defaultTags].flat();
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { BlogPostList } from "../BlogPostList";
+import { BlogSnippet } from "../BlogPost/BlogSnippet";
 
 const ScreenWidthBreakpoints = {
   twoRows: 830,
@@ -31,19 +31,13 @@ const NothingHereYet = styled.div`
   padding: 50px;
 `;
 
-export const BlogHomePosts: React.FC<{
-  posts: BlogPostProps[];
-  maxPosts?: number;
-  loadNextPage: () => {};
-}> = ({ posts, maxPosts, loadNextPage }) => {
+export const BlogHomePostList: React.FC<{ posts: BlogPostProps[] }> = ({
+  posts,
+}) => {
   return (
     <PostListGrid>
       {posts.length > 0 ? (
-        <BlogPostList
-          posts={posts}
-          maxPosts={maxPosts}
-          loadNextPage={loadNextPage}
-        />
+        posts.map((post) => <BlogSnippet post={post} />)
       ) : (
         <NothingHereYet>
           It looks like there's nothing here yet - check back later!

@@ -18,6 +18,11 @@ export const blogPostsSource = collection(
   db,
   process.env.REACT_APP_blogPostCollection ?? "blog-posts"
 );
+export const blogPostsTagSource = collection(
+  db,
+  process.env.REACT_APP_blogPostTagsCollection ?? "blog-tags"
+);
+
 export const wherePublished = where("publish", "==", true);
 
 export const GetAllBlogPosts = async (
@@ -35,9 +40,9 @@ export const GetAllBlogPostsCount = async (
   return count;
 };
 
-export const GetFrontPageBlogPosts = async (
+export const getFrontPageBlogPosts = async (
   pageLimit?: number,
-  startingPoint?: DocumentSnapshot
+  startingPoint?: number | DocumentSnapshot
 ): Promise<BlogPostProps[]> => {
   const frontPageBlogPosts: BlogPostProps[] = [];
 
