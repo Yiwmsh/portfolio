@@ -8,7 +8,8 @@ const ScreenWidthBreakpoints = {
   oneRow: 600,
 };
 
-const PostListGrid = styled.div`
+const PostListGrid = styled.ul`
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;

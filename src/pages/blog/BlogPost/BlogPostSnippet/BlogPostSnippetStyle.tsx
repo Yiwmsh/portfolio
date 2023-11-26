@@ -1,20 +1,70 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 
-export const SnippetContainer = styled.button`
-  display: flex;
-  flex-direction: column;
-  background-color: var(${SemanticColors.background});
-  border: none;
+const borderWidth = "2px";
+const cornerSize = "30px";
+
+export const SnippetContainer = styled.li`
+  list-style: none;
+  display: inline-block;
+  position: relative;
+  border: ${borderWidth} solid var(${SemanticColors.primary});
   cursor: pointer;
   height: 150px;
-  overflow: hidden;
-  justify-content: flex-start;
-  font-family: "Arima", cursive;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background-color: var(${SemanticColors.background});
+    z-index: 0;
+    transition: 200ms ease-in;
+    transform-origin: center center;
+  }
+
+  &::before {
+    width: calc(100% + ${borderWidth} * 2 - ${cornerSize});
+    height: calc(100% + ${borderWidth} * 2);
+    top: -${borderWidth};
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  ::after {
+    height: calc(100% + ${borderWidth} * 2 - ${cornerSize});
+    width: calc(100% + ${borderWidth} * 2);
+    left: -${borderWidth};
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &&:hover::after {
+    height: 0;
+  }
+
+  &&:hover::before {
+    width: 0;
+  }
 `;
+
+export const SnippetContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  position: relative;
+  font-family: "Arima", cursive;
+  font-size: 13px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  margin: 5px;
+  text-align: center;
+`;
+
 export const BlogPostMetaLine = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 3px;
   margin: 0;
 `;
@@ -23,19 +73,17 @@ export const BlogPostMetaEntry = styled.p`
 `;
 export const BlogPostTitle = styled.h2`
   margin: 0;
-  text-align: start;
 `;
 export const BlogPostAuthors = styled.i`
   margin: 0;
-  text-align: start;
 `;
 export const BlogPostSummary = styled.p`
   margin: 10px 0 0 0;
-  text-align: start;
 `;
 export const BlogPostSnippetRow = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 10px;
 `;
 export const BlogPostSnippetSeries = styled.h3`

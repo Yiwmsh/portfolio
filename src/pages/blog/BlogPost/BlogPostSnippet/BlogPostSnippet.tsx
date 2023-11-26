@@ -11,6 +11,7 @@ import {
   BlogPostSummary,
   BlogPostTitle,
   SnippetContainer,
+  SnippetContent,
 } from "./BlogPostSnippetStyle";
 
 export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
@@ -21,27 +22,31 @@ export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
         window.location.assign(`/blog/post/${post.slug}`);
       }}
     >
-      <BlogPostMetaLine>
-        <BlogPostMetaEntry>
-          {post.publishedDate ? displayTimestampAsDate(post.publishedDate) : ""}
-        </BlogPostMetaEntry>
-        <BlogPostMetaEntry>·</BlogPostMetaEntry>
-        <BlogPostMetaEntry>{readTime}</BlogPostMetaEntry>
-      </BlogPostMetaLine>
-      <BlogPostSnippetRow>
-        <BlogPostTitle>{post.title}</BlogPostTitle>
-        {post.series && post.series.length > 0 ? (
-          <BlogPostSnippetSeries>{post.series[0]}</BlogPostSnippetSeries>
-        ) : (
-          ""
-        )}
-      </BlogPostSnippetRow>
-      <BlogPostAuthors>{post.authors.join(", ")}</BlogPostAuthors>
-      <BlogPostSummary>
-        {post.summary !== ""
-          ? post.summary
-          : `${removeTags(post.content.slice(0, 230))}...`}
-      </BlogPostSummary>
+      <SnippetContent>
+        <BlogPostMetaLine>
+          <BlogPostMetaEntry>
+            {post.publishedDate
+              ? displayTimestampAsDate(post.publishedDate)
+              : ""}
+          </BlogPostMetaEntry>
+          <BlogPostMetaEntry>·</BlogPostMetaEntry>
+          <BlogPostMetaEntry>{readTime}</BlogPostMetaEntry>
+        </BlogPostMetaLine>
+        <BlogPostSnippetRow>
+          <BlogPostTitle>{post.title}</BlogPostTitle>
+          {post.series && post.series.length > 0 ? (
+            <BlogPostSnippetSeries>{post.series[0]}</BlogPostSnippetSeries>
+          ) : (
+            ""
+          )}
+        </BlogPostSnippetRow>
+        <BlogPostAuthors>{post.authors.join(", ")}</BlogPostAuthors>
+        <BlogPostSummary>
+          {post.summary !== ""
+            ? post.summary
+            : `${removeTags(post.content.slice(0, 230))}...`}
+        </BlogPostSummary>
+      </SnippetContent>
     </SnippetContainer>
   );
 };
