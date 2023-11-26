@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { BlogPostProps } from "../../admin/Blog/blogPostProps";
-import { BlogSnippet } from "../BlogPost/BlogSnippet";
+import { BlogSnippet } from "../BlogPost/BlogPostSnippet/BlogPostSnippet";
 
 const ScreenWidthBreakpoints = {
   twoRows: 830,
