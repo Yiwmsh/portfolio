@@ -1,9 +1,8 @@
-import { Color, SemanticColors } from "@chrisellis/react-carpentry";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import portrait from "../../../resources/portrait.jpg";
 
-const aboutBackgroundColor: Color = "#f4edfc";
 const TitleRowMinWidth = 353;
 
 const ScreenWidthBreakPoints = {
@@ -15,7 +14,7 @@ const ScreenWidthBreakPoints = {
 const HeaderContainer = styled.div`
   grid-row: 1;
   grid-column: 1 / span 3;
-  background-color: ${aboutBackgroundColor};
+  background-color: var(${SemanticColors.midground});
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

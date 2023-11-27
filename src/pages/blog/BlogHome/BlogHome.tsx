@@ -17,7 +17,7 @@ const CenteringDiv = styled.div`
 `;
 
 const ThatsAllForNow = styled.div`
-  margin: auto;
+  margin: 20px auto;
   text-align: center;
   font-size: medium;
 `;

@@ -19,6 +19,7 @@ export const TransparentTheme = new Theme({
 
 export const LightTheme = new Theme({
   background: "#FFFFFF",
+  midground: "#f4edfc",
   shadow: "rgba(0, 0, 0, 0.15)",
   primary: "#ac6996",
   primaryActive: "#f897d8",
