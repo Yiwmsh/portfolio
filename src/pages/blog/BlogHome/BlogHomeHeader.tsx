@@ -1,6 +1,7 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
+import { useBlogPostTags } from "../../../hooks/useBlogTags";
 import portrait from "../../../resources/portrait.jpg";
 
 const TitleRowMinWidth = 353;
@@ -134,15 +135,18 @@ const defaultTags: string[] = [
   "things I like",
 ];
 
-export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
-  const allTags = [tags, defaultTags].flat();
+export const BlogHomeHeader: React.FC = () => {
+  const { data: fetchedTags, status: tagQueryStatus } = useBlogPostTags();
+  const tags = React.useMemo(() => {
+    return tagQueryStatus === "success" && fetchedTags.length > 0
+      ? fetchedTags
+      : defaultTags;
+  }, []);
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);
   };
   const getNewRandomTag = (previousTag: string) => {
-    return allTags[
-      getRandomArrayIndex(allTags.filter((tag) => tag !== previousTag))
-    ];
+    return tags[getRandomArrayIndex(tags.filter((tag) => tag !== previousTag))];
   };
   const [displayTag, setDisplayTag] = React.useState(getNewRandomTag(""));
 
