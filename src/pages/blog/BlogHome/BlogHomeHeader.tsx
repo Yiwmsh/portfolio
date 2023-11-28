@@ -141,7 +141,7 @@ export const BlogHomeHeader: React.FC = () => {
     return tagQueryStatus === "success" && fetchedTags.length > 0
       ? fetchedTags
       : defaultTags;
-  }, []);
+  }, [fetchedTags, tagQueryStatus]);
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);
   };
@@ -158,7 +158,7 @@ export const BlogHomeHeader: React.FC = () => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [tags, tagQueryStatus]);
 
   return (
     <HeaderContainer>
