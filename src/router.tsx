@@ -34,10 +34,10 @@ export const routes = [
         index: true,
         element: <BlogHome />,
       },
-      {
-        path: "posts",
-        element: <>Nothing here yet.</>,
-      },
+      // {
+      //   path: "posts",
+      //   element: <>Nothing here yet.</>,
+      // },
       {
         path: "post/:blogSlug",
         element: <BlogPostHandler />,
