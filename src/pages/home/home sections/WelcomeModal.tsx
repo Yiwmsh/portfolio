@@ -9,7 +9,8 @@ import {
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
-import { Modal, WhatsYourName } from "../../../components";
+import { Modal } from "../../../components/Modal";
+import { WhatsYourName } from "../../../components/WhatsYourName";
 
 const AdjustedTextContent = styled(TextContent)`
   margin-top: 5px;

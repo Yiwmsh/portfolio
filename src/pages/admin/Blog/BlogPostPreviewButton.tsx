@@ -5,9 +5,10 @@ import {
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
-import { Modal } from "../../../components";
-import { LightTheme } from "../../../consts";
-import { BlogPost, Navbar } from "../../blog";
+import { Modal } from "../../../components/Modal";
+import { LightTheme } from "../../../consts/theme";
+import { Navbar } from "../../blog/BlogNavbar";
+import { BlogPost } from "../../blog/BlogPost/BlogPost/BlogPost";
 import { BlogPostProps } from "./blogPostProps";
 
 const CloseButton = styled.button`

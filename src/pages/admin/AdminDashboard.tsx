@@ -10,7 +10,7 @@ import { getAuth, signOut } from "firebase/auth";
 import React from "react";
 import { CenteringSection } from "../../components/CenteringSection";
 import { RichTextEditor } from "../../components/RichTextEditor/RichTextEditor";
-import { BlogAdminPanel } from "./Blog";
+import { BlogAdminPanel } from "./Blog/BlogAdminPanel";
 import { SignInButton } from "./SignIn";
 
 const SignOutButton = styled(Button)`
@@ -20,8 +20,8 @@ const SignOutButton = styled(Button)`
 `;
 
 const ScrollSection = styled.div`
-overflow-x: scroll
-`
+  overflow-x: scroll;
+`;
 
 export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   authorized,
@@ -31,9 +31,9 @@ export const AdminDashboard: React.FC<{ authorized: boolean }> = ({
   return authorized ? (
     <CenteringSection>
       <ScrollSection>
-      <BlogAdminPanel />
-      {/* <TestSegment /> */}
-      <SignOutButton onPress={() => signOut(auth)}>Sign Out</SignOutButton>
+        <BlogAdminPanel />
+        {/* <TestSegment /> */}
+        <SignOutButton onPress={() => signOut(auth)}>Sign Out</SignOutButton>
       </ScrollSection>
     </CenteringSection>
   ) : (

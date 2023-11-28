@@ -1,10 +1,13 @@
 import { ThemeContext } from "@chrisellis/react-carpentry";
-import { LightTheme, TransparentTheme } from "./consts";
-import { Home, SignInManager } from "./pages";
-import { Blog } from "./pages/blog/Blog";
+import { LightTheme, TransparentTheme } from "./consts/theme";
+import { SignInManager } from "./pages/admin/SignIn";
+import { BlogHome } from "./pages/blog/BlogHome/BlogHome";
+import { BlogOutlet } from "./pages/blog/BlogOutlet";
+import { BlogPostHandler } from "./pages/blog/BlogPost/BlogPostHandler";
+import { Home } from "./pages/home/home";
 import { Site } from "./pages/site";
 
-export const routs = [
+export const routes = [
   {
     path: "/",
     element: (
@@ -25,22 +28,20 @@ export const routs = [
   },
   {
     path: "blog",
+    element: <BlogOutlet />,
     children: [
       {
-        path: "/",
-        element: <Blog />,
+        index: true,
+        element: <BlogHome />,
       },
-      // {
-      //   path: "posts",
-      //   element: <BlogPosts />,
-      // },
+      {
+        path: "posts",
+        element: <>Nothing here yet.</>,
+      },
       {
         path: "post/:blogSlug",
-        element: <Blog />,
+        element: <BlogPostHandler />,
       },
-      // {
-      //   path: "preview/:blogSlug"
-      // }
     ],
   },
 ];

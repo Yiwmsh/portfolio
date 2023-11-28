@@ -9,11 +9,9 @@ import {
   where,
 } from "firebase/firestore";
 import React from "react";
-import { wherePublished } from "../../../../components";
-import { CenteringSection } from "../../../../components/CenteringSection";
-import { ScrollButton } from "../../../../components/ScrollButton";
+import { wherePublished } from "../../../../components/BlogPostTools";
 import { db } from "../../../../firebase";
-import { BlogPostProps } from "../../../admin";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { BlogPostBigPreview } from "./BlogPostPreviewBig";
 import { BlogPostPreviewList } from "./BlogPostPreviewList";
 
@@ -105,11 +103,14 @@ export const BlogSection: React.FC = () => {
   React.useEffect(() => {
     const getRecentPosts = async () => {
       const q = query(
-        collection(db, "blog-posts"),
+        collection(
+          db,
+          process.env.REACT_APP_blogPostCollection ?? "blog-posts"
+        ),
         wherePublished,
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),
-        limit(5)
+        limit(6)
       );
 
       const response = await getDocs(q);
@@ -127,11 +128,7 @@ export const BlogSection: React.FC = () => {
     getRecentPosts();
   }, []);
   return (
-    <CenteringSection id="Blog">
-      <ScrollButton
-        direction="up"
-        target="Music"
-      />
+    <>
       <BlogGrid>
         <BlogDescription>
           <TextContent>
@@ -163,7 +160,6 @@ export const BlogSection: React.FC = () => {
           <BlogPostPreviewList posts={recentPosts} />
         </SmallScreenPostList>
       </BlogGrid>
-      {/* <ScrollButton direction="down" target="" /> */}
-    </CenteringSection>
+    </>
   );
 };

@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
-import { Outlet, ReactLocation, Router } from "@tanstack/react-location";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import { routs } from "./router";
+import { routes } from "./router";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const location = new ReactLocation();
+const queryClient = new QueryClient();
 
 const FontContext = styled.div`
   font-family: "Arima", cursive;
@@ -16,14 +17,11 @@ const FontContext = styled.div`
 
 root.render(
   <React.StrictMode>
-    <FontContext>
-      <Router
-        routes={routs}
-        location={location}
-      >
-        <Outlet />
-      </Router>
-    </FontContext>
+    <QueryClientProvider client={queryClient}>
+      <FontContext>
+        <RouterProvider router={createBrowserRouter(routes)} />
+      </FontContext>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

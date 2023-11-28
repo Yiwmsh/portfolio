@@ -1,16 +1,28 @@
 import {
   DocumentData,
+  DocumentSnapshot,
   QuerySnapshot,
   collection,
+  getCountFromServer,
   getDocs,
+  limit,
   orderBy,
   query,
+  startAfter,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { BlogPostProps } from "../pages/admin";
+import { BlogPostProps } from "../pages/admin/Blog/blogPostProps";
 
-const blogPosts = collection(db, "blog-posts");
+export const blogPostsSource = collection(
+  db,
+  process.env.REACT_APP_blogPostCollection ?? "blog-posts"
+);
+export const blogPostsTagSource = collection(
+  db,
+  process.env.REACT_APP_blogPostTagsCollection ?? "blog-tags"
+);
+
 export const wherePublished = where("publish", "==", true);
 
 export const GetAllBlogPosts = async (
@@ -19,10 +31,60 @@ export const GetAllBlogPosts = async (
   return await GetBlogPostsByQuery(published);
 };
 
+export const GetAllBlogPostsCount = async (
+  published: boolean
+): Promise<number> => {
+  const q = query(blogPostsSource, wherePublished);
+  const snapshot = await getCountFromServer(published ? q : blogPostsSource);
+  const count = await snapshot.data().count;
+  return count;
+};
+
+export const getFrontPageBlogPosts = async (
+  pageLimit?: number,
+  startingPoint?: DocumentSnapshot
+): Promise<{ posts: BlogPostProps[]; lastCursor: DocumentSnapshot }> => {
+  const frontPageBlogPosts: BlogPostProps[] = [];
+
+  const q = startingPoint
+    ? query(
+        blogPostsSource,
+        wherePublished,
+        where("featuredPriority", "!=", null),
+        orderBy("featuredPriority", "desc"),
+        orderBy("publishedDate", "desc"),
+        startAfter(startingPoint),
+        limit(pageLimit ?? 15)
+      )
+    : query(
+        blogPostsSource,
+        wherePublished,
+        where("featuredPriority", "!=", null),
+        orderBy("featuredPriority", "desc"),
+        orderBy("publishedDate", "desc"),
+        limit(pageLimit ?? 15)
+      );
+  const response = await getDocs(q);
+
+  for (let i = 0; i < response.size; i++) {
+    try {
+      const docData = (await response.docs[i].data()) as BlogPostProps;
+      frontPageBlogPosts.push(docData);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  return {
+    posts: frontPageBlogPosts,
+    lastCursor: response.docs[response.docs.length - 1],
+  };
+};
+
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {
   const allPublishedPosts: BlogPostProps[] = [];
 
-  const q = query(blogPosts, wherePublished);
+  const q = query(blogPostsSource, wherePublished);
   const response = await getDocs(q);
 
   for (let i = 0; i < response.size; i++) {
@@ -43,7 +105,7 @@ export const GetRecentPublishedBlogPosts = async (): Promise<
   const allPublishedPosts: BlogPostProps[] = [];
 
   const q = query(
-    blogPosts,
+    blogPostsSource,
     wherePublished,
     where("publishedDate", "!=", "null"),
     orderBy("publishedDate", "desc")
@@ -66,7 +128,7 @@ export const GetBlogPostsByQuery = async (
   published: boolean,
   searchString?: string
 ): Promise<BlogPostProps[]> => {
-  const allMatchingPosts: BlogPostProps[] = [];
+  const allMatchingPosts: Set<BlogPostProps> = new Set();
 
   const addDocsToReturnArray = async (
     firestoreResponse: QuerySnapshot<DocumentData>
@@ -76,7 +138,7 @@ export const GetBlogPostsByQuery = async (
         const docData = (await firestoreResponse.docs[
           i
         ].data()) as BlogPostProps;
-        allMatchingPosts.push(docData);
+        allMatchingPosts.add(docData);
       } catch (e) {
         console.log(e);
       }
@@ -84,38 +146,45 @@ export const GetBlogPostsByQuery = async (
   };
 
   if (!searchString || searchString === "") {
-    const response = await getDocs(blogPosts);
+    const response = await getDocs(blogPostsSource);
     await addDocsToReturnArray(response);
   } else {
     const titleQuery = published
-      ? query(blogPosts, wherePublished, where("title", ">=", searchString))
-      : query(blogPosts, where("title", ">=", searchString));
+      ? query(
+          blogPostsSource,
+          wherePublished,
+          where("title", ">=", searchString)
+        )
+      : query(blogPostsSource, where("title", ">=", searchString));
     const titleRes = await getDocs(titleQuery);
     await addDocsToReturnArray(titleRes);
     const tagQuery = published
       ? query(
-          blogPosts,
+          blogPostsSource,
           wherePublished,
           where("tags", "array-contains", searchString)
         )
-      : query(blogPosts, where("tags", "array-contains", searchString));
+      : query(blogPostsSource, where("tags", "array-contains", searchString));
     const tagRes = await getDocs(tagQuery);
     await addDocsToReturnArray(tagRes);
     const seriesQuery = published
       ? query(
-          blogPosts,
+          blogPostsSource,
           wherePublished,
           where("series", "array-contains", searchString)
         )
-      : query(blogPosts, where("series", "array-contains", searchString));
+      : query(blogPostsSource, where("series", "array-contains", searchString));
     const seriesRes = await getDocs(seriesQuery);
     await addDocsToReturnArray(seriesRes);
   }
 
-  return allMatchingPosts;
+  const retVal: BlogPostProps[] = [];
+  allMatchingPosts.forEach((post) => retVal.push(post));
+
+  return retVal;
 };
 
-export const SortBlogPosts = (
+export const sortBlogPosts = (
   posts: BlogPostProps[],
   field: keyof BlogPostProps,
   direction: "asc" | "desc"

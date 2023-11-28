@@ -22,4 +22,6 @@ export interface BlogPostProps {
   tags?: string[];
   featuredPriority: number;
   readingTime: string;
+  tableOfContents?: boolean;
+  lastMajorUpdate?: Timestamp;
 }

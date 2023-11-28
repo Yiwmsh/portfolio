@@ -12,12 +12,13 @@ import styled from "@emotion/styled";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { RichTextEditor, removeTags } from "../../../components";
+import { blogPostsSource, removeTags } from "../../../components/BlogPostTools";
+import { RichTextEditor } from "../../../components/RichTextEditor/RichTextEditor";
 import { db } from "../../../firebase";
 import {
   calculateReadingTime,
   fancyDisplayTimestamp,
-} from "../../blog/BlogPost/BlogPost";
+} from "../../blog/BlogPost/BlogPost/BlogPost";
 import {
   CenteringButtonBank,
   Row,
@@ -74,7 +75,8 @@ const slugifyTitle = (title: string): string => {
 export const BlogPostEditor: React.FC<{
   post?: BlogPostProps;
   changesMade: () => void;
-}> = ({ post, changesMade }) => {
+  onSubmit: (post: BlogPostProps) => void;
+}> = ({ post, changesMade, onSubmit }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const postData = { ...post };
   const [uid, setUid] = React.useState(postData?.uid ?? uuidv4());
@@ -97,6 +99,14 @@ export const BlogPostEditor: React.FC<{
   const [featuredPriority, setFeaturedPriorty] = React.useState(
     post?.featuredPriority ?? 0
   );
+  const [tableOfContents, setTableOfContents] = React.useState(
+    post?.tableOfContents ?? false
+  );
+
+  const [lastMajorUpdate, setLastMajorUpdate] = React.useState(
+    post?.lastMajorUpdate ?? post?.publishedDate ?? undefined
+  );
+  const [isMajorUpdate, setIsMajorUpdate] = React.useState(false);
 
   const [slugMatchesTitle, setSlugMatchesTitle] = React.useState(true);
 
@@ -112,27 +122,58 @@ export const BlogPostEditor: React.FC<{
       if (publish && (publishedDate === undefined || publishedDate === null)) {
         pubDate = Timestamp.now();
       }
-      await setDoc(doc(db, "blog-posts", uid), {
-        uid: uid,
-        title: title,
-        createdDate: postData?.createdDate ?? Timestamp.now(),
-        lastUpdated: Timestamp.now(),
-        metaTitle: metaTitle === "" ? title : metaTitle,
-        slug: slugifyTitle(slug === "" ? title : slug),
-        authors: authors,
-        content: content,
-        summary: summary,
-        publish: publish,
-        publishedDate: publish ? pubDate ?? null : null,
-        series: series,
-        related: related,
-        tags: tags,
-        featuredPriority: featuredPriority,
-        readingTime: calculateReadingTime(removeTags(content)),
-      });
+      await setDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid),
+        {
+          uid: uid,
+          title: title,
+          createdDate: postData?.createdDate ?? Timestamp.now(),
+          lastUpdated: Timestamp.now(),
+          metaTitle: metaTitle === "" ? title : metaTitle,
+          slug: slugifyTitle(slug === "" ? title : slug),
+          authors: authors,
+          content: content,
+          summary: summary,
+          publish: publish,
+          publishedDate: publish ? pubDate ?? null : null,
+          series: series,
+          related: related,
+          tags: tags,
+          featuredPriority: featuredPriority,
+          readingTime: calculateReadingTime(removeTags(content)),
+          tableOfContents: tableOfContents,
+          lastMajorUpdate: isMajorUpdate
+            ? Timestamp.now()
+            : lastMajorUpdate ?? Timestamp.now(),
+        }
+      );
+      const tagsCollection = process.env.REACT_APP_blogPostTagsCollection;
+      if (tagsCollection && publish) {
+        tags.forEach((tag) => {
+          setDoc(doc(db, tagsCollection, tag), {
+            tag: tag,
+          });
+        });
+      }
+      const seriesCollection = process.env.REACT_APP_blogPostSeriesCollection;
+      if (seriesCollection && publish) {
+        series.forEach((series) => {
+          setDoc(doc(db, seriesCollection, series), {
+            series: series,
+          });
+        });
+      }
+
       const uploadedSuccessfully = await checkUploadSuccess();
       if (uploadedSuccessfully) {
         changesMade();
+        const response = await getDoc(doc(blogPostsSource, uid));
+        try {
+          const post = (await response.data()) as BlogPostProps;
+          onSubmit(post);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
   };
@@ -149,11 +190,14 @@ export const BlogPostEditor: React.FC<{
       publish: false,
       featuredPriority: 0,
       readingTime: "placeholder",
+      tableOfContents: tableOfContents ?? false,
     };
   };
 
   const checkUploadSuccess = async (): Promise<boolean> => {
-    const response = await getDoc(doc(db, "blog-posts", uid));
+    const response = await getDoc(
+      doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+    );
     try {
       const serverLastUpdatedPost = ((await response.data()) as BlogPostProps)
         .lastUpdated;
@@ -169,7 +213,9 @@ export const BlogPostEditor: React.FC<{
 
   const deleteBlogPost = async (uid: string) => {
     if (uid) {
-      await deleteDoc(doc(db, "blog-posts", uid));
+      await deleteDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+      );
       changesMade();
     }
   };
@@ -199,6 +245,10 @@ export const BlogPostEditor: React.FC<{
     setTags(post?.tags ?? []);
     setLastUpdated(post?.lastUpdated);
     setFeaturedPriorty(post?.featuredPriority ?? 0);
+    setTableOfContents(post?.tableOfContents ?? false);
+    setLastMajorUpdate(
+      post?.lastMajorUpdate ?? post?.publishedDate ?? undefined
+    );
   }, [post]);
 
   return (
@@ -289,45 +339,51 @@ export const BlogPostEditor: React.FC<{
           value={content}
           onChange={setContent}
         />
-        <PublishRow
+        <BooleanRow
           publish={publish}
           setPublish={setPublish}
           publishedDate={publishedDate}
           setPublishedDate={setPublishedDate}
+          tableOfContents={tableOfContents}
+          setTableOfContents={setTableOfContents}
+          majorUpdate={isMajorUpdate}
+          setMajorUpdate={setIsMajorUpdate}
         />
-        <TextField
-          label="Tags"
-          value={tags.join(", ")}
-          onChange={(value) => {
-            setTags(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Related"
-          value={related.join(", ")}
-          onChange={(value) => {
-            setRelated(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Series"
-          value={series.join(", ")}
-          onChange={(value) => {
-            setSeries(parseCommaDelineatedString(value));
-          }}
-        />
-        <TextField
-          label="Featured Priority"
-          type="number"
-          value={`${featuredPriority}`}
-          onChange={(value) => {
-            try {
-              setFeaturedPriorty(parseInt(value));
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-        />
+        <Row>
+          <TextField
+            label="Tags"
+            value={tags.join(", ")}
+            onChange={(value) => {
+              setTags(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Related"
+            value={related.join(", ")}
+            onChange={(value) => {
+              setRelated(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Series"
+            value={series.join(", ")}
+            onChange={(value) => {
+              setSeries(parseCommaDelineatedString(value));
+            }}
+          />
+          <TextField
+            label="Featured Priority"
+            type="number"
+            value={`${featuredPriority}`}
+            onChange={(value) => {
+              try {
+                setFeaturedPriorty(parseInt(value));
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+          />
+        </Row>
       </CardBody>
       <CardFooter>
         {titleValidity === ValidationStateOption.Invalid ? (
@@ -374,15 +430,44 @@ const DeletePostDialog: React.FC<{
   );
 };
 
-const PublishRow: React.FC<{
+const BooleanRow: React.FC<{
   publish: boolean;
   setPublish: (value: boolean) => void;
   publishedDate: Timestamp | null;
   setPublishedDate: (value: Timestamp | null) => void;
-}> = ({ publish, setPublish, publishedDate, setPublishedDate }) => {
+  tableOfContents: boolean;
+  setTableOfContents: (value: boolean) => void;
+  majorUpdate: boolean;
+  setMajorUpdate: (value: boolean) => void;
+}> = ({
+  publish,
+  setPublish,
+  publishedDate,
+  setPublishedDate,
+  tableOfContents,
+  setTableOfContents,
+  majorUpdate,
+  setMajorUpdate,
+}) => {
   return (
     <Row>
       <TextContent>
+        <label htmlFor="major-update">Major Update?</label>
+        <input
+          name="major-update"
+          type="checkbox"
+          checked={majorUpdate}
+          onChange={(event) => setMajorUpdate(!majorUpdate)}
+        />
+        {" | "}
+        <label htmlFor="table-of-contents">Enable Table of Contents?</label>
+        <input
+          name="table-of-contents"
+          type="checkbox"
+          checked={tableOfContents}
+          onChange={(event) => setTableOfContents(!tableOfContents)}
+        />
+        {" | "}
         <label htmlFor="publish">Publish?</label>
         <input
           name="publish"

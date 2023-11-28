@@ -1,12 +1,13 @@
 import { TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
+import { motion } from "framer-motion";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
-import { BlogPostProps } from "../../../admin";
-import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
+import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost/BlogPost";
 import { BottomBlur } from "./BlogPostPreview";
 
-const BigPreviewContainer = styled.button`
+const BigPreviewContainer = styled(motion.button)`
   width: 100%;
   height: 100%;
   display: grid;

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { Row } from "../../../../components/Row";
-import { BlogPostProps } from "../../../admin";
-import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost";
+import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
+import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost/BlogPost";
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;

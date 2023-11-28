@@ -9,8 +9,6 @@ import {
 import styled from "@emotion/styled";
 import moment from "moment";
 import React from "react";
-import { CenteringSection } from "../../../components/CenteringSection";
-import { ScrollButton } from "../../../components/ScrollButton";
 import portrait from "../../../resources/portrait.jpg";
 import { NameContext } from "../../site";
 
@@ -73,11 +71,7 @@ export const BioSection: React.FC = () => {
   const guitarTime = moment().diff(moment([2021, 6]), "years");
 
   return (
-    <CenteringSection id="Bio">
-      <ScrollButton
-        target="Splash"
-        direction="up"
-      />
+    <>
       <BioCard>
         <CardHeader>
           <NameContext.Consumer>
@@ -160,10 +154,6 @@ export const BioSection: React.FC = () => {
           />
         </Socials>
       </BioCard>
-      <ScrollButton
-        direction="down"
-        target="Music"
-      />
-    </CenteringSection>
+    </>
   );
 };

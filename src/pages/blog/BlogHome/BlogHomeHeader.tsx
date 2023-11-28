@@ -1,9 +1,8 @@
-import { Color, SemanticColors } from "@chrisellis/react-carpentry";
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import portrait from "../../../resources/portrait.jpg";
 
-const aboutBackgroundColor: Color = "#f4edfc";
 const TitleRowMinWidth = 353;
 
 const ScreenWidthBreakPoints = {
@@ -15,7 +14,7 @@ const ScreenWidthBreakPoints = {
 const HeaderContainer = styled.div`
   grid-row: 1;
   grid-column: 1 / span 3;
-  background-color: ${aboutBackgroundColor};
+  background-color: var(${SemanticColors.midground});
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -131,28 +130,32 @@ const BioBlurb = styled.p`
 const defaultTags: string[] = [
   "stuff",
   "whatever I want",
-  "anything",
-  "everything",
   "my favourite things",
   "things I like",
 ];
 
-export const BlogHomeHeader: React.FC<{ tags: (string | undefined)[] }> = ({
-  tags,
-}) => {
+export const BlogHomeHeader: React.FC<{ tags: string[] }> = ({ tags }) => {
   const allTags = [tags, defaultTags].flat();
   const getRandomArrayIndex = (array: Array<any>): number => {
     return Math.floor(Math.random() * array.length);
   };
-  const getRandomTag = () => {
-    return allTags[getRandomArrayIndex(allTags)];
+  const getNewRandomTag = (previousTag: string) => {
+    return allTags[
+      getRandomArrayIndex(allTags.filter((tag) => tag !== previousTag))
+    ];
   };
-  const [displayTag, setDisplayTag] = React.useState(getRandomTag());
+  const [displayTag, setDisplayTag] = React.useState(getNewRandomTag(""));
 
-  // setInterval(() => {
-  //   setDisplayTag(getRandomTag());
-  //   console.log("Tag changed");
-  // }, 5000);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setDisplayTag(getNewRandomTag(displayTag));
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <HeaderContainer>
       <BlogHomeBannerTextContainer>

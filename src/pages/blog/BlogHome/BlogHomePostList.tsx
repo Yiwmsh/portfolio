@@ -1,14 +1,15 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { BlogPostProps } from "../../admin";
-import { BlogPostList } from "../BlogPostList";
+import { BlogPostProps } from "../../admin/Blog/blogPostProps";
+import { BlogSnippet } from "../BlogPost/BlogPostSnippet/BlogPostSnippet";
 
 const ScreenWidthBreakpoints = {
   twoRows: 830,
   oneRow: 600,
 };
 
-const PostListGrid = styled.div`
+const PostListGrid = styled.ul`
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
@@ -31,13 +32,13 @@ const NothingHereYet = styled.div`
   padding: 50px;
 `;
 
-export const BlogHomePosts: React.FC<{ allPosts: BlogPostProps[] }> = ({
-  allPosts,
+export const BlogHomePostList: React.FC<{ posts: BlogPostProps[] }> = ({
+  posts,
 }) => {
   return (
     <PostListGrid>
-      {allPosts.length > 0 ? (
-        <BlogPostList posts={allPosts} />
+      {posts.length > 0 ? (
+        posts.map((post) => <BlogSnippet post={post} />)
       ) : (
         <NothingHereYet>
           It looks like there's nothing here yet - check back later!

@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import {
   GetBlogPostsByQuery,
-  SortBlogPosts,
+  sortBlogPosts,
 } from "../../../components/BlogPostTools";
 import { db } from "../../../firebase";
 import { Row } from "../../home/home sections/WelcomeModal";
@@ -22,13 +22,20 @@ export const BlogAdminPanel: React.FC = () => {
     if (uid === "") {
       setCurrentPost(undefined);
     } else {
-      const response = await getDoc(doc(db, "blog-posts", uid));
+      const response = await getDoc(
+        doc(db, process.env.REACT_APP_blogPostCollection ?? "blog-posts", uid)
+      );
       setCurrentPost(await (response.data() as BlogPostProps));
     }
   };
 
+  const handleBlogPostSubmit = (post: BlogPostProps) => {
+    if (!currentPost) {
+      setCurrentPost(post);
+    }
+  };
+
   const newPostAdded = (newPost: BlogPostID) => {
-    console.log("Post Added");
     setPostTitles((postTitles) => [newPost, ...postTitles]);
   };
 
@@ -37,7 +44,7 @@ export const BlogAdminPanel: React.FC = () => {
   const getAndSetBlogPosts = async () => {
     const allBlogPosts = await GetBlogPostsByQuery(false, query);
     setPostTitles(
-      SortBlogPosts(allBlogPosts, "lastUpdated", "desc").map((post) => {
+      sortBlogPosts(allBlogPosts, "lastUpdated", "desc").map((post) => {
         return { title: post.title, uid: post.uid };
       })
     );
@@ -58,6 +65,7 @@ export const BlogAdminPanel: React.FC = () => {
       <BlogPostEditor
         post={currentPost}
         changesMade={getAndSetBlogPosts}
+        onSubmit={handleBlogPostSubmit}
       />
     </Row>
   );
