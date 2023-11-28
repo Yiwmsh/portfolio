@@ -54,8 +54,8 @@ export const SnippetContent = styled.div`
   position: relative;
   font-family: "Arima", cursive;
   font-size: 13px;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: calc(100% - 10px);
+  max-height: calc(100% - 10px);
   overflow: hidden;
   margin: 5px;
   text-align: center;
