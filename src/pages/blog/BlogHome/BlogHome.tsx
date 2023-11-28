@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { TailSpin } from "react-loader-spinner";
-import { useBlogPostTags } from "../../../hooks/useBlogTags";
 import { useFrontPageBlogPosts } from "../../../hooks/useFrontPageBlogPosts";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePostList } from "./BlogHomePostList";
@@ -30,7 +29,6 @@ export const BlogHome: React.FC = () => {
     fetchNextPage,
     isFetchingNextPage,
   } = useFrontPageBlogPosts();
-  const { data: tags, status: tagQueryStatus } = useBlogPostTags();
 
   const handleScroll = () => {
     if (
@@ -56,7 +54,7 @@ export const BlogHome: React.FC = () => {
 
   return (
     <>
-      <BlogHomeHeader tags={tagQueryStatus === "success" ? tags : []} />
+      <BlogHomeHeader />
       {postQueryStatus === "success" ? (
         <BlogHomePostList posts={posts} />
       ) : null}
