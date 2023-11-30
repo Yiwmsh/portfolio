@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { DateData } from "../DateData";
-import { PostTags } from "../PostTags";
 import {
   Authors,
   BlogPostCardHeader,
@@ -16,6 +15,7 @@ import {
   Series,
   Title,
 } from "./BlogPostStyle";
+import { PostTags } from "./PostTags";
 
 export const displayTimestampAsDate = (timestamp: Timestamp): string => {
   const date = timestamp.toDate();

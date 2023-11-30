@@ -37,7 +37,7 @@ export const PostTags: React.FC<{ tags: string[] }> = ({ tags }) => {
               color: `var(${SemanticColors.secondary})`,
               fontWeight: "bold",
             }}
-            href=""
+            href={`/blog/posts?tag=${tag}`}
           >
             {tag}
           </Tag>

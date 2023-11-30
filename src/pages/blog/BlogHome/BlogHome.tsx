@@ -5,7 +5,7 @@ import { useFrontPageBlogPosts } from "../../../hooks/useFrontPageBlogPosts";
 import { BlogHomeHeader } from "./BlogHomeHeader";
 import { BlogHomePostList } from "./BlogHomePostList";
 
-const CenteringDiv = styled.div`
+export const CenteringDiv = styled.div`
   height: 100%;
   width: 100%;
   display: flex;

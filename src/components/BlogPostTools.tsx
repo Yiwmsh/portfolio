@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { BlogPostProps } from "../pages/admin/Blog/blogPostProps";
+import { normalizeString } from "../utils/normalizeString";
 
 export const blogPostsSource = collection(
   db,
@@ -79,6 +80,47 @@ export const getFrontPageBlogPosts = async (
     posts: frontPageBlogPosts,
     lastCursor: response.docs[response.docs.length - 1],
   };
+};
+
+export interface BlogPostQuery {
+  title?: string | null;
+  tags?: string[] | null;
+}
+
+export const getPostsBySearch = async (
+  search: BlogPostQuery
+): Promise<BlogPostProps[]> => {
+  const posts = await GetAllBlogPosts(true);
+
+  return posts
+    .filter(
+      (post) =>
+        (search.tags == null ||
+          search.tags.length === 0 ||
+          search.tags.every((tag) =>
+            post.tags
+              ?.map((postTag) => normalizeString(postTag))
+              ?.includes(normalizeString(tag))
+          )) &&
+        (search.title == null ||
+          search.title.trim() === "" ||
+          normalizeString(post.title).includes(normalizeString(search.title)))
+    )
+    .sort((a, b) => {
+      if (a.publishedDate == null && b.publishedDate == null) {
+        return 0;
+      }
+
+      if (a.publishedDate == null) {
+        return -1;
+      }
+
+      if (b.publishedDate == null) {
+        return 1;
+      }
+
+      return a.publishedDate.toMillis() - b.publishedDate.toMillis();
+    });
 };
 
 export const GetAllPublishedBlogPosts = async (): Promise<BlogPostProps[]> => {

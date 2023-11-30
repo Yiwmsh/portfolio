@@ -4,6 +4,7 @@ import { SignInManager } from "./pages/admin/SignIn";
 import { BlogHome } from "./pages/blog/BlogHome/BlogHome";
 import { BlogOutlet } from "./pages/blog/BlogOutlet";
 import { BlogPostHandler } from "./pages/blog/BlogPost/BlogPostHandler";
+import { BlogSearchPage } from "./pages/blog/BlogSearch/BlogSearchPage";
 import { Home } from "./pages/home/home";
 import { Site } from "./pages/site";
 
@@ -34,10 +35,10 @@ export const routes = [
         index: true,
         element: <BlogHome />,
       },
-      // {
-      //   path: "posts",
-      //   element: <>Nothing here yet.</>,
-      // },
+      {
+        path: "posts",
+        element: <BlogSearchPage />,
+      },
       {
         path: "post/:blogSlug",
         element: <BlogPostHandler />,
