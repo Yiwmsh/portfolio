@@ -2,6 +2,7 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
+import { BlogSearchBar } from "./BlogSearch/BlogSearchBar";
 
 const ScreenWidthBreakpoints = {
   iconsFit: 370,
@@ -85,11 +86,11 @@ export const Navbar: React.FC = () => {
         Whimsy
       </WhimsyLink>
       <NavbarUL layout>
+        <BlogSearchBar />
         <NavbarElement
           label="Blog"
           href="/blog"
         />
-        {/* <NavbarElement label="Posts" href="/blog/posts" /> */}
         <NavbarElement
           label="About"
           href="/#Bio"
