@@ -18,7 +18,6 @@ const NavbarContainer = styled.div`
   position: sticky;
   top: 0;
   padding: 2vh 0;
-  border-bottom: 1px solid var(${SemanticColors.primary});
   background-color: var(${SemanticColors.midground});
   z-index: 2;
 `;
