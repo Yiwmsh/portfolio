@@ -1,16 +1,19 @@
 import styled from "@emotion/styled";
-import { Fret } from "./Fret";
-import { FretboardMode, FretboardOrientation } from "./Fretboard";
+import React from "react";
+import { Fret, FretNote } from "./Fret";
+import {
+  FretboardMode,
+  FretboardOrientation,
+  FretboardSettings,
+} from "./Fretboard";
+import { FretboardContext } from "./FretboardDashboard";
 import { Note } from "./MusicTheory/types";
-import { FRET_COUNT } from "./consts";
+import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
 export interface FretboardStringProps {
-  mode: FretboardMode;
+  settings: FretboardSettings;
   stringNumber: number;
-  orientation: FretboardOrientation;
   stringNote: Note;
-  selectedFrets: boolean[][];
-  setSelectedFrets: (selectedFrets: boolean[][]) => void;
 }
 const FretboardStringStyle = styled.div<{
   orientation: FretboardOrientation;
@@ -34,30 +37,64 @@ const VisibleString = styled.span<{
   align-self: center;
 `;
 
+const GuitarNut = styled.button<{
+  mode: FretboardMode;
+  orientation: FretboardOrientation;
+}>`
+  background: transparent;
+  border: none;
+  cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: ${({ orientation }) =>
+    orientation === "Horizontal" ? FRET_THICKNESS : "50px"};
+  width: ${({ orientation }) =>
+    orientation === "Vertical" ? FRET_THICKNESS : "50px"};
+`;
+
 export const FretboardString: React.FC<FretboardStringProps> = ({
-  mode,
   stringNumber,
-  orientation,
   stringNote,
-  selectedFrets,
-  setSelectedFrets,
+  settings,
 }) => {
+  const { selectedFrets, setSelectedFrets } =
+    React.useContext(FretboardContext);
   return (
-    <FretboardStringStyle orientation={orientation}>
+    <FretboardStringStyle orientation={settings.orientation}>
+      <GuitarNut
+        disabled={settings.mode === "Inert"}
+        orientation={settings.orientation}
+        mode={settings.mode}
+        onClick={() => {
+          const newSelectedFrets = selectedFrets.map((string) => [...string]);
+          if (
+            settings.selectionMode === "Single" &&
+            !selectedFrets[stringNumber][0]
+          ) {
+            newSelectedFrets[stringNumber] = newSelectedFrets[stringNumber].map(
+              (fret) => false
+            );
+          }
+          newSelectedFrets[stringNumber][0] = !selectedFrets[stringNumber][0];
+          setSelectedFrets(newSelectedFrets);
+        }}
+      >
+        {selectedFrets[stringNumber][0] ? (
+          <FretNote>{stringNote}</FretNote>
+        ) : null}
+      </GuitarNut>
       {Array(FRET_COUNT)
         .fill(0)
         .map((_, index) => (
           <Fret
-            mode={mode}
+            settings={settings}
             fretNumber={index + 1}
             stringNote={stringNote}
-            orientation={orientation}
             stringNumber={stringNumber}
-            selectedFrets={selectedFrets}
-            setSelectedFrets={setSelectedFrets}
           />
         ))}
-      <VisibleString orientation={orientation} />
+      <VisibleString orientation={settings.orientation} />
     </FretboardStringStyle>
   );
 };

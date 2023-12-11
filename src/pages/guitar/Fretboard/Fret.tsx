@@ -1,6 +1,11 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { FretboardMode, FretboardOrientation } from "./Fretboard";
+import {
+  FretboardMode,
+  FretboardOrientation,
+  FretboardSettings,
+} from "./Fretboard";
+import { FretboardContext } from "./FretboardDashboard";
 import { noteAt } from "./MusicTheory/NoteUtilities";
 import { CHROMATIC_SCALE } from "./MusicTheory/Scale";
 import { MusicalNumber, NOTES, Note } from "./MusicTheory/types";
@@ -41,20 +46,16 @@ const calculateFretLength = (fretNumber: number) => {
 };
 
 export interface FretProps {
-  mode: FretboardMode;
+  settings: FretboardSettings;
   fretNumber: number;
-  orientation: FretboardOrientation;
   stringNote: Note;
   stringNumber: number;
-  selectedFrets: boolean[][];
-  setSelectedFrets: (selectedFrets: boolean[][]) => void;
 }
 
 const FretButton = styled.button<{
   mode: FretboardMode;
   fretNumber: number;
   orientation: FretboardOrientation;
-  stringNumber: number;
 }>`
   height: ${({ orientation, fretNumber }) =>
     orientation === "Horizontal"
@@ -68,7 +69,7 @@ const FretButton = styled.button<{
       : `${
           Number(calculateFretLength(fretNumber)) * (100 / percentOfNeckShown())
         }%`};
-  background: transparent;
+  background-color: #595251;
   border: none;
   cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
   display: flex;
@@ -83,7 +84,7 @@ const FretButton = styled.button<{
     }: 1px solid grey;`};
 `;
 
-const FretNote = styled.div`
+export const FretNote = styled.div`
   position: absolute;
   background-color: rgba(4, 59, 92, 1);
   color: white;
@@ -96,14 +97,13 @@ const FretNote = styled.div`
 `;
 
 export const Fret: React.FC<FretProps> = ({
-  mode,
+  settings,
   fretNumber,
-  orientation,
   stringNote,
   stringNumber,
-  selectedFrets,
-  setSelectedFrets,
 }) => {
+  const { selectedFrets, setSelectedFrets } =
+    React.useContext(FretboardContext);
   const fretNote = noteAt(fretNumber, {
     root: NOTES.indexOf(stringNote) as MusicalNumber,
     scale: CHROMATIC_SCALE,
@@ -111,19 +111,26 @@ export const Fret: React.FC<FretProps> = ({
 
   return (
     <FretButton
-      disabled={mode === "Inert"}
-      mode={mode}
+      disabled={settings.mode === "Inert"}
+      mode={settings.mode}
       fretNumber={fretNumber}
-      orientation={orientation}
-      stringNumber={stringNumber}
+      orientation={settings.orientation}
       onClick={() => {
         const newSelectedFrets = [...selectedFrets];
-        newSelectedFrets[stringNumber][fretNumber - 1] =
-          !selectedFrets[stringNumber][fretNumber - 1];
+        if (
+          settings.selectionMode === "Single" &&
+          !selectedFrets[stringNumber][fretNumber]
+        ) {
+          newSelectedFrets[stringNumber] = newSelectedFrets[stringNumber].map(
+            (fret) => false
+          );
+        }
+        newSelectedFrets[stringNumber][fretNumber] =
+          !selectedFrets[stringNumber][fretNumber];
         setSelectedFrets(newSelectedFrets);
       }}
     >
-      {selectedFrets[stringNumber][fretNumber - 1] ? (
+      {selectedFrets[stringNumber][fretNumber] ? (
         <FretNote>{fretNote}</FretNote>
       ) : null}
     </FretButton>
