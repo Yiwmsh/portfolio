@@ -2,7 +2,7 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React from "react";
-import { BlogSearchBar } from "./BlogSearch/BlogSearchBar";
+import { BlogSearchBar } from "../pages/blog/BlogSearch/BlogSearchBar";
 
 const ScreenWidthBreakpoints = {
   iconsFit: 370,
