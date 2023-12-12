@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
+import { FretboardContext } from "./FretboardDashboard";
+import { FretboardNumbering } from "./FretboardNumbering";
 import { FretboardString } from "./FretboardString";
 import { Note } from "./MusicTheory/types";
 import { FRET_THICKNESS } from "./consts";
@@ -14,10 +17,7 @@ export interface FretboardSettings {
   selectionMode: FretSelectionMode;
 }
 
-export interface FretboardProps {
-  settings: FretboardSettings;
-  tuning: Note[];
-}
+export interface FretboardProps {}
 
 const FRETBOARD_VIEWPORT_SIZE = 70;
 
@@ -27,7 +27,7 @@ const FretboardStyle = styled.div<{
 }>`
   display: flex;
   flex-direction: ${({ orientation }) =>
-    orientation === "Horizontal" ? "column" : "row"};
+    orientation === "Horizontal" ? "column" : "row-reverse"};
   margin: auto;
   ${({ orientation }) =>
     orientation === "Horizontal"
@@ -39,14 +39,23 @@ const FretboardStyle = styled.div<{
       : ""}
 `;
 
-export const Fretboard: React.FC<FretboardProps> = ({ settings, tuning }) => {
+export const Fretboard: React.FC<FretboardProps> = () => {
+  const { tuning } = React.useContext(FretboardContext);
+  const { status, data: settings } = useFretboardSettings();
+
+  if (status !== "success" || settings == null) {
+    return null;
+  }
+
   return (
     <FretboardStyle
       orientation={settings.orientation}
       tuning={tuning}
     >
+      <FretboardNumbering orientation={settings.orientation} />
       {tuning.map((note, index) => (
         <FretboardString
+          key={`string-${index}`}
           settings={settings}
           stringNumber={index}
           stringNote={note}

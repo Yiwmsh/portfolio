@@ -11,7 +11,7 @@ import { CHROMATIC_SCALE } from "./MusicTheory/Scale";
 import { MusicalNumber, NOTES, Note } from "./MusicTheory/types";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
-const percentOfNeckShown = () => {
+export const percentOfNeckShown = () => {
   let totalFretLength = 0;
 
   Array(FRET_COUNT)
@@ -24,7 +24,7 @@ const percentOfNeckShown = () => {
   return totalFretLength;
 };
 
-const calculateFretLength = (fretNumber: number) => {
+export const calculateFretLength = (fretNumber: number) => {
   /*
   The formula for this calculation is based on the following article:
   https://johnsaucier.com/calculating-fret-positions
