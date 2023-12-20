@@ -19,6 +19,7 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
       mode: "Interactive",
       selectionMode: "Multiple",
       orientation: "Horizontal",
+      stringCount: 6,
     });
   }
 

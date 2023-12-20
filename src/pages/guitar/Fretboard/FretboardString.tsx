@@ -8,6 +8,7 @@ import {
 } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
 import { NOTES, Note } from "./MusicTheory/types";
+import { StringNoteSelect } from "./StringNoteSelect";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
 export interface FretboardStringProps {
@@ -39,7 +40,7 @@ const VisibleString = styled.span<{
   align-self: center;
 `;
 
-const GuitarNut = styled.button<{
+export const GuitarNut = styled.button<{
   mode: FretboardMode;
   orientation: FretboardOrientation;
 }>`
@@ -53,23 +54,6 @@ const GuitarNut = styled.button<{
     orientation === "Horizontal" ? FRET_THICKNESS : "30"}px;
   width: ${({ orientation }) =>
     orientation === "Vertical" ? FRET_THICKNESS : "30"}px;
-`;
-
-const StringNoteSelect = styled.select<{ orientation: FretboardOrientation }>`
-  height: ${({ orientation }) =>
-    orientation === "Horizontal" ? `${FRET_THICKNESS - 4}px` : `30px`};
-  width: ${({ orientation }) =>
-    orientation === "Vertical" ? `${FRET_THICKNESS - 4}px` : `30px`};
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-indent: 1px;
-  text-overflow: "";
-  margin: ${({ orientation }) =>
-    orientation === "Horizontal" ? `2px 5px` : `5px 2px`};
-
-  .select-selected:after {
-    display: none;
-  }
 `;
 
 export const FretboardString: React.FC<FretboardStringProps> = ({
@@ -86,24 +70,15 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
   return (
     <FretboardStringWrapperStyle orientation={settings.orientation}>
       <StringNoteSelect
-        orientation={settings.orientation}
+        settings={settings}
         value={stringNote}
-        onChange={(e) => {
-          const selectedNote = e.target.value as Note;
+        onChange={(note) => {
           const newTuning = [...tuning];
-          newTuning[stringNumber] = selectedNote;
+          newTuning[stringNumber] = note;
           setTuning(newTuning);
         }}
-      >
-        {NOTES.map((note) => (
-          <option
-            key={note}
-            value={`${note}`}
-          >
-            {note}
-          </option>
-        ))}
-      </StringNoteSelect>
+        options={[...NOTES]}
+      />
       <FretboardStringWrapperStyle orientation={settings.orientation}>
         <GuitarNut
           disabled={settings.mode === "Inert"}

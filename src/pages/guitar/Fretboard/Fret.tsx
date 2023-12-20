@@ -52,7 +52,7 @@ export interface FretProps {
   stringNumber: number;
 }
 
-const FretButton = styled.button<{
+export const FretButton = styled.button<{
   mode: FretboardMode;
   fretNumber: number;
   orientation: FretboardOrientation;

@@ -15,6 +15,7 @@ export interface FretboardSettings {
   mode: FretboardMode;
   orientation: FretboardOrientation;
   selectionMode: FretSelectionMode;
+  stringCount: number;
 }
 
 export interface FretboardProps {}
@@ -52,7 +53,10 @@ export const Fretboard: React.FC<FretboardProps> = () => {
       orientation={settings.orientation}
       tuning={tuning}
     >
-      <FretboardNumbering orientation={settings.orientation} />
+      <FretboardNumbering
+        orientation={settings.orientation}
+        settings={settings}
+      />
       {tuning.map((note, index) => (
         <FretboardString
           key={`string-${index}`}
