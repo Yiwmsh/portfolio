@@ -69,7 +69,8 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
     <FretboardNumberingContainer orientation={orientation}>
       <TuningSelect
         onChange={(e) => {
-          const selectedTuning = e.target.value;
+          const selectedTuning = e.target.value.replaceAll(" ", "_");
+          console.log(selectedTuning);
           setTuning(TUNINGS[selectedTuning].slice(0, settings.stringCount));
         }}
         orientation={settings.orientation}
