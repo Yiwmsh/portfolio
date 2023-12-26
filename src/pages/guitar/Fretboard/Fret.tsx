@@ -6,9 +6,10 @@ import {
   FretboardSettings,
 } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
-import { noteAt } from "./MusicTheory/NoteUtilities";
-import { CHROMATIC_SCALE } from "./MusicTheory/Scale";
-import { MusicalNumber, NOTES, Note } from "./MusicTheory/types";
+import {
+  addSemitonesToFrequency,
+  frequencyToNote,
+} from "./MusicTheory/NoteUtilities";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
 export const percentOfNeckShown = () => {
@@ -48,7 +49,7 @@ export const calculateFretLength = (fretNumber: number) => {
 export interface FretProps {
   settings: FretboardSettings;
   fretNumber: number;
-  stringNote: Note;
+  stringNote: number;
   stringNumber: number;
 }
 
@@ -104,10 +105,9 @@ export const Fret: React.FC<FretProps> = ({
 }) => {
   const { selectedFrets, setSelectedFrets } =
     React.useContext(FretboardContext);
-  const fretNote = noteAt(fretNumber, {
-    root: NOTES.indexOf(stringNote) as MusicalNumber,
-    scale: CHROMATIC_SCALE,
-  });
+  const fretNote = frequencyToNote(
+    addSemitonesToFrequency(stringNote, fretNumber)
+  );
 
   return (
     <FretButton
@@ -131,7 +131,7 @@ export const Fret: React.FC<FretProps> = ({
       }}
     >
       {selectedFrets[stringNumber][fretNumber] ? (
-        <FretNote>{fretNote}</FretNote>
+        <FretNote>{fretNote.tone}</FretNote>
       ) : null}
     </FretButton>
   );

@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { FretboardOrientation, FretboardSettings } from "./Fretboard";
-import { noteFrom } from "./MusicTheory/NoteUtilities";
-import { MusicalNumber, NOTES, Note } from "./MusicTheory/types";
+import { FREQUENCIES } from "./MusicTheory/Frequency";
 import { FRET_THICKNESS } from "./consts";
 
 export const StringNoteSelectStyle = styled.select<{
@@ -27,45 +26,30 @@ export const StringNoteSelectStyle = styled.select<{
 
 interface StringNoteSelectProps {
   settings: FretboardSettings;
-  value: string | number | readonly string[] | undefined;
-  onChange: (note: Note) => void;
-  options: string[];
+  value: number;
+  onChange: (note: number) => void;
 }
 
 export const StringNoteSelect: React.FC<StringNoteSelectProps> = ({
   settings,
   value,
   onChange,
-  options,
 }) => {
-  const selectRef = React.useRef<HTMLSelectElement>(null);
-  React.useEffect(() => {
-    const handleScroll = (event: WheelEvent) => {
-      const currentNoteIndex: MusicalNumber = NOTES.indexOf(
-        value as Note
-      ) as MusicalNumber;
-      const newNote = noteFrom(currentNoteIndex, event.deltaY);
-      onChange(NOTES[newNote - 1] as Note);
-    };
-    selectRef.current?.addEventListener("wheel", handleScroll);
-
-    return () => selectRef.current?.removeEventListener("wheel", handleScroll);
-  }, []);
   return (
     <StringNoteSelectStyle
       orientation={settings.orientation}
       value={value}
       onChange={(e) => {
-        onChange(e.target.value as Note);
+        console.log(e.target.value);
+        onChange(Number(e.target.value));
       }}
-      ref={selectRef}
     >
-      {options.map((option) => (
+      {FREQUENCIES.map((note) => (
         <option
-          key={option}
-          value={`${option}`}
+          key={note.frequency}
+          value={note.frequency}
         >
-          {option}
+          {`${note.tone}${note.octave}`}
         </option>
       ))}
     </StringNoteSelectStyle>

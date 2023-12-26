@@ -1,3 +1,4 @@
+import { Button } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { SwitchControl } from "../../../components/SwitchControl";
@@ -12,7 +13,8 @@ interface FretboardOptionsProps {}
 export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
   const { data: settings, status } = useFretboardSettings();
   const { mutate: updateSettings } = useEditFretboardSettings();
-  const { clearSelectedFrets } = React.useContext(FretboardContext);
+  const { clearSelectedFrets, selectedFrets } =
+    React.useContext(FretboardContext);
 
   if (settings == null) {
     updateSettings({
@@ -65,6 +67,14 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
         falseValueLabel="Chord"
         lateral
       />
+      <Button
+        onPress={() => {
+          clearSelectedFrets();
+        }}
+        isDisabled={selectedFrets.length === 0}
+      >
+        Reset
+      </Button>
     </FretboardOptionsContainer>
   );
 };

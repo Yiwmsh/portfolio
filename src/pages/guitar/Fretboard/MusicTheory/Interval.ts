@@ -1,0 +1,15 @@
+export enum Interval {
+  Unison = 0,
+  Minor_Second = 1,
+  Major_Second = 2,
+  Minor_Third = 3,
+  Major_Third = 4,
+  Perfect_Fourth = 5,
+  Tritone = 6,
+  Perfect_Fifth = 7,
+  Minor_Sixth = 8,
+  Major_Sixth = 9,
+  Minor_Seventh = 10,
+  Major_Seventh = 11,
+  Octave = 12,
+}

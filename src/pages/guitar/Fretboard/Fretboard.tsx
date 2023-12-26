@@ -4,7 +4,6 @@ import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
 import { FretboardContext } from "./FretboardDashboard";
 import { FretboardNumbering } from "./FretboardNumbering";
 import { FretboardString } from "./FretboardString";
-import { Note } from "./MusicTheory/types";
 import { FRET_THICKNESS } from "./consts";
 
 export type FretboardMode = "Interactive" | "Inert";
@@ -24,7 +23,7 @@ const FRETBOARD_VIEWPORT_SIZE = 70;
 
 const FretboardStyle = styled.div<{
   orientation: FretboardOrientation;
-  tuning: Note[];
+  tuning: number[];
 }>`
   display: flex;
   flex-direction: ${({ orientation }) =>

@@ -7,14 +7,13 @@ import {
   FretboardSettings,
 } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
-import { NOTES, Note } from "./MusicTheory/types";
 import { StringNoteSelect } from "./StringNoteSelect";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
 export interface FretboardStringProps {
   settings: FretboardSettings;
   stringNumber: number;
-  stringNote: Note;
+  stringNote: number;
 }
 const FretboardStringWrapperStyle = styled.div<{
   orientation: FretboardOrientation;
@@ -77,7 +76,6 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
           newTuning[stringNumber] = note;
           setTuning(newTuning);
         }}
-        options={[...NOTES]}
       />
       <FretboardStringWrapperStyle orientation={settings.orientation}>
         <GuitarNut
