@@ -1,17 +1,5 @@
 import { CHROMATIC_SCALE } from "./Scale";
-import {
-  MusicalKey,
-  MusicalNumber,
-  Note,
-  Tone,
-  ToneLetter,
-  TONES,
-} from "./types";
-
-export const deriveToneFromFrequency = (frequency: number): ToneLetter => {
-  // TODO
-  throw new Error("Not implemented");
-};
+import { MusicalKey, MusicalNumber, Note, Tone, TONES } from "./types";
 
 export const noteAt = (
   index: number,
@@ -33,13 +21,26 @@ export const noteFrom = (
 };
 
 export const intervalBetween = (
-  startingNote: Tone,
-  targetNote: Tone
+  startingTone: Tone,
+  targetTone: Tone
 ): MusicalNumber => {
-  const semitones = Math.abs(
-    (TONES.indexOf(startingNote) - TONES.indexOf(targetNote)) % 12
-  ) as MusicalNumber;
-  return semitones;
+  let semitones = 0;
+  let cursor = TONES.indexOf(startingTone);
+  while (TONES[cursor] !== targetTone) {
+    cursor++;
+    if (cursor > TONES.length - 1) {
+      cursor = 0;
+    }
+    semitones++;
+  }
+  return (semitones % 12) as MusicalNumber;
+};
+
+export const fullIntervalBetween = (startingNote: Note, targetNote: Note) => {
+  const semitoneDistance =
+    intervalBetween(startingNote.tone, targetNote.tone) +
+    (targetNote.octave - startingNote.octave) * 12;
+  return semitoneDistance;
 };
 
 const a = Math.pow(2, 1 / 12);

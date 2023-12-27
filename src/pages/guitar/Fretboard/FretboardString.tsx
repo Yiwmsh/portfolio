@@ -7,6 +7,7 @@ import {
   FretboardSettings,
 } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
+import { frequencyToNote } from "./MusicTheory/NoteUtilities";
 import { StringNoteSelect } from "./StringNoteSelect";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
@@ -97,7 +98,7 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
           }}
         >
           {selectedFrets[stringNumber][0] ? (
-            <FretNote>{stringNote}</FretNote>
+            <FretNote>{frequencyToNote(stringNote).tone}</FretNote>
           ) : null}
         </GuitarNut>
         {Array(FRET_COUNT)

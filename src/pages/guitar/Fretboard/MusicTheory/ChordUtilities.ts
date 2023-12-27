@@ -1,33 +1,43 @@
-import { Chords } from "./Chord";
+import { Chord, ChordArchetype, Chords } from "./Chord";
 import { intervalBetween } from "./NoteUtilities";
-import { MusicalNumber, Tone } from "./types";
+import { MusicalNumber, Note, Tone } from "./types";
 
-export const IdentifyPossibleChordsFromNotes = (notes: Tone[]) => {
+export const IdentifyPossibleChordsFromNotes = (notes: Note[]) => {
+  const possibleChords: Set<Chord> = new Set<Chord>();
   // Make a set of discrete tones
-  const tones = new Set<Tone>(notes);
+  const toneSet = new Set<Tone>(notes.map((note) => note.tone));
+  console.log(`Unqiue Tones: ${toneSet.size}`);
   // Iterate through the tones in the chord, treating each as though it were the root.
-  tones.forEach((rootTone) => {
+  toneSet.forEach((rootTone) => {
     // Get each interval
     const intervals: MusicalNumber[] = [];
-    tones.forEach((tone) => {
+    toneSet.forEach((tone) => {
       intervals.push(intervalBetween(rootTone, tone));
     });
+    const possibleChordsWithRootN =
+      IdentifyPossibleChordsFromIntervals(intervals);
+    possibleChordsWithRootN.forEach((chord) => {
+      possibleChords.add({ ...chord, root: rootTone });
+    });
   });
+
+  return Array.from(possibleChords.values());
 };
 
 export const IdentifyPossibleChordsFromIntervals = (
   intervals: MusicalNumber[]
 ) => {
-  const possibleChords: string[] = [];
+  const possibleChords: ChordArchetype[] = [];
   // Get perfect matches
   Object.keys(Chords).forEach((chordKey) => {
     const chord = Chords[chordKey];
     if (
-      chord.every((chordInterval) =>
-        intervals.some((interval) => interval === chordInterval)
+      intervals.length === chord.structure.length &&
+      intervals.every((interval) =>
+        chord.structure.some((chordInterval) => interval === chordInterval)
       )
     ) {
-      possibleChords.push(chordKey);
+      possibleChords.push(Chords[chordKey]);
     }
   });
   // TODO get imperfect matches

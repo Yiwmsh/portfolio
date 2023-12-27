@@ -1,13 +1,12 @@
 import React from "react";
 import { FretboardOptions } from "./FretboardOptions";
-import { Interval } from "./MusicTheory/Interval";
+import { IdentifyPossibleChordsFromNotes } from "./MusicTheory/ChordUtilities";
 import {
   addSemitonesToFrequency,
   frequencyToNote,
-  intervalBetween,
 } from "./MusicTheory/NoteUtilities";
 import { STANDARD_TUNING } from "./MusicTheory/Tunings";
-import { Note } from "./MusicTheory/types";
+import { Note, Tone } from "./MusicTheory/types";
 import { FRET_COUNT } from "./consts";
 
 export const FretboardContext = React.createContext<{
@@ -39,19 +38,30 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
   );
 
   // TODO
-  const selectedNotes = React.useMemo(() => {
+  const { selectedNotes, selectedTones } = React.useMemo(() => {
     const notesSet = new Set<Note>();
+    const toneSet = new Set<Tone>();
     selectedFrets.forEach((string, stringNumber) => {
       const stringPitch = tuning[stringNumber];
       string.forEach((fret, fretNumber) => {
         if (fret) {
-          const fretPitch = addSemitonesToFrequency(stringPitch, fretNumber);
-          notesSet.add(frequencyToNote(fretPitch));
+          const fretNote = frequencyToNote(
+            addSemitonesToFrequency(stringPitch, fretNumber)
+          );
+          notesSet.add(fretNote);
+          toneSet.add(fretNote.tone);
         }
       });
     });
-    return Array.from(notesSet.values());
+    return {
+      selectedNotes: Array.from(notesSet.values()),
+      selectedTones: Array.from(toneSet.values()),
+    };
   }, [selectedFrets, tuning]);
+
+  const possibleChords = React.useMemo(() => {
+    return IdentifyPossibleChordsFromNotes(selectedNotes);
+  }, [selectedNotes]);
 
   return (
     <>
@@ -72,15 +82,17 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
       >
         <FretboardOptions />
         <>
+          {children}
           Selected Notes:{" "}
           {selectedNotes.map((note) => note.tone + note.octave).join(", ")}
-          <br />
-          {selectedNotes.length === 2
-            ? `Interval: ${Interval[
-                intervalBetween(selectedNotes[0].tone, selectedNotes[1].tone)
-              ].replaceAll("_", " ")}`
-            : null}
-          {children}
+          {possibleChords.length > 0 ? (
+            <>
+              <br />
+              {`Possible Chords: ${possibleChords
+                .map((chord) => chord.root + " " + chord.shortHand)
+                .join(", ")}`}
+            </>
+          ) : null}
         </>
       </FretboardContext.Provider>
     </>

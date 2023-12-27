@@ -1,7 +1,16 @@
 import { Interval } from "./Interval";
-import { MusicalNumber } from "./types";
+import { MusicalNumber, Tone } from "./types";
 
 export type ChordStructure = MusicalNumber[];
+
+export type ChordArchetype = {
+  structure: ChordStructure;
+  shortHand: string;
+};
+
+export type Chord = ChordArchetype & {
+  root: Tone;
+};
 
 const Fifth_Chord: ChordStructure = [Interval.Unison, Interval.Perfect_Fifth];
 
@@ -56,15 +65,24 @@ const Suspended_Fourth_Chord: ChordStructure = [
   Interval.Perfect_Fifth,
 ];
 
-export const Chords: { [chordName: string]: ChordStructure } = {
-  "Fifth Chord": Fifth_Chord,
-  "Major Chord": Major_Chord,
-  "Minor Chord": Minor_Chord,
-  "Diminished Chord": Diminished_Chord,
-  "Augmented Chord": Augmented_Chord,
-  "Major Seventh Chord": Major_Seventh_Chord,
-  "Minor Seventh Chord": Minor_Seventh_Chord,
-  "Dominant Seventh Chord": Dominant_Seventh_Chord,
-  "Suspended Second Chord": Suspended_Second_Chord,
-  "Suspended Fourth Chord": Suspended_Fourth_Chord,
+export const Chords: { [chordName: string]: ChordArchetype } = {
+  "Fifth Chord": { structure: Fifth_Chord, shortHand: "5" },
+  "Major Chord": { structure: Major_Chord, shortHand: "major" },
+  "Minor Chord": { structure: Minor_Chord, shortHand: "minor" },
+  "Diminished Chord": { structure: Diminished_Chord, shortHand: "dim" },
+  "Augmented Chord": { structure: Augmented_Chord, shortHand: "aug" },
+  "Major Seventh Chord": { structure: Major_Seventh_Chord, shortHand: "maj7" },
+  "Minor Seventh Chord": { structure: Minor_Seventh_Chord, shortHand: "m7" },
+  "Dominant Seventh Chord": {
+    structure: Dominant_Seventh_Chord,
+    shortHand: "7",
+  },
+  "Suspended Second Chord": {
+    structure: Suspended_Second_Chord,
+    shortHand: "sus2",
+  },
+  "Suspended Fourth Chord": {
+    structure: Suspended_Fourth_Chord,
+    shortHand: "sus4",
+  },
 } as const;
