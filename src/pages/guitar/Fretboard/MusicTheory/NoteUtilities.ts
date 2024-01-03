@@ -1,23 +1,10 @@
-import { CHROMATIC_SCALE } from "./Scale";
-import { MusicalKey, MusicalNumber, Note, Tone, TONES } from "./types";
+import { MusicalNumber, Note, TONES, Tone } from "./types";
 
-export const noteAt = (
-  index: number,
-  key: MusicalKey = { root: 3, scale: CHROMATIC_SCALE }
-) => {
-  let cursor: number = key.root;
-
-  for (let i = 0; i < index; i++) {
-    cursor = cursor + key.scale.sequence[i % key.scale.sequence.length];
-  }
-  return TONES[cursor % TONES.length];
-};
-
-export const noteFrom = (
-  startingNote: MusicalNumber,
+export const toneFrom = (
+  startingTone: MusicalNumber,
   interval: number
 ): MusicalNumber => {
-  return ((startingNote + interval) % 12) as MusicalNumber;
+  return ((startingTone + interval) % 12) as MusicalNumber;
 };
 
 export const intervalBetween = (

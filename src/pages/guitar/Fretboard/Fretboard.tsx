@@ -10,12 +10,26 @@ export type FretboardMode = "Interactive" | "Inert";
 export type FretboardOrientation = "Horizontal" | "Vertical";
 export type FretSelectionMode = "Single" | "Multiple";
 
+type PlaybackOptions = {
+  onFretClick: boolean;
+};
 export interface FretboardSettings {
   mode: FretboardMode;
   orientation: FretboardOrientation;
   selectionMode: FretSelectionMode;
   stringCount: number;
+  playbackOptions: PlaybackOptions;
 }
+
+export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
+  mode: "Interactive",
+  selectionMode: "Multiple",
+  orientation: "Horizontal",
+  stringCount: 6,
+  playbackOptions: {
+    onFretClick: true,
+  },
+};
 
 export interface FretboardProps {}
 

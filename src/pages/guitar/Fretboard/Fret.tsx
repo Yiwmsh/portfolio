@@ -103,11 +103,10 @@ export const Fret: React.FC<FretProps> = ({
   stringNote,
   stringNumber,
 }) => {
-  const { selectedFrets, setSelectedFrets } =
+  const { selectedFrets, setSelectedFrets, sampler } =
     React.useContext(FretboardContext);
-  const fretNote = frequencyToNote(
-    addSemitonesToFrequency(stringNote, fretNumber)
-  );
+  const fretFrequency = addSemitonesToFrequency(stringNote, fretNumber);
+  const fretNote = frequencyToNote(fretFrequency);
 
   return (
     <FretButton
@@ -128,6 +127,13 @@ export const Fret: React.FC<FretProps> = ({
         newSelectedFrets[stringNumber][fretNumber] =
           !selectedFrets[stringNumber][fretNumber];
         setSelectedFrets(newSelectedFrets);
+
+        if (
+          settings.playbackOptions.onFretClick &&
+          newSelectedFrets[stringNumber][fretNumber]
+        ) {
+          sampler.triggerAttack(fretFrequency);
+        }
       }}
     >
       {selectedFrets[stringNumber][fretNumber] ? (

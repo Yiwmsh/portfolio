@@ -85,4 +85,4 @@ export const Chords: { [chordName: string]: ChordArchetype } = {
     structure: Suspended_Fourth_Chord,
     shortHand: "sus4",
   },
-} as const;
+};

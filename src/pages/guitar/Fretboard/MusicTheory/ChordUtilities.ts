@@ -6,7 +6,6 @@ export const IdentifyPossibleChordsFromNotes = (notes: Note[]) => {
   const possibleChords: Set<Chord> = new Set<Chord>();
   // Make a set of discrete tones
   const toneSet = new Set<Tone>(notes.map((note) => note.tone));
-  console.log(`Unqiue Tones: ${toneSet.size}`);
   // Iterate through the tones in the chord, treating each as though it were the root.
   toneSet.forEach((rootTone) => {
     // Get each interval
@@ -40,6 +39,7 @@ export const IdentifyPossibleChordsFromIntervals = (
       possibleChords.push(Chords[chordKey]);
     }
   });
+  // TODO match extended chords
   // TODO get imperfect matches
 
   return possibleChords;

@@ -4,6 +4,7 @@ import React from "react";
 import { SwitchControl } from "../../../components/SwitchControl";
 import { useEditFretboardSettings } from "../../../hooks/useEditFretboardSettings";
 import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
+import { DEFAULT_FRETBOARD_SETTINGS } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
 
 const FretboardOptionsContainer = styled.div``;
@@ -17,12 +18,7 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
     React.useContext(FretboardContext);
 
   if (settings == null) {
-    updateSettings({
-      mode: "Interactive",
-      selectionMode: "Multiple",
-      orientation: "Horizontal",
-      stringCount: 6,
-    });
+    updateSettings(DEFAULT_FRETBOARD_SETTINGS);
   }
 
   if (status !== "success" || settings == null) {
@@ -66,6 +62,19 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
         trueValueLabel="Scale"
         falseValueLabel="Chord"
         lateral
+      />
+      <SwitchControl
+        label="Audible fretting"
+        value={settings.playbackOptions.onFretClick}
+        onChange={(value) => {
+          updateSettings({
+            ...settings,
+            playbackOptions: {
+              ...settings.playbackOptions,
+              onFretClick: value,
+            },
+          });
+        }}
       />
       <Button
         onPress={() => {

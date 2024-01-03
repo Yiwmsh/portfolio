@@ -1,5 +1,3 @@
-import { Scale } from "./Scale";
-
 export const TONE_LETTERS = ["A", "B", "C", "D", "E", "F", "G"] as const;
 
 export type ToneLetter = (typeof TONE_LETTERS)[number];
@@ -35,11 +33,6 @@ export type MusicalNumber =
   | 10
   | 11
   | 12;
-
-export type MusicalKey = {
-  root: MusicalNumber;
-  scale: Scale;
-};
 
 export enum Frequencies {
   C = 16.35,

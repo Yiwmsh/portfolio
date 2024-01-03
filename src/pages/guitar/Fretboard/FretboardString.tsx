@@ -61,7 +61,7 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
   stringNote,
   settings,
 }) => {
-  const { selectedFrets, setSelectedFrets, setTuning, tuning } =
+  const { selectedFrets, setSelectedFrets, setTuning, tuning, sampler } =
     React.useContext(FretboardContext);
   React.useEffect(() => {
     if (settings.selectionMode === "Single") {
@@ -95,6 +95,13 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
             }
             newSelectedFrets[stringNumber][0] = !selectedFrets[stringNumber][0];
             setSelectedFrets(newSelectedFrets);
+
+            if (
+              settings.playbackOptions.onFretClick &&
+              newSelectedFrets[stringNumber][0]
+            ) {
+              sampler.triggerAttack(stringNote);
+            }
           }}
         >
           {selectedFrets[stringNumber][0] ? (
