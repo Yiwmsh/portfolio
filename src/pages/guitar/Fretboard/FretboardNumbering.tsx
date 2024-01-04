@@ -1,11 +1,11 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
+import { TUNINGS } from "../MusicTheory/Tunings";
 import { FretButton } from "./Fret";
 import { FretboardOrientation, FretboardSettings } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
 import { GuitarNut } from "./FretboardString";
-import { TUNINGS } from "./MusicTheory/Tunings";
 import { StringNoteSelectStyle } from "./StringNoteSelect";
 import { FRET_COUNT } from "./consts";
 
@@ -63,8 +63,7 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
   orientation,
   settings,
 }) => {
-  const { selectedFrets, setSelectedFrets, setTuning, tuning } =
-    React.useContext(FretboardContext);
+  const { setTuning } = React.useContext(FretboardContext);
   return (
     <FretboardNumberingContainer orientation={orientation}>
       <TuningSelect
@@ -84,7 +83,9 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
         <GuitarNut
           orientation={settings.orientation}
           mode={"Inert"}
-        />
+        >
+          0
+        </GuitarNut>
         {Array(FRET_COUNT)
           .fill(0)
           .map((_, index) => (
@@ -94,7 +95,7 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
               key={`fretNumbering-${index}`}
               mode="Inert"
             >
-              {index}
+              {index + 1}
             </FretboardNumber>
           ))}
       </NumberContainer>

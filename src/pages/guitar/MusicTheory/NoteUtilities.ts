@@ -1,11 +1,19 @@
 import { MusicalNumber, Note, TONES, Tone } from "./types";
 
-export const toneFrom = (
+export function toneFrom(
   startingTone: MusicalNumber,
   interval: number
-): MusicalNumber => {
-  return ((startingTone + interval) % 12) as MusicalNumber;
-};
+): MusicalNumber;
+
+export function toneFrom(startingTone: Tone, interval: number): Tone;
+
+export function toneFrom(startingTone: any, interval: number): any {
+  if (typeof startingTone === "number") {
+    return ((startingTone + interval) % 12) as MusicalNumber;
+  } else if (typeof startingTone === "string") {
+    return TONES[(TONES.indexOf(startingTone as Tone) + interval) % 12];
+  }
+}
 
 export const intervalBetween = (
   startingTone: Tone,

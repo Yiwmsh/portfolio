@@ -2,28 +2,39 @@ import { Button } from "@chrisellis/react-carpentry";
 import React from "react";
 import * as ToneJS from "tone";
 import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
-import { FretboardOptions } from "./FretboardOptions";
-import { IdentifyPossibleChordsFromNotes } from "./MusicTheory/ChordUtilities";
+import { MusicalStructureList } from "../Displays/MusicalStructureList";
+import { Chords } from "../MusicTheory/Chord/Chord";
+import { Keys } from "../MusicTheory/Key/Key";
 import {
   addSemitonesToFrequency,
   frequencyToNote,
   noteToFrequency,
-} from "./MusicTheory/NoteUtilities";
-import { STANDARD_TUNING } from "./MusicTheory/Tunings";
-import { Note, Tone } from "./MusicTheory/types";
+} from "../MusicTheory/NoteUtilities";
+import { STANDARD_TUNING } from "../MusicTheory/Tunings";
+import { identifyPossibleStructures } from "../MusicTheory/identifyPossibleStructures";
+import { Note, Tone } from "../MusicTheory/types";
+import { FretboardOptions } from "./FretboardOptions";
 import { FRET_COUNT } from "./consts";
 
 export const FretboardContext = React.createContext<{
   selectedFrets: boolean[][];
   setSelectedFrets: React.Dispatch<React.SetStateAction<boolean[][]>>;
   clearSelectedFrets: () => void;
+  ghostedFrets: boolean[][];
+  setGhostedFrets: React.Dispatch<React.SetStateAction<boolean[][]>>;
+  clearGhostedFrets: () => void;
   tuning: number[];
   setTuning: React.Dispatch<React.SetStateAction<number[]>>;
   sampler: ToneJS.Sampler;
+  root?: Tone;
+  setRoot: React.Dispatch<React.SetStateAction<Tone | undefined>>;
 }>({
   selectedFrets: [],
   setSelectedFrets: () => {},
   clearSelectedFrets: () => {},
+  ghostedFrets: [],
+  setGhostedFrets: () => {},
+  clearGhostedFrets: () => {},
   tuning: STANDARD_TUNING,
   setTuning: () => {},
   sampler: new ToneJS.Sampler({
@@ -33,6 +44,7 @@ export const FretboardContext = React.createContext<{
     },
     baseUrl: "https://tonejs.github.io/audio/casio/",
   }).toDestination(),
+  setRoot: () => {},
 });
 
 interface FretboardDashboardProps {
@@ -42,9 +54,15 @@ interface FretboardDashboardProps {
 export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
   children,
 }) => {
+  const [root, setRoot] = React.useState<Tone>();
   const { data: settings, status } = useFretboardSettings();
   const [tuning, setTuning] = React.useState<number[]>(STANDARD_TUNING);
   const [selectedFrets, setSelectedFrets] = React.useState<boolean[][]>(
+    Array(tuning.length)
+      .fill(0)
+      .map((_) => Array(FRET_COUNT + 1).fill(false))
+  );
+  const [ghostedFrets, setGhostedFrets] = React.useState<boolean[][]>(
     Array(tuning.length)
       .fill(0)
       .map((_) => Array(FRET_COUNT + 1).fill(false))
@@ -80,8 +98,20 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
   }, [selectedFrets, tuning]);
 
   const possibleChords = React.useMemo(() => {
-    return IdentifyPossibleChordsFromNotes(selectedNotes);
+    return identifyPossibleStructures(selectedNotes, Chords);
   }, [selectedNotes]);
+
+  const possibleKeys = React.useMemo(() => {
+    return identifyPossibleStructures(selectedNotes, Keys);
+  }, [selectedNotes]);
+
+  React.useEffect(() => {
+    if (selectedTones.length === 1) {
+      setRoot(selectedTones[0]);
+    } else if (selectedTones.length === 0) {
+      setRoot(undefined);
+    }
+  }, [selectedTones]);
 
   if (status !== "success" || settings == null) {
     return <></>;
@@ -91,6 +121,8 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
     <>
       <FretboardContext.Provider
         value={{
+          root,
+          setRoot,
           sampler,
           tuning,
           setTuning,
@@ -98,6 +130,15 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
           setSelectedFrets,
           clearSelectedFrets: () => {
             setSelectedFrets(
+              Array(tuning.length)
+                .fill(0)
+                .map((_) => Array(FRET_COUNT + 1).fill(false))
+            );
+          },
+          ghostedFrets,
+          setGhostedFrets,
+          clearGhostedFrets: () => {
+            setGhostedFrets(
               Array(tuning.length)
                 .fill(0)
                 .map((_) => Array(FRET_COUNT + 1).fill(false))
@@ -118,14 +159,21 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
             Strum
           </Button>
           {children}
-          Selected Notes:{" "}
-          {selectedNotes.map((note) => note.tone + note.octave).join(", ")}
-          {possibleChords.length > 0 && settings.selectionMode === "Single" ? (
+          {possibleChords.length > 0 && settings.selectionMode === "Chord" ? (
             <>
               <br />
-              {`Possible Chords: ${possibleChords
-                .map((chord) => chord.root + " " + chord.shortHand)
-                .join(", ")}`}
+              <MusicalStructureList
+                structures={possibleChords}
+                selectedTones={selectedTones}
+              />
+            </>
+          ) : possibleKeys.length > 0 && settings.selectionMode === "Scale" ? (
+            <>
+              <br />
+              <MusicalStructureList
+                structures={possibleKeys}
+                selectedTones={selectedTones}
+              />
             </>
           ) : null}
         </>

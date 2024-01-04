@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Fret, FretNote } from "./Fret";
+import { Fret } from "./Fret";
 import {
   FretboardMode,
   FretboardOrientation,
   FretboardSettings,
 } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
-import { frequencyToNote } from "./MusicTheory/NoteUtilities";
 import { StringNoteSelect } from "./StringNoteSelect";
 import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
@@ -40,20 +39,22 @@ const VisibleString = styled.span<{
   align-self: center;
 `;
 
-export const GuitarNut = styled.button<{
+export const GuitarNut = styled.div<{
   mode: FretboardMode;
   orientation: FretboardOrientation;
 }>`
-  background: transparent;
-  border: none;
-  cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: ${({ orientation }) =>
-    orientation === "Horizontal" ? FRET_THICKNESS : "30"}px;
-  width: ${({ orientation }) =>
-    orientation === "Vertical" ? FRET_THICKNESS : "30"}px;
+  & > button {
+    background: transparent;
+    border: none;
+    cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: ${({ orientation }) =>
+      orientation === "Horizontal" ? FRET_THICKNESS : "30"}px;
+    width: ${({ orientation }) =>
+      orientation === "Vertical" ? FRET_THICKNESS : "30"}px;
+  }
 `;
 
 export const FretboardString: React.FC<FretboardStringProps> = ({
@@ -61,10 +62,16 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
   stringNote,
   settings,
 }) => {
-  const { selectedFrets, setSelectedFrets, setTuning, tuning, sampler } =
-    React.useContext(FretboardContext);
+  const {
+    selectedFrets,
+    setSelectedFrets,
+    setTuning,
+    tuning,
+    sampler,
+    ghostedFrets,
+  } = React.useContext(FretboardContext);
   React.useEffect(() => {
-    if (settings.selectionMode === "Single") {
+    if (settings.selectionMode === "Chord") {
     }
   }, [settings]);
   return (
@@ -80,33 +87,15 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
       />
       <FretboardStringWrapperStyle orientation={settings.orientation}>
         <GuitarNut
-          disabled={settings.mode === "Inert"}
           orientation={settings.orientation}
           mode={settings.mode}
-          onClick={() => {
-            const newSelectedFrets = selectedFrets.map((string) => [...string]);
-            if (
-              settings.selectionMode === "Single" &&
-              !selectedFrets[stringNumber][0]
-            ) {
-              newSelectedFrets[stringNumber] = newSelectedFrets[
-                stringNumber
-              ].map((fret) => false);
-            }
-            newSelectedFrets[stringNumber][0] = !selectedFrets[stringNumber][0];
-            setSelectedFrets(newSelectedFrets);
-
-            if (
-              settings.playbackOptions.onFretClick &&
-              newSelectedFrets[stringNumber][0]
-            ) {
-              sampler.triggerAttack(stringNote);
-            }
-          }}
         >
-          {selectedFrets[stringNumber][0] ? (
-            <FretNote>{frequencyToNote(stringNote).tone}</FretNote>
-          ) : null}
+          <Fret
+            settings={settings}
+            fretNumber={0}
+            stringNote={stringNote}
+            stringNumber={stringNumber}
+          />
         </GuitarNut>
         {Array(FRET_COUNT)
           .fill(0)

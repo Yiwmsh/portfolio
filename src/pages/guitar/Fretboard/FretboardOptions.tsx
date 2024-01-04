@@ -14,7 +14,7 @@ interface FretboardOptionsProps {}
 export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
   const { data: settings, status } = useFretboardSettings();
   const { mutate: updateSettings } = useEditFretboardSettings();
-  const { clearSelectedFrets, selectedFrets } =
+  const { clearSelectedFrets, selectedFrets, clearGhostedFrets, setRoot } =
     React.useContext(FretboardContext);
 
   if (settings == null) {
@@ -49,11 +49,12 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
       />
       <SwitchControl
         label="Selection Mode"
-        value={settings.selectionMode === "Multiple"}
+        value={settings.selectionMode === "Scale"}
         onChange={(value) => {
+          clearGhostedFrets();
           updateSettings({
             ...settings,
-            selectionMode: value ? "Multiple" : "Single",
+            selectionMode: value ? "Scale" : "Chord",
           });
           if (!value) {
             clearSelectedFrets();
@@ -79,6 +80,8 @@ export const FretboardOptions: React.FC<FretboardOptionsProps> = ({}) => {
       <Button
         onPress={() => {
           clearSelectedFrets();
+          clearGhostedFrets();
+          setRoot(undefined);
         }}
         isDisabled={selectedFrets.length === 0}
       >

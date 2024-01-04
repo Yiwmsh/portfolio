@@ -1,7 +1,7 @@
 import { mod } from "../../../../utils/mod";
-import { Interval } from "./Interval";
-import { toneFrom } from "./NoteUtilities";
-import { MusicalNumber, TONES, Tone } from "./types";
+import { Interval } from "../Interval";
+import { toneFrom } from "../NoteUtilities";
+import { MusicalNumber, TONES, Tone } from "../types";
 
 export const scaleToMode = (sequence: Interval[], mode: number): Interval[] => {
   const scalePosition = mode % (sequence.length + 1);

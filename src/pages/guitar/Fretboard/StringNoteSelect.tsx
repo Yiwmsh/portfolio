@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { FREQUENCIES } from "../MusicTheory/Frequency";
 import { FretboardOrientation, FretboardSettings } from "./Fretboard";
-import { FREQUENCIES } from "./MusicTheory/Frequency";
 import { FRET_THICKNESS } from "./consts";
 
 export const StringNoteSelectStyle = styled.select<{

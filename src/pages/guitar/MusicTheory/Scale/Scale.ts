@@ -1,4 +1,4 @@
-import { Interval } from "./Interval";
+import { Interval } from "../Interval";
 import { scaleToMode } from "./ScaleUtils";
 
 export type Scale = {

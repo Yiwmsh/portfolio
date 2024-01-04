@@ -8,7 +8,7 @@ import { FRET_THICKNESS } from "./consts";
 
 export type FretboardMode = "Interactive" | "Inert";
 export type FretboardOrientation = "Horizontal" | "Vertical";
-export type FretSelectionMode = "Single" | "Multiple";
+export type FretSelectionMode = "Chord" | "Scale";
 
 type PlaybackOptions = {
   onFretClick: boolean;
@@ -23,7 +23,7 @@ export interface FretboardSettings {
 
 export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
   mode: "Interactive",
-  selectionMode: "Multiple",
+  selectionMode: "Scale",
   orientation: "Horizontal",
   stringCount: 6,
   playbackOptions: {
