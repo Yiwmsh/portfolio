@@ -13,6 +13,7 @@ import {
 import { FretboardContext } from "./FretboardDashboard";
 import {
   FRET_ACTIVE_BACKGROUND_COLOR,
+  FRET_ACTIVE_BORDER_COLOR,
   FRET_COUNT,
   FRET_ROOT_BACKGROUND_COLOR,
   FRET_THICKNESS,
@@ -205,7 +206,7 @@ export const Fret: React.FC<FretProps> = ({
               ? FRET_ROOT_BACKGROUND_COLOR
               : FRET_ACTIVE_BACKGROUND_COLOR
           }
-          borderColor={`#F5F21B`}
+          borderColor={FRET_ACTIVE_BORDER_COLOR}
         >
           {fretNote.tone}
         </FretNote>
