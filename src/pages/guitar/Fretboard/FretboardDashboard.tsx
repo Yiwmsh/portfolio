@@ -3,6 +3,7 @@ import React from "react";
 import * as ToneJS from "tone";
 import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
 import { MusicalStructureList } from "../Displays/MusicalStructureList";
+import { Barre, findBarreOnFret } from "../MusicTheory/Barres";
 import { Chords } from "../MusicTheory/Chord/Chord";
 import { Keys } from "../MusicTheory/Key/Key";
 import {
@@ -28,6 +29,9 @@ export const FretboardContext = React.createContext<{
   sampler: ToneJS.Sampler;
   root?: Tone;
   setRoot: React.Dispatch<React.SetStateAction<Tone | undefined>>;
+  possibleBarres: Barre[];
+  barres: Barre[];
+  setBarres: React.Dispatch<React.SetStateAction<Barre[]>>;
 }>({
   selectedFrets: [],
   setSelectedFrets: () => {},
@@ -45,6 +49,9 @@ export const FretboardContext = React.createContext<{
     baseUrl: "https://tonejs.github.io/audio/casio/",
   }).toDestination(),
   setRoot: () => {},
+  possibleBarres: [],
+  barres: [],
+  setBarres: () => {},
 });
 
 interface FretboardDashboardProps {
@@ -67,6 +74,28 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
       .fill(0)
       .map((_) => Array(FRET_COUNT + 1).fill(false))
   );
+
+  const [barres, setBarres] = React.useState<Barre[]>([]);
+  const possibleBarres: Barre[] = React.useMemo(() => {
+    const fretsInUse: Set<number> = new Set();
+    selectedFrets.forEach((guitarString) => {
+      guitarString.forEach((fret, fretIndex) => {
+        if (fret) {
+          fretsInUse.add(fretIndex);
+        }
+      });
+    });
+
+    const possibleBarres: Barre[] = [];
+    fretsInUse.forEach((fret) => {
+      const barre = findBarreOnFret(selectedFrets, fret);
+      if (barre !== false) {
+        possibleBarres.push(barre);
+      }
+    });
+
+    return possibleBarres;
+  }, [selectedFrets]);
 
   const sampler = new ToneJS.Sampler({
     urls: {
@@ -144,6 +173,9 @@ export const FretboardDashboard: React.FC<FretboardDashboardProps> = ({
                 .map((_) => Array(FRET_COUNT + 1).fill(false))
             );
           },
+          possibleBarres,
+          barres,
+          setBarres,
         }}
       >
         <FretboardOptions />

@@ -1,5 +1,5 @@
-import { Fretboard } from "./Fretboard/Fretboard";
 import { FretboardDashboard } from "./Fretboard/FretboardDashboard";
+import { Fretboard } from "./FretboardGrid/Fretboard/Fretboard";
 
 export const GuitarHomePage: React.FC = () => {
   return (

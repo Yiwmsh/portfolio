@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Fret } from "./Fret";
+import { Fret } from "./Fret/Fret";
 import {
   FretboardMode,
   FretboardOrientation,
@@ -43,7 +43,7 @@ export const GuitarNut = styled.div<{
   mode: FretboardMode;
   orientation: FretboardOrientation;
 }>`
-  & > button {
+  & > * {
     background: transparent;
     border: none;
     cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
@@ -62,14 +62,7 @@ export const FretboardString: React.FC<FretboardStringProps> = ({
   stringNote,
   settings,
 }) => {
-  const {
-    selectedFrets,
-    setSelectedFrets,
-    setTuning,
-    tuning,
-    sampler,
-    ghostedFrets,
-  } = React.useContext(FretboardContext);
+  const { setTuning, tuning } = React.useContext(FretboardContext);
   React.useEffect(() => {
     if (settings.selectionMode === "Chord") {
     }

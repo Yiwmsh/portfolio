@@ -4,20 +4,21 @@ import React from "react";
 import {
   addSemitonesToFrequency,
   frequencyToNote,
-} from "../MusicTheory/NoteUtilities";
-import {
-  FretboardMode,
-  FretboardOrientation,
-  FretboardSettings,
-} from "./Fretboard";
-import { FretboardContext } from "./FretboardDashboard";
+} from "../../MusicTheory/NoteUtilities";
 import {
   FRET_ACTIVE_BACKGROUND_COLOR,
   FRET_ACTIVE_BORDER_COLOR,
   FRET_COUNT,
   FRET_ROOT_BACKGROUND_COLOR,
   FRET_THICKNESS,
-} from "./consts";
+} from "../consts";
+import {
+  FretboardMode,
+  FretboardOrientation,
+  FretboardSettings,
+} from "../Fretboard";
+import { FretboardContext } from "../FretboardDashboard";
+import { fretBorder, fretSize } from "./fretStyle";
 
 export const percentOfNeckShown = () => {
   let totalFretLength = 0;
@@ -65,32 +66,15 @@ export const FretButton = styled.button<{
   fretNumber: number;
   orientation: FretboardOrientation;
 }>`
-  height: ${({ orientation, fretNumber }) =>
-    orientation === "Horizontal"
-      ? `${FRET_THICKNESS}px`
-      : `${
-          Number(calculateFretLength(fretNumber)) * (100 / percentOfNeckShown())
-        }%`};
-  width: ${({ orientation, fretNumber }) =>
-    orientation === "Vertical"
-      ? `${FRET_THICKNESS}px`
-      : `${
-          Number(calculateFretLength(fretNumber)) * (100 / percentOfNeckShown())
-        }%`};
+  ${({ orientation, fretNumber }) => fretSize(orientation, fretNumber)}
   background-color: #595251;
-  border: none;
   cursor: ${({ mode }) => (mode === "Interactive" ? "pointer" : "auto")};
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 
-  ${({ orientation }) =>
-    `border-${orientation === "Horizontal" ? "left" : "top"}: 1px solid grey;`}
-  ${({ orientation }) =>
-    `border-${
-      orientation === "Horizontal" ? "right" : "bottom"
-    }: 1px solid grey;`};
+  ${({ orientation }) => fretBorder(orientation)}
 `;
 
 export const FretNote = styled.div<{

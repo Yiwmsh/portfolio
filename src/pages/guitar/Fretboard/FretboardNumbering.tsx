@@ -2,12 +2,12 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { TUNINGS } from "../MusicTheory/Tunings";
-import { FretButton } from "./Fret";
+import { FRET_COUNT } from "./consts";
+import { fretSize } from "./Fret/fretStyle";
 import { FretboardOrientation, FretboardSettings } from "./Fretboard";
 import { FretboardContext } from "./FretboardDashboard";
 import { GuitarNut } from "./FretboardString";
 import { StringNoteSelectStyle } from "./StringNoteSelect";
-import { FRET_COUNT } from "./consts";
 
 const FretboardNumberingContainer = styled.div<{
   orientation: FretboardOrientation;
@@ -20,9 +20,12 @@ const FretboardNumberingContainer = styled.div<{
     orientation === "Horizontal" ? "row" : "column"};
 `;
 
-const FretboardNumber = styled(FretButton)`
-  background-color: transparent;
-  border-color: transparent;
+const FretboardNumber = styled.div<{
+  orientation: FretboardOrientation;
+  fretNumber: number;
+}>`
+  /* text-align: center; */
+  ${({ orientation, fretNumber }) => fretSize(orientation, fretNumber)}
 `;
 
 const NumberContainer = styled.div<{
@@ -84,7 +87,13 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
           orientation={settings.orientation}
           mode={"Inert"}
         >
-          0
+          <FretboardNumber
+            orientation={orientation}
+            fretNumber={0}
+            key={`fretNumbering-0`}
+          >
+            0
+          </FretboardNumber>
         </GuitarNut>
         {Array(FRET_COUNT)
           .fill(0)
@@ -93,7 +102,6 @@ export const FretboardNumbering: React.FC<FretboardNumberProps> = ({
               orientation={orientation}
               fretNumber={index + 1}
               key={`fretNumbering-${index}`}
-              mode="Inert"
             >
               {index + 1}
             </FretboardNumber>

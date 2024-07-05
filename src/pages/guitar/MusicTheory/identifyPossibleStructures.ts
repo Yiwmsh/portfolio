@@ -3,8 +3,8 @@ import {
   AbstractMusicalStructure,
   MusicalNumber,
   Note,
-  TONES,
   Tone,
+  TONES,
 } from "./types";
 
 export const identifyPossibleStructures = <T extends AbstractMusicalStructure>(

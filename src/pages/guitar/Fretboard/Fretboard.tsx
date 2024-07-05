@@ -1,10 +1,11 @@
+import { Button } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { useFretboardSettings } from "../../../hooks/useFretboardSettings";
 import { FretboardContext } from "./FretboardDashboard";
 import { FretboardNumbering } from "./FretboardNumbering";
 import { FretboardString } from "./FretboardString";
-import { FRET_THICKNESS } from "./consts";
+import { FRET_COUNT, FRET_THICKNESS } from "./consts";
 
 export type FretboardMode = "Interactive" | "Inert";
 export type FretboardOrientation = "Horizontal" | "Vertical";
@@ -54,7 +55,8 @@ const FretboardStyle = styled.div<{
 `;
 
 export const Fretboard: React.FC<FretboardProps> = () => {
-  const { tuning } = React.useContext(FretboardContext);
+  const { tuning, possibleBarres, barres, setBarres } =
+    React.useContext(FretboardContext);
   const { status, data: settings } = useFretboardSettings();
 
   if (status !== "success" || settings == null) {
@@ -66,6 +68,15 @@ export const Fretboard: React.FC<FretboardProps> = () => {
       orientation={settings.orientation}
       tuning={tuning}
     >
+      {Array(FRET_COUNT)
+        .fill(0)
+        .map((_, index) =>
+          possibleBarres.some((barre) => barre.fret === index) ? (
+            <Button>Barre</Button>
+          ) : (
+            <div></div>
+          )
+        )}
       <FretboardNumbering
         orientation={settings.orientation}
         settings={settings}
