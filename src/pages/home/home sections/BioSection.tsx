@@ -67,8 +67,8 @@ const BioCard = styled(Card)`
 `;
 
 export const BioSection: React.FC = () => {
-  const age = moment().diff(moment([1996, 6, 12]), "years");
-  const guitarTime = moment().diff(moment([2021, 6]), "years");
+  const age = moment().diff(moment([1996, 5, 12]), "years");
+  const guitarTime = moment().diff(moment([2021, 5]), "years");
 
   return (
     <>
