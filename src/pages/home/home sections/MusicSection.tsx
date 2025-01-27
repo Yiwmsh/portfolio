@@ -196,9 +196,11 @@ export const MusicSection: React.FC = () => {
       fetch(
         `${YOUTUBE_PLAYLIST_ITEMS_API}?key=${YOUTUBE_API_KEY}&part=snippet&maxResults=${YOUTUBE_MAX_RESULTS}&playlistId=${YOUTUBE_PLAYLIST_ID}`
       ).then((res) => {
-        res.json().then((json: { items: [] }) => {
-          setYoutubeVideos((arr) => [...json.items]);
-        });
+        if (res.status === 200) {
+          res.json().then((json: { items: [] }) => {
+            setYoutubeVideos((arr) => [...json.items]);
+          });
+        }
       });
     };
 
