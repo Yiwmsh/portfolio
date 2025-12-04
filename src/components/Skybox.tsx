@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React from "react";
 import { SessionContext } from "../pages/site";
 import { Star, StarData } from "./Star";

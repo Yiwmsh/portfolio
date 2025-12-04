@@ -7,7 +7,7 @@ import {
   TextContent,
 } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React, { ReactNode } from "react";
 import { Modal } from "../../../components/Modal";
 import { WhatsYourName } from "../../../components/WhatsYourName";

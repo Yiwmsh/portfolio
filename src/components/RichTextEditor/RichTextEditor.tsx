@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { TextFieldProps } from "@react-types/textfield";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React from "react";
 import {
   RichTextDecoration,

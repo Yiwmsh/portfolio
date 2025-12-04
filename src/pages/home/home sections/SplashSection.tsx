@@ -1,6 +1,6 @@
 import { AnimatedText, TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import { NameContext, SessionContext } from "../../site";
 
