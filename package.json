@@ -27,7 +27,7 @@
     "react-stately": "^3.18.0",
     "serve": "^14.1.2",
     "sort-by": "^1.2.0",
-    "typescript": "^4.8.4",
+    "typescript": "^5.9.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
