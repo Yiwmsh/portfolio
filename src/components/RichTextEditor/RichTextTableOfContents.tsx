@@ -75,7 +75,7 @@ const TableOfContentsAccordion: React.FC<{
       <AccordionHeader initial={false}>
         <AccordionHeaderArrow
           animate={{ rotate: isOpen ? 90 : 0 }}
-          transition={{ type: "ease" }}
+          transition={{ ease: "linear" }}
           onClick={() => {
             setIsOpen(!isOpen);
             if (accordionID) {
