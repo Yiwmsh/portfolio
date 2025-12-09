@@ -1,6 +1,6 @@
 import { TextContent } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";

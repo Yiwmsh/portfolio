@@ -1,6 +1,6 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const TagsRow = styled.div`
   display: flex;

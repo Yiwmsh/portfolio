@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion, Transition } from "motion/react";
 import React from "react";
 import { SessionContext } from "../pages/site";
 import { Star, StarData } from "./Star";
 
 const Sun = styled(motion.circle)``;
 
-const SUN_TRANSITION = {
+const SUN_TRANSITION: Transition = {
   type: "spring",
   duration: 3,
   delay: 2,
@@ -15,7 +15,7 @@ const SUN_TRANSITION = {
   mass: 1,
 };
 
-const SUN_RAY_TRANSITION = {
+const SUN_RAY_TRANSITION: Transition = {
   delay: 4.5,
   duration: 0.1,
   type: "spring",
@@ -103,7 +103,7 @@ export const Skybox: React.FC = () => {
           </defs>
           <Sun
             fill={"url('#sun')"}
-            initial={{ x: "50%", r: 50, y: session ? 10 : "-100vh" }}
+            initial={{ x: "50vw", r: 50, y: session ? 10 : "-100vh" }}
             animate={session ? {} : { y: 10 }}
             whileHover={{ scale: 1.2 }}
             transition={SUN_TRANSITION}
@@ -114,7 +114,7 @@ export const Skybox: React.FC = () => {
           <motion.path
             d={SUN_RAY_PATH}
             fill="#f4f812"
-            initial={{ x: "50%", scale: session ? 1.3 : 0, y: 5, rotate: 0 }}
+            initial={{ x: "50vw", scale: session ? 1.3 : 0, y: 5, rotate: 0 }}
             animate={session ? {} : { scale: 1.3 }}
             transition={SUN_RAY_TRANSITION}
             whileHover={{ scale: 20 }}
@@ -123,7 +123,7 @@ export const Skybox: React.FC = () => {
             d={SUN_RAY_PATH}
             fill="#f4f812"
             initial={{
-              x: `calc(50% - 41.7812px)`,
+              x: `calc(50vw - 41.7812px)`,
               scale: session ? 1.3 : 0,
               y: 49.7929 - 60,
               rotate: 40,
@@ -136,7 +136,7 @@ export const Skybox: React.FC = () => {
             d={SUN_RAY_PATH}
             fill="#f4f812"
             initial={{
-              x: "calc(50% - 64.0125px)",
+              x: "calc(50vw - 64.0125px)",
               scale: session ? 1.3 : 0,
               y: 11.2871 - 60,
               rotate: 80,
@@ -149,7 +149,7 @@ export const Skybox: React.FC = () => {
             d={SUN_RAY_PATH}
             fill="#f4f812"
             initial={{
-              x: "calc(50% + 41.7812px)",
+              x: "calc(50vw + 41.7812px)",
               scale: session ? 1.3 : 0,
               y: 49.7929 - 60,
               rotate: -40,
@@ -162,7 +162,7 @@ export const Skybox: React.FC = () => {
             d={SUN_RAY_PATH}
             fill="#f4f812"
             initial={{
-              x: "calc(50% + 64.0125px)",
+              x: "calc(50vw + 64.0125px)",
               scale: session ? 1.3 : 0,
               y: 11.2871 - 60,
               rotate: -80,

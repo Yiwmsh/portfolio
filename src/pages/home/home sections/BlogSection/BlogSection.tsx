@@ -103,10 +103,7 @@ export const BlogSection: React.FC = () => {
   React.useEffect(() => {
     const getRecentPosts = async () => {
       const q = query(
-        collection(
-          db,
-          process.env.REACT_APP_blogPostCollection ?? "blog-posts"
-        ),
+        collection(db, process.env.REACT_APP_blogPostCollection!),
         wherePublished,
         where("publishedDate", "!=", "null"),
         orderBy("publishedDate", "desc"),

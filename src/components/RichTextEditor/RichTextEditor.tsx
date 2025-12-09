@@ -1,17 +1,11 @@
 import styled from "@emotion/styled";
-import { TextFieldProps } from "@react-types/textfield";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import React from "react";
 import {
   RichTextDecoration,
   getExpectedClosingTag,
   tagIsVariable,
 } from "./RichTextDisplay";
-
-const RichTextInput = styled.textarea`
-  min-height: 20vh;
-  resize: both;
-`;
 
 const RichTextButtonsContainer = styled.div``;
 
@@ -20,9 +14,14 @@ const RichTextButton = styled(motion.button)`
   border: 1px solid black;
 `;
 
-export const RichTextEditor: React.FC<TextFieldProps> = ({
+interface RichTextEditorProps {
+  onChange?: (value: string) => void;
+  value: string;
+}
+
+export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   onChange,
-  ...rest
+  value,
 }) => {
   const setText = (value: string) => {
     onChange?.(value);
@@ -68,10 +67,14 @@ export const RichTextEditor: React.FC<TextFieldProps> = ({
           );
         })}
       </RichTextButtonsContainer>
-      <RichTextInput
+      <textarea
+        style={{
+          minHeight: "20vh",
+          resize: "both",
+        }}
         ref={inputRef}
         onChange={(event) => setText(event.target.value)}
-        {...rest}
+        value={value}
       />
     </>
   );

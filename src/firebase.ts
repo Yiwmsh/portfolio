@@ -23,9 +23,14 @@ const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
+if (process.env.NODE_ENV === "development") {
+  // eslint-disable-next-line no-restricted-globals
+  (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN =
+    process.env.REACT_APP_reCaptcha_DebugToken;
+}
+
 const appCheck = initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider("6Lc5m7EjAAAAAOP8HOGS4HA-9ioKPwyyDhsmz1le"),
-
   isTokenAutoRefreshEnabled: true,
 });
 
