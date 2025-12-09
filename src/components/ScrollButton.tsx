@@ -28,7 +28,7 @@ export const ScrollButton: React.FC<{
       <motion.div
         style={{ margin: "0 auto" }}
         animate={{
-          y: [0, 10, 0],
+          y: [0, 10],
         }}
         transition={{
           repeat: Infinity,
