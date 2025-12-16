@@ -107,7 +107,11 @@ export const useScryfallQuery = () => {
       queryTimes.push(queryTimeMs);
 
       setEstTimeRemaining(
-        estimateRemainingTimeMs(queryTimes, newCards.length, totalCards)
+        estimateRemainingTimeMs(
+          queryTimes,
+          newCards.length,
+          scryfallResponse.total_cards
+        )
       );
     });
     setStatus("finished");
