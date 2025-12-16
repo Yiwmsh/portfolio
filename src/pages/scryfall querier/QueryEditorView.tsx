@@ -1,4 +1,5 @@
 import React from "react";
+import { LowFrictionInput } from "./Components/LowFrictionInput";
 import { DeckGoalsList } from "./GoalsDisplay/DeckGoalsList";
 import { useDeck, useUpdateDeck } from "./hooks/decks";
 import {
@@ -6,7 +7,6 @@ import {
   useUpdateGlobalScryfallQueryTerms,
 } from "./hooks/globalScryfallQueryTerms";
 import { composeQuery } from "./hooks/scryfallQuery";
-import { LowFrictionInput } from "./LowFrictionInput";
 import { QueryResultsDisplay } from "./QueryResultsDisplay";
 
 interface QueryEditorViewProps {

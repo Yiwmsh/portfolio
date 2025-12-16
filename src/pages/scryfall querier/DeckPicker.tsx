@@ -1,5 +1,6 @@
 import React from "react";
 import { generateGUID } from "../../utils/generateGuid";
+import { LowFrictionInput } from "./Components/LowFrictionInput";
 import {
   DEFAULT_DECK,
   useDecks,
@@ -7,7 +8,6 @@ import {
   useUpdateDeck,
   useUpdateDeckId,
 } from "./hooks/decks";
-import { LowFrictionInput } from "./LowFrictionInput";
 import { Deck, DeckId } from "./types";
 
 interface DeckPickerProps {

@@ -1,9 +1,9 @@
 import localforage from "localforage";
 import React from "react";
 import { pluralize } from "../../../utils/pluralize";
+import { LowFrictionInput } from "../Components/LowFrictionInput";
 import { msPerDay, msPerHour, msPerMinute } from "../consts";
 import { DeckGoalWithId, GOALS_QUERY_KEY } from "../hooks/scryfallQuery";
-import { LowFrictionInput } from "../LowFrictionInput";
 import { DeckGoal } from "../types";
 
 const displayLastCached = (ms: number) => {
@@ -21,8 +21,9 @@ const displayLastCached = (ms: number) => {
   }
 };
 
-const useIsCacheValid = (goalId: string) => {
+const useCacheStats = (goalId: string, dateLastCached?: Date) => {
   const [validCache, setValidCache] = React.useState(false);
+  const [cacheSize, setCacheSize] = React.useState(0);
 
   const checkCache = async () => {
     const instance = await localforage.createInstance({
@@ -31,6 +32,7 @@ const useIsCacheValid = (goalId: string) => {
     });
 
     const len = await instance.length();
+    setCacheSize(len);
 
     if (len > 0) {
       setValidCache(true);
@@ -41,7 +43,7 @@ const useIsCacheValid = (goalId: string) => {
   };
 
   checkCache();
-  return validCache;
+  return { validCache, cacheSize };
 };
 
 type DeckGoalProps = DeckGoal & {
@@ -63,7 +65,7 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
   updateGoal,
   updateGoalCache,
 }) => {
-  const cacheIsValid = useIsCacheValid(goalGuid);
+  const { validCache: cacheIsValid, cacheSize } = useCacheStats(goalGuid);
 
   return (
     <div
@@ -86,7 +88,12 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
         }}
         value={name}
         onUpdate={(newValue) =>
-          updateGoal(goalGuid, { score, queryTerms, name: newValue })
+          updateGoal(goalGuid, {
+            score,
+            queryTerms,
+            name: newValue,
+            dateLastCached,
+          })
         }
       />
       <LowFrictionInput
@@ -94,9 +101,11 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
           gridColumn: "3",
         }}
         value={queryTerms}
-        onUpdate={(newValue) =>
-          updateGoal(goalGuid, { name, score, queryTerms: newValue })
-        }
+        onUpdate={(newValue) => {
+          if (newValue !== queryTerms) {
+            updateGoal(goalGuid, { name, score, queryTerms: newValue });
+          }
+        }}
       />
       <LowFrictionInput
         style={{
@@ -104,7 +113,12 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
         }}
         value={`${score}`}
         onUpdate={(newValue) =>
-          updateGoal(goalGuid, { name, score: Number(newValue), queryTerms })
+          updateGoal(goalGuid, {
+            name,
+            score: Number(newValue),
+            queryTerms,
+            dateLastCached,
+          })
         }
       />
       <label
