@@ -37,7 +37,8 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   }
 
   return (
-    <div
+    <a
+      href={card.scryfall_uri}
       style={{
         border: "1px solid black",
         margin: "5px",
@@ -54,6 +55,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         alt={card.name}
       />
       <div>Score: {card.score}</div>
-    </div>
+    </a>
   );
 };

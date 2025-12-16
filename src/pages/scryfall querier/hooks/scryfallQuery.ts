@@ -10,27 +10,6 @@ const QUERY_DELAY_MS = 500;
 
 const SCRYFALL_MAX_PAGE_SIZE = 175;
 
-const SCRYFALL_PARAMETERS = [
-  "q",
-  "unique",
-  "order",
-  "dir",
-  "include_extras",
-  "include_multilingual",
-  "include_variations",
-  "page",
-  "format",
-  "pretty",
-] as const;
-
-type ScryfallParameter = (typeof SCRYFALL_PARAMETERS)[number];
-
-const SCRYFALL_DESIGNATORS = [":", "=", "<", ">", ">=", "<="] as const;
-
-type ScryfallDesignator = (typeof SCRYFALL_DESIGNATORS)[number];
-
-type ScryfallQuery = Map<ScryfallParameter, string>;
-
 export interface ScryfallCard {
   id: string;
   oracle_id: string;
@@ -39,6 +18,7 @@ export interface ScryfallCard {
     normal: string;
   };
   score?: number;
+  scryfall_uri: string;
 }
 
 interface ScryfallResponse {
