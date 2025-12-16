@@ -5,9 +5,19 @@ import { BlogHome } from "./pages/blog/BlogHome/BlogHome";
 import { BlogOutlet } from "./pages/blog/BlogOutlet";
 import { BlogPostHandler } from "./pages/blog/BlogPost/BlogPostHandler";
 import { Home } from "./pages/home/home";
+import { ScryfallQuerier } from "./pages/scryfall querier/ScryfallQuerier";
 import { Site } from "./pages/site";
 
 export const routes = [
+  {
+    // path: "/scryfallQuerier",
+    path: "/",
+    element: (
+      <ThemeContext theme={TransparentTheme}>
+        <ScryfallQuerier />
+      </ThemeContext>
+    ),
+  },
   {
     path: "/",
     element: (
@@ -43,5 +53,14 @@ export const routes = [
         element: <BlogPostHandler />,
       },
     ],
+  },
+  {
+    // path: "/scryfallQuerier",
+    path: "/",
+    element: (
+      <ThemeContext theme={TransparentTheme}>
+        <ScryfallQuerier />
+      </ThemeContext>
+    ),
   },
 ];
