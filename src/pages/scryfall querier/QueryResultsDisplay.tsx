@@ -1,12 +1,9 @@
-import localforage from "localforage";
 import React from "react";
+import { displayMs } from "../../utils/displayMs";
 import { CardsGrid } from "./CardsGrid";
-import {
-  GOALS_QUERY_KEY,
-  ScryfallCard,
-  useScryfallQuery,
-} from "./hooks/scryfallQuery";
+import { ScryfallCard, useScryfallQuery } from "./hooks/scryfallQuery";
 import { Deck } from "./types";
+import { compileScoreMap, sortCards } from "./utilities/card sorting";
 
 interface QueryResultsDisplayProps {
   query: string;
@@ -17,54 +14,36 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
   deck,
   query,
 }) => {
-  const { cards, currentPage, totalCards, executeQuery, status } =
-    useScryfallQuery();
+  const {
+    cards,
+    currentPage,
+    totalCards,
+    executeQuery,
+    status,
+    estTimeRemaining,
+  } = useScryfallQuery();
 
   const [sortedCards, setSortedCards] = React.useState<ScryfallCard[]>([]);
 
-  const sortCards = async () => {
-    for (let i = 0; i < cards.length; i++) {
-      let card = cards[i];
-      let score = 0;
-
-      for (const [goalId, goal] of Array.from(deck.goals.entries())) {
-        const instance = await localforage.createInstance({
-          name: GOALS_QUERY_KEY,
-          storeName: goalId,
-        });
-        const foundValue = await instance.getItem(card.oracle_id);
-        if (foundValue !== null) {
-          score += goal.score;
-        }
-      }
-
-      cards[i] = { ...card, score };
-    }
-    const sorted = cards.toSorted((a, b) => {
-      const aScore = a.score ?? 0;
-      const bScore = b.score ?? 0;
-
-      if (aScore > bScore) {
-        return -1;
-      } else if (aScore < bScore) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+  const updateSortedCards = async () => {
+    const scoreMap = await compileScoreMap(deck);
+    const sorted = sortCards(scoreMap, cards);
     setSortedCards(sorted);
   };
 
   if (status === "loading") {
-    return `Loading: ${cards.length} / ${totalCards} cards.`;
+    return (
+      <div>
+        <div>
+          Loading: {cards.length} / {totalCards} cards
+        </div>
+        <div>Estimated time remaining: {displayMs(estTimeRemaining)}</div>
+      </div>
+    );
   }
 
   return (
     <div>
-      <div>
-        <label>Query url: </label>
-        {query}
-      </div>
       <button
         disabled={!query}
         onClick={() => {
@@ -76,15 +55,12 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
       </button>
       <button
         onClick={() => {
-          sortCards();
+          updateSortedCards();
         }}
       >
         Sort
       </button>
-      <div>
-        Cards: {cards.length}/{totalCards}{" "}
-      </div>
-      <div>Querying Page: {currentPage}</div>
+      <div>Cards: {totalCards}</div>
       <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
     </div>
   );

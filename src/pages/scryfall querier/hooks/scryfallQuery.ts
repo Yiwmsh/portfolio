@@ -8,6 +8,8 @@ const SCRYFALL_API_BASE = "https://api.scryfall.com";
 
 const QUERY_DELAY_MS = 500;
 
+const SCRYFALL_MAX_PAGE_SIZE = 175;
+
 const SCRYFALL_PARAMETERS = [
   "q",
   "unique",
@@ -50,7 +52,7 @@ export const composeQuery = (...queryClusters: string[]): string => {
   let query = SCRYFALL_API_BASE + "/cards/search?q=";
 
   for (const queryCluster of queryClusters) {
-    query += encodeURI(` ${queryCluster.trim()}`);
+    query += encodeURI(` (${queryCluster.trim()})`);
   }
 
   return query;
@@ -58,25 +60,45 @@ export const composeQuery = (...queryClusters: string[]): string => {
 
 const getAllQueryPages = async (
   queryUrl: string,
-  callback: (scryfallResponse: ScryfallResponse, page: number) => void
+  callback: (
+    scryfallResponse: ScryfallResponse,
+    page: number,
+    queryTimeMs: number
+  ) => void
 ): Promise<void> => {
   let page = 1;
   let has_more = true;
 
   while (has_more) {
+    const startTime = Date.now();
+    const cooldown = new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
     const response = await fetch(queryUrl + `&page=${page}`);
     const data: ScryfallResponse = await response.json();
+    const elapsed = Date.now() - startTime;
 
     has_more = data.has_more;
 
-    callback(data, page);
+    callback(data, page, elapsed);
 
     page += 1;
 
     if (has_more) {
-      await new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
+      await cooldown;
     }
   }
+};
+
+const estimateRemainingTimeMs = (
+  queryTimes: number[],
+  cardsSoFar: number,
+  totalCards: number
+): number => {
+  const avgQueryTime =
+    queryTimes.reduce((total, n) => total + n, 0) / queryTimes.length;
+  const estTimePerQuery =
+    avgQueryTime > QUERY_DELAY_MS ? avgQueryTime : QUERY_DELAY_MS;
+  const queriesRemaining = (totalCards - cardsSoFar) / SCRYFALL_MAX_PAGE_SIZE;
+  return queriesRemaining * estTimePerQuery;
 };
 
 export const useScryfallQuery = () => {
@@ -86,24 +108,39 @@ export const useScryfallQuery = () => {
   const [status, setStatus] = React.useState<"loading" | "finished">(
     "finished"
   );
+  const [estTimeRemaining, setEstTimeRemaining] = React.useState(0);
 
   const executeQuery = async (query: string) => {
     setStatus("loading");
+    setEstTimeRemaining(0);
     setCards([]);
     setTotalCards(0);
     setCurrentPage(1);
     let newCards: ScryfallCard[] = [];
-    await getAllQueryPages(query, (scryfallResponse, page) => {
+    let queryTimes: number[] = [];
+    await getAllQueryPages(query, (scryfallResponse, page, queryTimeMs) => {
       newCards.push(...scryfallResponse.data);
-
       setTotalCards(scryfallResponse.total_cards);
       setCurrentPage(page);
       setCards(newCards);
+
+      queryTimes.push(queryTimeMs);
+
+      setEstTimeRemaining(
+        estimateRemainingTimeMs(queryTimes, newCards.length, totalCards)
+      );
     });
     setStatus("finished");
   };
 
-  return { cards, totalCards, currentPage, executeQuery, status };
+  return {
+    cards,
+    totalCards,
+    currentPage,
+    executeQuery,
+    status,
+    estTimeRemaining,
+  };
 };
 
 export const GOALS_QUERY_KEY = "goals";
@@ -127,6 +164,7 @@ export interface UpdateGoalsCacheProps {
 export const useUpdateGoalCache = () => {
   const [totalCards, setTotalCards] = React.useState(0);
   const [progress, setProgress] = React.useState(0);
+  const [estTimeRemaining, setEstTimeRemaining] = React.useState(0);
 
   return {
     ...useMutation({
@@ -136,6 +174,12 @@ export const useUpdateGoalCache = () => {
         let currentProgress = 0;
         let currentTotalCards = 0;
         let hasMore = true;
+        let queryTimes: number[] = [];
+        let currentEstTimeRemaining = 0;
+
+        setTotalCards(0);
+        setProgress(0);
+        setEstTimeRemaining(0);
 
         while (hasMore) {
           hasMore = false;
@@ -165,10 +209,18 @@ export const useUpdateGoalCache = () => {
             const goalProgress = allGoalProgress.get(goal.goalId);
 
             if (goalProgress?.hasMore) {
+              const startTime = Date.now();
               const response = await fetch(
                 goalProgress.queryString + `&page=${goalProgress.page}`
               );
               const data: ScryfallResponse = await response.json();
+              queryTimes.push(Date.now() - startTime);
+              currentEstTimeRemaining = estimateRemainingTimeMs(
+                queryTimes,
+                currentProgress,
+                currentTotalCards
+              );
+              setEstTimeRemaining(currentEstTimeRemaining);
 
               const queryCooldown = new Promise((f) =>
                 setTimeout(f, QUERY_DELAY_MS)
@@ -196,13 +248,11 @@ export const useUpdateGoalCache = () => {
             }
           }
         }
-
-        setTotalCards(0);
-        setProgress(0);
         return;
       },
     }),
     totalCards,
     progress,
+    estTimeRemaining,
   };
 };

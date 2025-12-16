@@ -1,5 +1,6 @@
 import localforage from "localforage";
 import React, { ReactNode } from "react";
+import { displayMs } from "../../../utils/displayMs";
 import { generateGUID } from "../../../utils/generateGuid";
 import { useDeck, useUpdateDeck } from "../hooks/decks";
 import {
@@ -60,6 +61,7 @@ export const DeckGoalsList: React.FC<DeckGoalsListProps> = ({
     status: goalCacheStatus,
     progress: goalCacheProgress,
     totalCards: goalCacheTotalCards,
+    estTimeRemaining,
   } = useUpdateGoalCache();
   const updateSingleGoalCache = (goal: DeckGoalWithId) =>
     updateGoalsCache({
@@ -99,8 +101,11 @@ export const DeckGoalsList: React.FC<DeckGoalsListProps> = ({
   if (goalCacheStatus === "loading") {
     return (
       <div>
-        Updating Goals Cache. Progress: {goalCacheProgress} /{" "}
-        {goalCacheTotalCards} cards.
+        <div>
+          Updating Goals Cache. Progress: {goalCacheProgress} /{" "}
+          {goalCacheTotalCards} cards.
+        </div>
+        <div>Estimated remaining time: {displayMs(estTimeRemaining)}</div>
       </div>
     );
   }

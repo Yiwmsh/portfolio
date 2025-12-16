@@ -1,21 +1,21 @@
 import localforage from "localforage";
 import React from "react";
+import { pluralize } from "../../../utils/pluralize";
+import { msPerDay, msPerHour, msPerMinute } from "../consts";
 import { DeckGoalWithId, GOALS_QUERY_KEY } from "../hooks/scryfallQuery";
 import { LowFrictionInput } from "../LowFrictionInput";
 import { DeckGoal } from "../types";
 
-const msPerSec = 1000;
-const msPerMinute = 60 * msPerSec;
-const msPerHour = 60 * msPerMinute;
-const msPerDay = 24 * msPerHour;
-
 const displayLastCached = (ms: number) => {
   if (ms > msPerDay) {
-    return `${Math.floor(ms / msPerDay)} days`;
+    const days = Math.floor(ms / msPerDay);
+    return pluralize(days, "day", "days");
   } else if (ms > msPerHour) {
-    return `${Math.floor(ms / msPerHour)} hours`;
+    const hours = Math.floor(ms / msPerHour);
+    return pluralize(hours, "hour", "hours");
   } else if (ms > msPerMinute) {
-    return `${Math.floor(ms / msPerMinute)} minutes`;
+    const minutes = Math.floor(ms / msPerMinute);
+    return pluralize(minutes, "minute", "minutes");
   } else {
     return "Just now";
   }
