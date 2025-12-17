@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import moment from "moment";
 import React from "react";
 import portrait from "../../../resources/portrait.jpg";
-import { NameContext } from "../../site";
+import { NameContext } from "../../Showcase";
 
 const PortraitOfMe = styled.img`
   border-radius: 10px;

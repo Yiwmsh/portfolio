@@ -1,8 +1,8 @@
 import React from "react";
 import { displayMs } from "../../utils/displayMs";
 import { CardsGrid } from "./CardsGrid";
-import { ScryfallCard, useScryfallQuery } from "./hooks/scryfallQuery";
-import { Deck } from "./types";
+import { useScryfallQuery } from "./hooks/scryfallQuery";
+import { Deck, ScryfallCard } from "./types";
 import { compileScoreMap, sortCards } from "./utilities/card sorting";
 
 interface QueryResultsDisplayProps {

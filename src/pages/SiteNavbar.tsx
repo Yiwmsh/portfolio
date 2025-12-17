@@ -9,26 +9,26 @@ const ScreenWidthBreakpoints = {
 
 const NavbarContainer = styled.div`
   background-color: var(${SemanticColors.foreground});
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr auto 1fr;
   max-width: 100%;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  flex-direction: row;
   position: sticky;
   top: 0;
-  padding: 2vh 0;
+  padding: 2vh 1vw;
   border-bottom: 1px solid var(${SemanticColors.primary});
   background-color: var(${SemanticColors.midground});
   z-index: 2;
 `;
 
 const NavbarUL = styled(motion.ul)`
+  grid-column: 3;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
+  justify-content: flex-end;
   list-style: none;
   gap: 50px;
-  margin-right: 5vw;
 `;
 
 const NavbarLI = styled.li`
@@ -46,8 +46,8 @@ const NavbarLink = styled(motion.a)`
 `;
 
 const WhimsyLink = styled(NavbarLink)`
+  grid-column: 1;
   font-size: 40px;
-  margin-left: 5vw;
 
   @media screen and (max-width: ${ScreenWidthBreakpoints.iconsFit}px) {
     font-size: 30px;
@@ -73,7 +73,40 @@ const NavbarElement: React.FC<{ label: string; href: string }> = ({
   );
 };
 
+const PATHS = ["Blog", "Orrery"] as const;
+
+type SitePath = (typeof PATHS)[number];
+type Page = {
+  pathNameRegex: RegExp;
+  display: string;
+  route: string;
+};
+
+const Paths: Record<SitePath, Page> = {
+  Blog: {
+    pathNameRegex: /\/blog($|\/)/gm,
+    display: "Blog",
+    route: "/blog",
+  },
+  Orrery: {
+    pathNameRegex: /\/orrery($|\/)/gm,
+    display: "Orrery",
+    route: "/orrery",
+  },
+};
+
 export const Navbar: React.FC = () => {
+  const pathName = window.location.pathname;
+  let page: SitePath | null = null;
+
+  for (const pathKey in Paths) {
+    const path = Paths[pathKey as SitePath];
+    if (pathName.match(path.pathNameRegex)) {
+      page = pathKey as SitePath;
+      break;
+    }
+  }
+
   return (
     <NavbarContainer>
       <WhimsyLink
@@ -84,17 +117,45 @@ export const Navbar: React.FC = () => {
       >
         Whimsy
       </WhimsyLink>
+      <div
+        style={{
+          gridColumn: 2,
+        }}
+      >
+        {page !== null ? (
+          <motion.ul
+            style={{
+              display: "flex",
+              listStyle: "none",
+              justifyContent: "center",
+              padding: 0,
+            }}
+            layout
+          >
+            <NavbarElement
+              label={Paths[page].display}
+              href={Paths[page].route}
+            />
+          </motion.ul>
+        ) : null}
+      </div>
       <NavbarUL layout>
-        <NavbarElement
-          label="Blog"
-          href="/blog"
-        />
-        {/* <NavbarElement label="Posts" href="/blog/posts" /> */}
+        {page !== "Blog" && (
+          <NavbarElement
+            label="Blog"
+            href={Paths.Blog.route}
+          />
+        )}
+        {page !== "Orrery" && (
+          <NavbarElement
+            label="Orrery"
+            href={Paths.Orrery.route}
+          />
+        )}
         <NavbarElement
           label="About"
           href="/#Bio"
         />
-        <NavbarLI></NavbarLI>
       </NavbarUL>
     </NavbarContainer>
   );

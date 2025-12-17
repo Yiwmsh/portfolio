@@ -7,8 +7,8 @@ import styled from "@emotion/styled";
 import React from "react";
 import { Modal } from "../../../components/Modal";
 import { LightTheme } from "../../../consts/theme";
-import { Navbar } from "../../blog/BlogNavbar";
 import { BlogPost } from "../../blog/BlogPost/BlogPost/BlogPost";
+import { Navbar } from "../../SiteNavbar";
 import { BlogPostProps } from "./blogPostProps";
 
 const CloseButton = styled.button`

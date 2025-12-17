@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import { routes } from "./router";
+import { routes } from "./routing/router";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

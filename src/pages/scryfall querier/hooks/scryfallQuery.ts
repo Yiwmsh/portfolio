@@ -2,24 +2,13 @@ import localforage from "localforage";
 import React from "react";
 import { useMutation } from "react-query";
 import { Url } from "url";
-import { DeckGoal } from "../types";
+import { DeckGoal, ScryfallCard } from "../types";
 
 const SCRYFALL_API_BASE = "https://api.scryfall.com";
 
 const QUERY_DELAY_MS = 500;
 
 const SCRYFALL_MAX_PAGE_SIZE = 175;
-
-export interface ScryfallCard {
-  id: string;
-  oracle_id: string;
-  name: string;
-  image_uris: {
-    normal: string;
-  };
-  score?: number;
-  scryfall_uri: string;
-}
 
 interface ScryfallResponse {
   total_cards: number;
@@ -51,7 +40,6 @@ const getAllQueryPages = async (
 
   while (has_more) {
     const startTime = Date.now();
-    const cooldown = new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
     const response = await fetch(queryUrl + `&page=${page}`);
     const data: ScryfallResponse = await response.json();
     const elapsed = Date.now() - startTime;
@@ -63,7 +51,7 @@ const getAllQueryPages = async (
     page += 1;
 
     if (has_more) {
-      await cooldown;
+      await new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
     }
   }
 };
@@ -75,8 +63,7 @@ const estimateRemainingTimeMs = (
 ): number => {
   const avgQueryTime =
     queryTimes.reduce((total, n) => total + n, 0) / queryTimes.length;
-  const estTimePerQuery =
-    avgQueryTime > QUERY_DELAY_MS ? avgQueryTime : QUERY_DELAY_MS;
+  const estTimePerQuery = avgQueryTime + QUERY_DELAY_MS;
   const queriesRemaining = (totalCards - cardsSoFar) / SCRYFALL_MAX_PAGE_SIZE;
   return queriesRemaining * estTimePerQuery;
 };
@@ -206,10 +193,6 @@ export const useUpdateGoalCache = () => {
               );
               setEstTimeRemaining(currentEstTimeRemaining);
 
-              const queryCooldown = new Promise((f) =>
-                setTimeout(f, QUERY_DELAY_MS)
-              );
-
               let newGoalProgress: GoalProgress = { ...goalProgress };
               newGoalProgress.hasMore = data.has_more;
               if (data.has_more) {
@@ -228,7 +211,7 @@ export const useUpdateGoalCache = () => {
               }
 
               allGoalProgress.set(goal.goalId, newGoalProgress);
-              await queryCooldown;
+              await new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
             }
           }
         }

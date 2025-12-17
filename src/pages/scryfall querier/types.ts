@@ -15,3 +15,17 @@ export type Deck = DeckId & {
   deckQueryFragment: string;
   goals: Map<string, DeckGoal>;
 };
+
+export interface ScryfallCard {
+  id: string;
+  oracle_id: string;
+  name: string;
+  image_uris: {
+    normal: string;
+  };
+  score?: number;
+  scryfall_uri: string;
+  prices: {
+    usd: number;
+  };
+}

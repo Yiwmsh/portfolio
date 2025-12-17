@@ -1,6 +1,6 @@
 import localforage from "localforage";
-import { GOALS_QUERY_KEY, ScryfallCard } from "../hooks/scryfallQuery";
-import { Deck } from "../types";
+import { GOALS_QUERY_KEY } from "../hooks/scryfallQuery";
+import { Deck, ScryfallCard } from "../types";
 
 export const compileScoreMap = async (
   deck: Deck
