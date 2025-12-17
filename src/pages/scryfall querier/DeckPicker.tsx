@@ -61,7 +61,6 @@ export const DeckPicker: React.FC<DeckPickerProps> = ({
         style={{
           border: "1px solid black",
           textAlign: "center",
-          width: "30rem",
           padding: "10px",
           margin: "auto",
         }}

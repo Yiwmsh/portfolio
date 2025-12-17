@@ -74,3 +74,24 @@ export const useDeleteDeck = () => {
     },
   });
 };
+
+export const DECK_PICKER_STATUS_QUERY_KEY = "deck picker status";
+
+export const useDeckPickerStatus = () =>
+  useQuery([DECK_PICKER_STATUS_QUERY_KEY], async () => {
+    const fetchedStatus = await localforage.getItem(
+      DECK_PICKER_STATUS_QUERY_KEY
+    );
+    return fetchedStatus === true;
+  });
+
+export const useToggleDeckPickerStatus = () => {
+  const client = useQueryClient();
+  const { data: status } = useDeckPickerStatus();
+
+  return useMutation({
+    mutationFn: async () =>
+      localforage.setItem(DECK_PICKER_STATUS_QUERY_KEY, !(status === true)),
+    onSettled: () => client.invalidateQueries(DECK_PICKER_STATUS_QUERY_KEY),
+  });
+};

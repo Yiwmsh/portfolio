@@ -1,6 +1,4 @@
 import React from "react";
-import { ScryfallQuerierView } from "./consts";
-import { DeckPicker } from "./DeckPicker";
 import { QueryEditorView } from "./QueryEditorView";
 import { ScryfallQuerierTopBar } from "./ScryfallQuerierTopBar";
 
@@ -8,22 +6,19 @@ export const ScryfallQuerier: React.FC = () => {
   const [selectedDeckGuid, setSelectedDeckGuid] = React.useState<
     string | undefined
   >();
-  const [view, setView] = React.useState<ScryfallQuerierView>("Decks");
 
   return (
-    <div>
+    <div
+      style={{
+        overflow: "hidden",
+        maxHeight: "90vh",
+      }}
+    >
       <ScryfallQuerierTopBar
         selectedDeckGuid={selectedDeckGuid}
-        setView={setView}
+        setSelectedDeckGuid={setSelectedDeckGuid}
       />
-      {view === "Decks" ? (
-        <DeckPicker
-          selectedDeck={selectedDeckGuid}
-          onChange={(newDeck) => setSelectedDeckGuid(newDeck)}
-        />
-      ) : view === "Query" ? (
-        <QueryEditorView selectedDeckGuid={selectedDeckGuid} />
-      ) : null}
+      <QueryEditorView selectedDeckGuid={selectedDeckGuid} />
     </div>
   );
 };

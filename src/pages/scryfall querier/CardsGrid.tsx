@@ -46,9 +46,9 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
     <div
       style={{
         width: "90vw",
-        height: "100%",
         background: "#ADD8E6",
         overflowY: "scroll",
+        border: "1px solid red",
       }}
     >
       {/* Scrollable Page */}

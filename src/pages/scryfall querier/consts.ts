@@ -1,7 +1,3 @@
-export const VIEWS = ["Decks", "Query"] as const;
-
-export type ScryfallQuerierView = (typeof VIEWS)[number];
-
 export const msPerSec = 1000;
 export const msPerMinute = 60 * msPerSec;
 export const msPerHour = 60 * msPerMinute;
