@@ -5,20 +5,17 @@ import {
   DEFAULT_DECK,
   useDecks,
   useDeleteDeck,
+  useSelectedDeck,
+  useSetSelectedDeck,
   useUpdateDeck,
   useUpdateDeckId,
 } from "./hooks/decks";
 import { Deck, DeckId } from "./types";
 
-interface DeckPickerProps {
-  selectedDeck?: string;
-  onChange: (newDeck?: string) => void;
-}
+export const DeckPicker: React.FC = () => {
+  const { data: { selectedDeckId } = {} } = useSelectedDeck();
+  const { mutate: setSelectedDeck } = useSetSelectedDeck();
 
-export const DeckPicker: React.FC<DeckPickerProps> = ({
-  selectedDeck,
-  onChange,
-}) => {
   const { data: decks } = useDecks();
   const { mutate: updateDeck } = useUpdateDeck();
 
@@ -48,8 +45,6 @@ export const DeckPicker: React.FC<DeckPickerProps> = ({
     };
     updateDeck(newDeck);
   }
-
-  console.log(decks);
 
   return (
     <div
@@ -102,9 +97,9 @@ export const DeckPicker: React.FC<DeckPickerProps> = ({
         {searchedDecks &&
           searchedDecks.map((deck) => (
             <DeckDisplay
-              selected={selectedDeck === deck.guid}
+              selected={selectedDeckId === deck.guid}
               setSelected={(newSelection) => {
-                onChange(newSelection);
+                setSelectedDeck(newSelection);
               }}
               {...deck}
             />

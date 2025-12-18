@@ -1,12 +1,9 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { DeckPicker } from "./DeckPicker";
-import {
-  useDeck,
-  useDeckPickerStatus,
-  useToggleDeckPickerStatus,
-} from "./hooks/decks";
-import { Deck } from "./types";
+import { QueryModifiersView } from "./QueryModifiers/QueryModifiersView";
+import { useSelectedDeck } from "./hooks/decks";
+import { useSiteSetting } from "./hooks/siteSettings";
 
 const HeaderSideSectionStyle: React.CSSProperties = {
   width: "30%",
@@ -15,23 +12,9 @@ const HeaderSideSectionStyle: React.CSSProperties = {
   justifyContent: "space-evenly",
 };
 
-interface TopbarProps {
-  selectedDeckGuid?: string;
-  setSelectedDeckGuid: (newDeck?: string) => void;
-}
+interface TopbarProps {}
 
-export const ScryfallQuerierTopBar: React.FC<TopbarProps> = ({
-  selectedDeckGuid,
-  setSelectedDeckGuid,
-}) => {
-  const { data: selectedDeck, status: selectedDeckStatus } = useDeck(
-    selectedDeckGuid ?? ""
-  );
-
-  if (selectedDeckStatus === "loading") {
-    return null;
-  }
-
+export const ScryfallQuerierTopBar: React.FC<TopbarProps> = ({}) => {
   return (
     <>
       <div
@@ -43,34 +26,24 @@ export const ScryfallQuerierTopBar: React.FC<TopbarProps> = ({
         }}
       >
         <div style={HeaderSideSectionStyle} />
-        <DeckSelectionModal
-          selectedDeck={selectedDeck}
-          selectedDeckGuid={selectedDeckGuid}
-          setSelectedDeckGuid={setSelectedDeckGuid}
-        />
+        <DeckSelectionModal />
         <div
           style={{
             ...HeaderSideSectionStyle,
           }}
-        ></div>
+        >
+          <QueryModifiersView />
+        </div>
       </div>
     </>
   );
 };
 
-interface DeckSelectionModalProps {
-  selectedDeckGuid?: string;
-  selectedDeck?: Deck;
-  setSelectedDeckGuid: (newDeck?: string) => void;
-}
+const DeckSelectionModal: React.FC = () => {
+  const { settingValue: isOpen, toggleSetting: toggleIsOpen } =
+    useSiteSetting("deck picker status");
 
-const DeckSelectionModal: React.FC<DeckSelectionModalProps> = ({
-  selectedDeckGuid,
-  setSelectedDeckGuid,
-  selectedDeck,
-}) => {
-  const { data: isOpen } = useDeckPickerStatus();
-  const { mutate: toggleIsOpen } = useToggleDeckPickerStatus();
+  const { data: { selectedDeck } = {} } = useSelectedDeck();
 
   return (
     <>
@@ -93,10 +66,7 @@ const DeckSelectionModal: React.FC<DeckSelectionModalProps> = ({
           height: "100%",
         }}
       >
-        <DeckPicker
-          selectedDeck={selectedDeckGuid}
-          onChange={(newDeck) => setSelectedDeckGuid(newDeck)}
-        />
+        <DeckPicker />
       </div>
     </>
   );

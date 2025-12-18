@@ -60,6 +60,7 @@ export const useUpdateDeck = () => {
     mutationFn: (deck: Deck) => decksCollection.setItem(deck.guid, deck),
     onSettled: () => {
       client.invalidateQueries(DECKS_COLLECTION_KEY);
+      client.invalidateQueries(SELECTED_DECK_KEY);
     },
   });
 };
@@ -75,23 +76,28 @@ export const useDeleteDeck = () => {
   });
 };
 
-export const DECK_PICKER_STATUS_QUERY_KEY = "deck picker status";
+export const SELECTED_DECK_KEY = "selected deck";
 
-export const useDeckPickerStatus = () =>
-  useQuery([DECK_PICKER_STATUS_QUERY_KEY], async () => {
-    const fetchedStatus = await localforage.getItem(
-      DECK_PICKER_STATUS_QUERY_KEY
-    );
-    return fetchedStatus === true;
+export const useSelectedDeck = () =>
+  useQuery([SELECTED_DECK_KEY], async () => {
+    const selectedDeckId: string | null = await localforage.getItem<
+      string | null
+    >(SELECTED_DECK_KEY);
+
+    const selectedDeck =
+      selectedDeckId != null
+        ? await decksCollection.getItem<Deck>(selectedDeckId)
+        : null;
+
+    return { selectedDeckId, selectedDeck };
   });
 
-export const useToggleDeckPickerStatus = () => {
+export const useSetSelectedDeck = () => {
   const client = useQueryClient();
-  const { data: status } = useDeckPickerStatus();
 
   return useMutation({
-    mutationFn: async () =>
-      localforage.setItem(DECK_PICKER_STATUS_QUERY_KEY, !(status === true)),
-    onSettled: () => client.invalidateQueries(DECK_PICKER_STATUS_QUERY_KEY),
+    mutationFn: async (selectedDeckId?: string | null) =>
+      localforage.setItem(SELECTED_DECK_KEY, selectedDeckId ?? null),
+    onSettled: () => client.invalidateQueries(SELECTED_DECK_KEY),
   });
 };

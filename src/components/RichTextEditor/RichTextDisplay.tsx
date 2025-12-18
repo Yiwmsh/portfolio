@@ -469,8 +469,6 @@ const parseRichText = (
   const test = true;
   const setTest = (value: boolean) => {};
   const parsedContent = recursiveParser(autoAddParagraphs(content), addHeader);
-  console.log("Headers:");
-  console.log(headers);
   return {
     parsedContent: parsedContent,
     headers: headers,

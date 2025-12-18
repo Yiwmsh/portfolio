@@ -1,12 +1,8 @@
 import React from "react";
-import { QueryEditorView } from "./QueryEditorView";
 import { ScryfallQuerierTopBar } from "./ScryfallQuerierTopBar";
+import { SearchView } from "./SearchView";
 
 export const ScryfallQuerier: React.FC = () => {
-  const [selectedDeckGuid, setSelectedDeckGuid] = React.useState<
-    string | undefined
-  >();
-
   return (
     <div
       style={{
@@ -14,11 +10,8 @@ export const ScryfallQuerier: React.FC = () => {
         maxHeight: "90vh",
       }}
     >
-      <ScryfallQuerierTopBar
-        selectedDeckGuid={selectedDeckGuid}
-        setSelectedDeckGuid={setSelectedDeckGuid}
-      />
-      <QueryEditorView selectedDeckGuid={selectedDeckGuid} />
+      <ScryfallQuerierTopBar />
+      <SearchView />
     </div>
   );
 };

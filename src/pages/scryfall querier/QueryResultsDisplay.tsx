@@ -1,17 +1,16 @@
 import React from "react";
 import { displayMs } from "../../utils/displayMs";
 import { CardsGrid } from "./CardsGrid";
+import { useSelectedDeck } from "./hooks/decks";
 import { useScryfallQuery } from "./hooks/scryfallQuery";
-import { Deck, ScryfallCard } from "./types";
+import { ScryfallCard } from "./types";
 import { compileScoreMap, sortCards } from "./utilities/card sorting";
 
 interface QueryResultsDisplayProps {
   query: string;
-  deck: Deck;
 }
 
 export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
-  deck,
   query,
 }) => {
   const {
@@ -25,8 +24,13 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
 
   const [sortedCards, setSortedCards] = React.useState<ScryfallCard[]>([]);
 
+  const { data: { selectedDeck } = {} } = useSelectedDeck();
+
   const updateSortedCards = async () => {
-    const scoreMap = await compileScoreMap(deck);
+    if (selectedDeck == null) {
+      return;
+    }
+    const scoreMap = await compileScoreMap(selectedDeck);
     const sorted = sortCards(scoreMap, cards);
     setSortedCards(sorted);
   };

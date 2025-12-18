@@ -47,7 +47,6 @@ const useCacheStats = (goalId: string, dateLastCached?: Date) => {
 };
 
 type DeckGoalProps = DeckGoal & {
-  deckGuid: string;
   goalGuid: string;
   deleteGoal: (goalId: string) => void;
   updateGoal: (goalId: string, updatedGoal: DeckGoal) => void;
@@ -55,7 +54,6 @@ type DeckGoalProps = DeckGoal & {
 };
 
 export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
-  deckGuid,
   goalGuid,
   name,
   queryTerms,
@@ -66,6 +64,8 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
   updateGoalCache,
 }) => {
   const { validCache: cacheIsValid, cacheSize } = useCacheStats(goalGuid);
+  const [goalQueryTermsFocused, setGoalQueryTermsFocused] =
+    React.useState(false);
 
   return (
     <div
@@ -74,83 +74,93 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
         display: "contents",
       }}
     >
-      <button
-        style={{
-          gridColumn: "1",
-        }}
-        onClick={() => deleteGoal(goalGuid)}
-      >
-        x
-      </button>
+      {!goalQueryTermsFocused && (
+        <>
+          <button
+            style={{
+              gridColumn: "1",
+            }}
+            onClick={() => deleteGoal(goalGuid)}
+          >
+            x
+          </button>
+          <LowFrictionInput
+            style={{
+              gridColumn: "2",
+            }}
+            value={name}
+            onUpdate={(newValue) =>
+              updateGoal(goalGuid, {
+                score,
+                queryTerms,
+                name: newValue,
+                dateLastCached,
+              })
+            }
+          />
+        </>
+      )}
       <LowFrictionInput
         style={{
-          gridColumn: "2",
-        }}
-        value={name}
-        onUpdate={(newValue) =>
-          updateGoal(goalGuid, {
-            score,
-            queryTerms,
-            name: newValue,
-            dateLastCached,
-          })
-        }
-      />
-      <LowFrictionInput
-        style={{
-          gridColumn: "3",
+          gridColumn: goalQueryTermsFocused ? "span 6" : "3",
         }}
         value={queryTerms}
+        onFocusChange={(isFocused) => setGoalQueryTermsFocused(isFocused)}
         onUpdate={(newValue) => {
           if (newValue !== queryTerms) {
             updateGoal(goalGuid, { name, score, queryTerms: newValue });
           }
         }}
       />
-      <LowFrictionInput
-        style={{
-          gridColumn: "4",
-        }}
-        value={`${score}`}
-        onUpdate={(newValue) =>
-          updateGoal(goalGuid, {
-            name,
-            score: Number(newValue),
-            queryTerms,
-            dateLastCached,
-          })
-        }
-      />
-      <label
-        style={{
-          gridColumn: "5",
-        }}
-      >
-        {dateLastCached?.toString() && cacheIsValid
-          ? displayLastCached(Date.now() - dateLastCached.getTime())
-          : "Not cached"}
-      </label>
-      <button
-        style={{
-          gridColumn: "6",
-        }}
-        onClick={() => {
-          updateGoalCache({
-            name,
-            queryTerms,
-            score,
-            goalId: goalGuid,
-          });
-          updateGoal(goalGuid, {
-            name,
-            queryTerms,
-            score,
-            dateLastCached: new Date(),
-          });
-        }}
-      >
-        Update Cache
-      </button>
+      {!goalQueryTermsFocused && (
+        <>
+          <LowFrictionInput
+            style={{
+              gridColumn: "4",
+            }}
+            value={`${score}`}
+            onUpdate={(newValue) =>
+              updateGoal(goalGuid, {
+                name,
+                score: Number(newValue),
+                queryTerms,
+                dateLastCached,
+              })
+            }
+          />
+          <label
+            style={{
+              gridColumn: "5",
+              textAlign: "center",
+            }}
+          >
+            {dateLastCached?.toString() && cacheIsValid
+              ? displayLastCached(Date.now() - dateLastCached.getTime())
+              : "Not cached"}
+          </label>
+          <button
+            style={{
+              gridColumn: "6",
+            }}
+            onClick={() => {
+              updateGoalCache({
+                name,
+                queryTerms,
+                score,
+                goalId: goalGuid,
+              });
+              updateGoal(goalGuid, {
+                name,
+                queryTerms,
+                score,
+                dateLastCached: new Date(),
+              });
+            }}
+          >
+            Update Cache
+          </button>
+        </>
+      )}
     </div>
   );
 };
