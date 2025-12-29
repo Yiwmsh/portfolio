@@ -1,3 +1,4 @@
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { generateGUID } from "../../utils/generateGuid";
 import { LowFrictionInput } from "./Components/LowFrictionInput";
@@ -10,7 +11,50 @@ import {
   useUpdateDeck,
   useUpdateDeckId,
 } from "./hooks/decks";
+import { useSiteSetting } from "./hooks/siteSettings";
+import { QueryModifiersView } from "./QueryModifiers/QueryModifiersView";
 import { Deck, DeckId } from "./types";
+
+export const DeckModal: React.FC = () => {
+  const {
+    settingValue: isOpen,
+    toggleSetting: toggleIsOpen,
+    setSetting: setIsOpen,
+  } = useSiteSetting("deck modal status");
+
+  const { data: { selectedDeck } = {} } = useSelectedDeck();
+
+  return (
+    <>
+      <h1
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={() => toggleIsOpen()}
+      >
+        {selectedDeck ? `Deck: ${selectedDeck.name}` : "No Deck Selected"}
+      </h1>
+      <div
+        style={{
+          position: "fixed",
+          display: isOpen ? "flex" : "none",
+          width: `100vw`,
+          maxWidth: `100vw`,
+          height: "100vh",
+          maxHeight: "100vh",
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          backdropFilter: "blur(4px)",
+        }}
+        onClick={() => setIsOpen(false)}
+      >
+        <DeckPicker />
+        <QueryModifiersView />
+      </div>
+    </>
+  );
+};
 
 export const DeckPicker: React.FC = () => {
   const { data: { selectedDeckId } = {} } = useSelectedDeck();
@@ -49,61 +93,76 @@ export const DeckPicker: React.FC = () => {
   return (
     <div
       style={{
-        margin: "1rem",
+        position: "relative",
+        width: "400px",
+        zIndex: 2,
+        background: `var(${SemanticColors.midground})`,
+        border: `1px solid var(${SemanticColors.primary})`,
+        height: "100%",
+        paddingTop: "calc(5vh + 60px)",
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
       }}
     >
       <div
         style={{
-          border: "1px solid black",
-          textAlign: "center",
-          padding: "10px",
-          margin: "auto",
+          margin: "1rem",
         }}
       >
-        <h3>Create A New Deck</h3>
-        <label>Deck Name: </label>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !inputIsEmpty && !deckNameTaken) {
-              createNewDeck();
-            }
+        <div
+          style={{
+            border: "1px solid black",
+            textAlign: "center",
+            padding: "10px",
+            margin: "auto",
           }}
-        />
-        <button
-          disabled={inputIsEmpty || deckNameTaken}
-          onClick={() => createNewDeck()}
         >
-          Create New Deck
-        </button>
-      </div>
-      <div>
-        <label>Search Decks: </label>
-        <LowFrictionInput
-          value={search}
-          onUpdate={(newValue) => setSearch(newValue)}
-        />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: "5px",
-          padding: "10px",
-        }}
-      >
-        {searchedDecks &&
-          searchedDecks.map((deck) => (
-            <DeckDisplay
-              selected={selectedDeckId === deck.guid}
-              setSelected={(newSelection) => {
-                setSelectedDeck(newSelection);
-              }}
-              {...deck}
-            />
-          ))}
+          <h3>Create A New Deck</h3>
+          <label>Deck Name: </label>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !inputIsEmpty && !deckNameTaken) {
+                createNewDeck();
+              }
+            }}
+          />
+          <button
+            disabled={inputIsEmpty || deckNameTaken}
+            onClick={() => createNewDeck()}
+          >
+            Create New Deck
+          </button>
+        </div>
+        <div>
+          <label>Search Decks: </label>
+          <LowFrictionInput
+            value={search}
+            onUpdate={(newValue) => setSearch(newValue)}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: "5px",
+            padding: "10px",
+          }}
+        >
+          {searchedDecks &&
+            searchedDecks.map((deck) => (
+              <DeckDisplay
+                selected={selectedDeckId === deck.guid}
+                setSelected={(newSelection) => {
+                  setSelectedDeck(newSelection);
+                }}
+                {...deck}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );

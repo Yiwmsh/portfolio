@@ -1,13 +1,9 @@
 import localforage from "localforage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-export const DECK_PICKER_STATUS_KEY = "deck picker status";
-export const QUERY_MODIFIERS_VIEW_STATUS_KEY = "query modifiers view status";
+export const DECK_MODAL_STATUS_KEY = "deck modal status";
 
-export const SITE_SETTINGS_KEYS = [
-  DECK_PICKER_STATUS_KEY,
-  QUERY_MODIFIERS_VIEW_STATUS_KEY,
-] as const;
+export const SITE_SETTINGS_KEYS = [DECK_MODAL_STATUS_KEY] as const;
 
 export type SiteSettingKey = (typeof SITE_SETTINGS_KEYS)[number];
 
