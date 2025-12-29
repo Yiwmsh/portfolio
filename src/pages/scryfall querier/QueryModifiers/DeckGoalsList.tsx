@@ -104,7 +104,11 @@ export const DeckGoalsList: React.FC = () => {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        overflowY: "scroll",
+      }}
+    >
       <div
         style={{
           marginTop: "1rem",

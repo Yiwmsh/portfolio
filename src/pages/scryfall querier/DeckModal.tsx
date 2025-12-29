@@ -1,6 +1,7 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { generateGUID } from "../../utils/generateGuid";
+import { NAVBAR_HEIGHT_VAR_NAME } from "../SiteNavbar";
 import { LowFrictionInput } from "./Components/LowFrictionInput";
 import {
   DEFAULT_DECK,
@@ -40,17 +41,53 @@ export const DeckModal: React.FC = () => {
           display: isOpen ? "flex" : "none",
           width: `100vw`,
           maxWidth: `100vw`,
-          height: "100vh",
-          maxHeight: "100vh",
-          top: 0,
+          height: `calc(100vh - var(${NAVBAR_HEIGHT_VAR_NAME}))`,
+          top: `var(${NAVBAR_HEIGHT_VAR_NAME})`,
           left: 0,
           zIndex: 1,
           backdropFilter: "blur(4px)",
         }}
         onClick={() => setIsOpen(false)}
       >
-        <DeckPicker />
-        <QueryModifiersView />
+        <div
+          style={{
+            width: "80%",
+            height: "80%",
+            position: "relative",
+            zIndex: 2,
+            background: `var(${SemanticColors.midground})`,
+            margin: "auto",
+            border: `1px solid var(${SemanticColors.primary})`,
+            padding: "2rem",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            gap: "1rem",
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <button
+            style={{
+              background: "none",
+              width: "2rem",
+              height: "2rem",
+              fontSize: "1.5rem",
+              border: "none",
+              cursor: "pointer",
+              right: "0",
+              top: "0",
+              position: "absolute",
+            }}
+            onClick={() => setIsOpen(false)}
+          >
+            x
+          </button>
+          <DeckPicker />
+          <QueryModifiersView />
+        </div>
       </div>
     </>
   );
@@ -93,13 +130,11 @@ export const DeckPicker: React.FC = () => {
   return (
     <div
       style={{
-        position: "relative",
         width: "400px",
-        zIndex: 2,
-        background: `var(${SemanticColors.midground})`,
         border: `1px solid var(${SemanticColors.primary})`,
-        height: "100%",
-        paddingTop: "calc(5vh + 60px)",
+        maxHeight: "100%",
+        overflowY: "scroll",
+        overflowX: "hidden",
       }}
       onClick={(e) => {
         e.stopPropagation();
@@ -107,62 +142,59 @@ export const DeckPicker: React.FC = () => {
     >
       <div
         style={{
-          margin: "1rem",
+          textAlign: "center",
+          padding: "10px",
+          margin: "auto",
         }}
       >
-        <div
-          style={{
-            border: "1px solid black",
-            textAlign: "center",
-            padding: "10px",
-            margin: "auto",
+        <h3>Create A New Deck</h3>
+        <label>Deck Name: </label>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !inputIsEmpty && !deckNameTaken) {
+              createNewDeck();
+            }
           }}
+        />
+        <button
+          disabled={inputIsEmpty || deckNameTaken}
+          onClick={() => createNewDeck()}
         >
-          <h3>Create A New Deck</h3>
-          <label>Deck Name: </label>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !inputIsEmpty && !deckNameTaken) {
-                createNewDeck();
-              }
-            }}
-          />
-          <button
-            disabled={inputIsEmpty || deckNameTaken}
-            onClick={() => createNewDeck()}
-          >
-            Create New Deck
-          </button>
-        </div>
-        <div>
-          <label>Search Decks: </label>
-          <LowFrictionInput
-            value={search}
-            onUpdate={(newValue) => setSearch(newValue)}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: "5px",
-            padding: "10px",
-          }}
-        >
-          {searchedDecks &&
-            searchedDecks.map((deck) => (
-              <DeckDisplay
-                selected={selectedDeckId === deck.guid}
-                setSelected={(newSelection) => {
-                  setSelectedDeck(newSelection);
-                }}
-                {...deck}
-              />
-            ))}
-        </div>
+          Create New Deck
+        </button>
+      </div>
+      <div
+        style={{
+          textAlign: "center",
+          padding: "10px",
+          margin: "auto",
+        }}
+      >
+        <label>Search Decks: </label>
+        <LowFrictionInput
+          value={search}
+          onUpdate={(newValue) => setSearch(newValue)}
+        />
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          padding: "10px",
+        }}
+      >
+        {searchedDecks &&
+          searchedDecks.map((deck) => (
+            <DeckDisplay
+              selected={selectedDeckId === deck.guid}
+              setSelected={(newSelection) => {
+                setSelectedDeck(newSelection);
+              }}
+              {...deck}
+            />
+          ))}
       </div>
     </div>
   );
@@ -205,11 +237,13 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
       style={{
         width: "10rem",
         height: "10rem",
-        border: `1px solid ${selected ? "blue" : "black"}`,
+        border: `1px solid var(${SemanticColors.primary})`,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        background: selected ? `var(${SemanticColors.primary})` : "none",
+        margin: "5px",
       }}
       onClick={() => {
         if (selected) {
@@ -221,7 +255,8 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
     >
       <div style={topBarStyle}>
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setEditing(true);
           }}
           style={{ ...buttonStyle }}
@@ -229,7 +264,10 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
           e
         </button>
         <button
-          onClick={() => deleteDeck(guid)}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteDeck(guid);
+          }}
           style={{ ...buttonStyle }}
         >
           x
@@ -251,6 +289,10 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
               });
               setEditing(false);
             }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            autoFocus
           />
         ) : (
           name

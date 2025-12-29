@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { motion } from "motion/react";
 import React from "react";
 
+export const NAVBAR_HEIGHT_VAR_NAME = "--navbar-height";
+
 const ScreenWidthBreakpoints = {
   iconsFit: 370,
 };
@@ -48,6 +50,7 @@ const NavbarLink = styled(motion.a)`
 const WhimsyLink = styled(NavbarLink)`
   grid-column: 1;
   font-size: 40px;
+  margin-right: auto;
 
   @media screen and (max-width: ${ScreenWidthBreakpoints.iconsFit}px) {
     font-size: 30px;
@@ -96,6 +99,8 @@ const Paths: Record<SitePath, Page> = {
 };
 
 export const Navbar: React.FC = () => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
   const pathName = window.location.pathname;
   let page: SitePath | null = null;
 
@@ -107,8 +112,29 @@ export const Navbar: React.FC = () => {
     }
   }
 
+  const setNavbarHeightVariable = () => {
+    if (ref != null && ref.current != null) {
+      document.documentElement.style.setProperty(
+        NAVBAR_HEIGHT_VAR_NAME,
+        `${ref.current.clientHeight}px`
+      );
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("resize", setNavbarHeightVariable);
+
+    return () => {
+      window.removeEventListener("resize", setNavbarHeightVariable);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    setNavbarHeightVariable();
+  }, [ref, ref.current]);
+
   return (
-    <NavbarContainer>
+    <NavbarContainer ref={ref}>
       <WhimsyLink
         whileHover={{
           color: `var(${SemanticColors.secondary})`,
