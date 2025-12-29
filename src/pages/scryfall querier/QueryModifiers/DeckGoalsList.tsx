@@ -69,12 +69,9 @@ export const DeckGoalsList: React.FC = () => {
       return [];
     }
 
-    console.log("Reconstructing goals");
-
     let retVal: ReactNode[] = [];
 
     selectedDeck.goals.forEach((goal, goalId) => {
-      console.log(goal.name);
       retVal.push(
         <DeckGoalDisplay
           {...goal}

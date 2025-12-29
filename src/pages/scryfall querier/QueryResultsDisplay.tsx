@@ -26,13 +26,17 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
 
   const { data: { selectedDeck } = {} } = useSelectedDeck();
 
+  const [sorting, setSorting] = React.useState(false);
+
   const updateSortedCards = async () => {
     if (selectedDeck == null) {
       return;
     }
+    setSorting(true);
     const scoreMap = await compileScoreMap(selectedDeck);
     const sorted = sortCards(scoreMap, cards);
     setSortedCards(sorted);
+    setSorting(false);
   };
 
   if (status === "loading") {
@@ -48,24 +52,36 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
 
   return (
     <div>
-      <button
-        disabled={!query}
-        onClick={() => {
-          setSortedCards([]);
-          executeQuery(query);
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: "1rem",
+          margin: "10px 0",
         }}
       >
-        Search
-      </button>
-      <button
-        onClick={() => {
-          updateSortedCards();
-        }}
-      >
-        Sort
-      </button>
+        <button
+          disabled={!query}
+          onClick={() => {
+            setSortedCards([]);
+            executeQuery(query);
+          }}
+        >
+          Search
+        </button>
+        <button
+          onClick={() => {
+            updateSortedCards();
+          }}
+        >
+          Sort
+        </button>
+      </div>
       <div>Cards: {totalCards}</div>
-      <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
+      {!sorting && (
+        <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
+      )}
     </div>
   );
 };

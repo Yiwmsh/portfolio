@@ -33,7 +33,9 @@ export const SearchView: React.FC = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        width: "600px",
+        justifyContent: "center",
+        alignItems: "center",
+        margin: "10px 0",
       }}
     >
       <div>

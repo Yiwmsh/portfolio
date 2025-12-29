@@ -1,87 +1,90 @@
 import React from "react";
+import { clamp } from "../../utils/clamp";
 import { ScryfallCard } from "./types";
 
-const MAX_CARDS_ON_SCREEN = 42;
 const CARDS_PER_ROW = 6;
+const CARDS_PER_PAGE = CARDS_PER_ROW * 6;
 
 const CARD_MARGIN = "5px";
 const CARD_PADDING = "5px";
 const CARD_IMAGE_HEIGHT = "300px";
 const TOTAL_CARD_HEIGHT = `(${CARD_MARGIN} + (${CARD_PADDING} * 2) + ${CARD_IMAGE_HEIGHT})`;
 
+const parseCssNumberToNumber = (cssNumber: string) => {
+  return Number(cssNumber.replace(/[\D]/gm, ""));
+};
+
+const TOTAL_CARD_HEIGHT_NUMBER =
+  parseCssNumberToNumber(CARD_MARGIN) +
+  parseCssNumberToNumber(CARD_IMAGE_HEIGHT) +
+  parseCssNumberToNumber(CARD_PADDING);
+
 interface CardsGridProps {
   cards: ScryfallCard[];
 }
 
 export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
-  const [page, setPage] = React.useState(0);
+  const [nextPage, setNextPage] = React.useState(0);
+  const [loadedCards, setLoadedCards] = React.useState<ScryfallCard[]>([]);
 
-  const { loadedCards, totalHeight, spaceBehind, spaceAhead } =
-    React.useMemo(() => {
-      let loadedCards: ScryfallCard[] = [];
-      const pageStart = page * CARDS_PER_ROW;
+  const lastPage = React.useMemo(() => {
+    return Math.ceil(cards.length / CARDS_PER_PAGE);
+  }, [cards.length]);
 
-      let i = pageStart;
+  const loadPage = () => {
+    if (nextPage < lastPage && loadedCards.length < cards.length) {
+      const pageStart = clamp(CARDS_PER_PAGE * nextPage, 0, cards.length);
+      const pageEnd = clamp(pageStart + CARDS_PER_PAGE, 0, cards.length);
+      const pageCards = cards.slice(pageStart, pageEnd);
+      const newLoadedCards = [...loadedCards, ...pageCards];
+      setLoadedCards(newLoadedCards);
+      setNextPage(nextPage + 1);
+    }
+  };
 
-      while (loadedCards.length < MAX_CARDS_ON_SCREEN && i < cards.length) {
-        loadedCards.push(cards[i]);
-        i += 1;
-      }
+  React.useEffect(() => {
+    console.log("Resetting loaded cards");
+    setLoadedCards([]);
+    setNextPage(0);
+    loadPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards]);
 
-      const totalPages = Math.ceil(cards.length / CARDS_PER_ROW);
-      const totalHeight = `calc(${TOTAL_CARD_HEIGHT} * ${totalPages})`;
-
-      const pagesBehind = page;
-      const spaceBehind = `calc(${TOTAL_CARD_HEIGHT} * ${pagesBehind})`;
-
-      const cardsAhead = cards.length - i;
-      const pagesAhead = Math.ceil(cardsAhead / CARDS_PER_ROW);
-      const spaceAhead = `calc(${TOTAL_CARD_HEIGHT} * ${pagesAhead})`;
-
-      return { loadedCards, totalHeight, spaceBehind, spaceAhead };
-    }, [page, cards]);
+  if (cards.length === 0) {
+    return null;
+  }
 
   return (
     // Grid Scroll Container
     <div
       style={{
-        width: "90vw",
+        width: "100%",
         background: "#ADD8E6",
         overflowY: "scroll",
         border: "1px solid red",
+        maxHeight: "77.5vh",
+      }}
+      onScroll={(e) => {
+        const distanceFromBottom =
+          e.currentTarget.scrollHeight -
+          e.currentTarget.scrollTop -
+          e.currentTarget.clientHeight;
+        if (distanceFromBottom <= TOTAL_CARD_HEIGHT_NUMBER / 2) {
+          loadPage();
+        }
       }}
     >
-      {/* Scrollable Page */}
       <div
         style={{
-          height: totalHeight,
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
         }}
       >
-        {/* Spacer for cards behind */}
-        <div
-          style={{
-            height: spaceBehind,
-          }}
-        />
-        {/* Grid */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-evenly",
-          }}
-        >
-          {loadedCards.map((card) => (
-            <CardDisplay card={card} />
-          ))}
-        </div>
-        {/* Spacer for cards ahead */}
-        <div
-          style={{
-            height: spaceAhead,
-          }}
-        />
+        {loadedCards.map((card) => (
+          <CardDisplay card={card} />
+        ))}
       </div>
     </div>
   );
