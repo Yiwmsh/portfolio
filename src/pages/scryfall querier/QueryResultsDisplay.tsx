@@ -5,6 +5,7 @@ import { useSelectedDeck } from "./hooks/decks";
 import { useScryfallQuery } from "./hooks/scryfallQuery";
 import { ScryfallCard } from "./types";
 import { compileScoreMap, sortCards } from "./utilities/card sorting";
+import { displayScryfallError } from "./utilities/displayScryfallError";
 
 interface QueryResultsDisplayProps {
   query: string;
@@ -20,6 +21,7 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
     executeQuery,
     status,
     estTimeRemaining,
+    error,
   } = useScryfallQuery();
 
   const [sortedCards, setSortedCards] = React.useState<ScryfallCard[]>([]);
@@ -78,7 +80,14 @@ export const QueryResultsDisplay: React.FC<QueryResultsDisplayProps> = ({
           Sort
         </button>
       </div>
-      <div>Cards: {totalCards}</div>
+      {error != null ? (
+        <div style={{ color: "red" }}>
+          There was an error with your query:{" "}
+          {displayScryfallError(error).toLowerCase()}.
+        </div>
+      ) : totalCards > 0 ? (
+        <div>Cards: {totalCards}</div>
+      ) : null}
       {!sorting && (
         <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
       )}

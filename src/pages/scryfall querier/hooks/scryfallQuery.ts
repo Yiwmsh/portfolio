@@ -4,6 +4,9 @@ import { useMutation } from "react-query";
 import { Url } from "url";
 import { DeckGoal, ScryfallCard } from "../types";
 
+export const GOAL_ERROR_CODE_KEY = "errorCode";
+export const GOAL_ERROR_MESSAGE_KEY = "errorMessage";
+
 const SCRYFALL_API_BASE = "https://api.scryfall.com";
 
 const QUERY_DELAY_MS = 500;
@@ -27,28 +30,52 @@ export const composeQuery = (...queryClusters: string[]): string => {
   return query;
 };
 
-const getAllQueryPages = async (
-  queryUrl: string,
-  callback: (
+interface GetAllQueryPagesProps {
+  queryUrl: string;
+  handleResponse: (
     scryfallResponse: ScryfallResponse,
     page: number,
     queryTimeMs: number
-  ) => void
+  ) => void;
+  handleError?: (
+    errorCode: number,
+    errorMessage: string,
+    currentErrorCount: number
+  ) => void;
+  maxErrors?: number;
+}
+
+const getAllQueryPages = async (
+  props: GetAllQueryPagesProps
 ): Promise<void> => {
+  const { queryUrl, handleResponse, handleError, maxErrors = 1 } = { ...props };
   let page = 1;
   let has_more = true;
+  let errors = 0;
 
   while (has_more) {
     const startTime = Date.now();
     const response = await fetch(queryUrl + `&page=${page}`);
-    const data: ScryfallResponse = await response.json();
-    const elapsed = Date.now() - startTime;
 
-    has_more = data.has_more;
+    if (response.ok) {
+      const data: ScryfallResponse = await response.json();
+      const elapsed = Date.now() - startTime;
 
-    callback(data, page, elapsed);
+      has_more = data.has_more;
 
-    page += 1;
+      handleResponse(data, page, elapsed);
+
+      page += 1;
+    } else {
+      const errorCode = response.status;
+      const errorMessage = response.statusText;
+      handleError?.(errorCode, errorMessage, errors);
+      errors += 1;
+
+      if (maxErrors != null && errors >= maxErrors) {
+        return;
+      }
+    }
 
     if (has_more) {
       await new Promise((f) => setTimeout(f, QUERY_DELAY_MS));
@@ -68,6 +95,11 @@ const estimateRemainingTimeMs = (
   return queriesRemaining * estTimePerQuery;
 };
 
+export type ScryfallError = {
+  message?: string;
+  code?: number;
+};
+
 export const useScryfallQuery = () => {
   const [cards, setCards] = React.useState<ScryfallCard[]>([]);
   const [totalCards, setTotalCards] = React.useState(0);
@@ -76,31 +108,43 @@ export const useScryfallQuery = () => {
     "finished"
   );
   const [estTimeRemaining, setEstTimeRemaining] = React.useState(0);
+  const [error, setError] = React.useState<ScryfallError | null>(null);
 
   const executeQuery = async (query: string) => {
     setStatus("loading");
+    setError(null);
     setEstTimeRemaining(0);
     setCards([]);
     setTotalCards(0);
     setCurrentPage(1);
     let newCards: ScryfallCard[] = [];
     let queryTimes: number[] = [];
-    await getAllQueryPages(query, (scryfallResponse, page, queryTimeMs) => {
-      newCards.push(...scryfallResponse.data);
-      setTotalCards(scryfallResponse.total_cards);
-      setCurrentPage(page);
-      setCards(newCards);
+    const p = getAllQueryPages({
+      queryUrl: query,
+      handleResponse: (scryfallResponse, page, queryTimeMs) => {
+        newCards.push(...scryfallResponse.data);
+        setTotalCards(scryfallResponse.total_cards);
+        setCurrentPage(page);
+        setCards(newCards);
 
-      queryTimes.push(queryTimeMs);
+        queryTimes.push(queryTimeMs);
 
-      setEstTimeRemaining(
-        estimateRemainingTimeMs(
-          queryTimes,
-          newCards.length,
-          scryfallResponse.total_cards
-        )
-      );
+        setEstTimeRemaining(
+          estimateRemainingTimeMs(
+            queryTimes,
+            newCards.length,
+            scryfallResponse.total_cards
+          )
+        );
+      },
+      handleError: (errorCode, errorMessage) => {
+        setError({
+          code: errorCode,
+          message: errorMessage,
+        });
+      },
     });
+    await p;
     setStatus("finished");
   };
 
@@ -111,12 +155,15 @@ export const useScryfallQuery = () => {
     executeQuery,
     status,
     estTimeRemaining,
+    error,
   };
 };
 
 export const GOALS_QUERY_KEY = "goals";
 
 interface GoalProgress {
+  totalCards: number;
+  cardsSoFar: number;
   page: number;
   hasMore: boolean;
   queryString: string;
@@ -147,6 +194,7 @@ export const useUpdateGoalCache = () => {
         let hasMore = true;
         let queryTimes: number[] = [];
         let currentEstTimeRemaining = 0;
+        let erroredGoals = new Set();
 
         setTotalCards(0);
         setProgress(0);
@@ -155,7 +203,15 @@ export const useUpdateGoalCache = () => {
         while (hasMore) {
           hasMore = false;
 
+          if (erroredGoals.size === goals.length) {
+            return;
+          }
+
           for (const goal of goals) {
+            if (erroredGoals.has(goal.goalId)) {
+              continue;
+            }
+
             const goalTable = localforage.createInstance({
               name: GOALS_QUERY_KEY,
               storeName: goal.goalId,
@@ -164,6 +220,10 @@ export const useUpdateGoalCache = () => {
             // Create a new entry for this goal's progress if it doesn't exist already.
             if (!allGoalProgress.has(goal.goalId)) {
               await goalTable.clear();
+              await goalTable.setItem(
+                GOAL_ERROR_MESSAGE_KEY,
+                "Query interrupted"
+              );
               const goalQuery = composeQuery(
                 deckQuery,
                 globalQuery,
@@ -173,6 +233,8 @@ export const useUpdateGoalCache = () => {
                 page: 1,
                 hasMore: true,
                 queryString: goalQuery,
+                totalCards: 0,
+                cardsSoFar: 0,
               };
               allGoalProgress.set(goal.goalId, goalProgress);
             }
@@ -184,6 +246,22 @@ export const useUpdateGoalCache = () => {
               const response = await fetch(
                 goalProgress.queryString + `&page=${goalProgress.page}`
               );
+
+              if (!response.ok) {
+                erroredGoals.add(goal.goalId);
+                goalTable.clear();
+                goalTable.setItem(GOAL_ERROR_CODE_KEY, response.status);
+                goalTable.setItem(GOAL_ERROR_MESSAGE_KEY, response.statusText);
+                currentTotalCards -= goalProgress.totalCards;
+                setTotalCards(currentTotalCards);
+                currentProgress -= goalProgress.cardsSoFar;
+                setProgress(currentProgress);
+                console.log(
+                  `Encountered error when querying ${goal.name} - status: ${response.status} - message: ${response.statusText}`
+                );
+                continue;
+              }
+
               const data: ScryfallResponse = await response.json();
               queryTimes.push(Date.now() - startTime);
               currentEstTimeRemaining = estimateRemainingTimeMs(
@@ -193,12 +271,19 @@ export const useUpdateGoalCache = () => {
               );
               setEstTimeRemaining(currentEstTimeRemaining);
 
-              let newGoalProgress: GoalProgress = { ...goalProgress };
+              let newGoalProgress: GoalProgress = {
+                ...goalProgress,
+                totalCards: data.total_cards,
+                cardsSoFar: goalProgress.cardsSoFar + data.data.length,
+              };
               newGoalProgress.hasMore = data.has_more;
               if (data.has_more) {
                 hasMore = true;
                 newGoalProgress.page += 1;
+              } else {
+                goalTable.removeItem(GOAL_ERROR_MESSAGE_KEY);
               }
+
               if (goalProgress.page === 1) {
                 currentTotalCards += data.total_cards;
                 setTotalCards(currentTotalCards);

@@ -10,7 +10,7 @@ import {
   useUpdateGoalCache,
 } from "../hooks/scryfallQuery";
 import { DeckGoal } from "../types";
-import { DeckGoalDisplay } from "./DeckGoalDispaly";
+import { DeckGoalDisplay } from "./DeckGoalDisplay";
 
 const deleteGoalCache = async (goalId: string) => {
   const instance = await localforage.createInstance({
@@ -113,7 +113,7 @@ export const DeckGoalsList: React.FC = () => {
         style={{
           marginTop: "1rem",
           display: "grid",
-          gridTemplateColumns: "25px 1fr 3fr 70px 75px 95px",
+          gridTemplateColumns: "25px 3fr 1fr 70px 2fr 95px",
           gap: "5px",
         }}
       >
@@ -150,7 +150,7 @@ export const DeckGoalsList: React.FC = () => {
               fontSize: "1.2rem",
             }}
           >
-            Cache
+            Cache Status
           </div>
           <button
             onClick={() => {
