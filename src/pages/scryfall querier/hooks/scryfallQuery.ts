@@ -2,7 +2,8 @@ import localforage from "localforage";
 import React from "react";
 import { useMutation } from "react-query";
 import { Url } from "url";
-import { DeckGoal, ScryfallCard } from "../types";
+import { Deck, DeckGoal, ScryfallCard } from "../types";
+import { compileScoreMap, sortCards } from "../utilities/card sorting";
 
 export const GOAL_ERROR_CODE_KEY = "errorCode";
 export const GOAL_ERROR_MESSAGE_KEY = "errorMessage";
@@ -110,7 +111,7 @@ export const useScryfallQuery = () => {
   const [estTimeRemaining, setEstTimeRemaining] = React.useState(0);
   const [error, setError] = React.useState<ScryfallError | null>(null);
 
-  const executeQuery = async (query: string) => {
+  const executeQuery = async (query: string, deck?: Deck) => {
     setStatus("loading");
     setError(null);
     setEstTimeRemaining(0);
@@ -119,7 +120,10 @@ export const useScryfallQuery = () => {
     setCurrentPage(1);
     let newCards: ScryfallCard[] = [];
     let queryTimes: number[] = [];
-    const p = getAllQueryPages({
+
+    const scoreMap = deck == null ? null : await compileScoreMap(deck);
+
+    await getAllQueryPages({
       queryUrl: query,
       handleResponse: (scryfallResponse, page, queryTimeMs) => {
         newCards.push(...scryfallResponse.data);
@@ -144,7 +148,15 @@ export const useScryfallQuery = () => {
         });
       },
     });
-    await p;
+
+    if (scoreMap != null) {
+      console.log("Sorting");
+      const sorted = sortCards(scoreMap, newCards);
+      console.log(sorted);
+      await setTimeout(() => {}, 10);
+      setCards(sorted);
+    }
+
     setStatus("finished");
   };
 

@@ -115,7 +115,9 @@ export const DeckPicker: React.FC = () => {
       return decks;
     }
 
-    return decks?.filter((deck) => deck.name.includes(search));
+    return decks?.filter((deck) =>
+      deck.name.toLowerCase().includes(search.toLowerCase())
+    );
   }, [decks, search]);
 
   function createNewDeck() {
@@ -173,9 +175,9 @@ export const DeckPicker: React.FC = () => {
         }}
       >
         <label>Search Decks: </label>
-        <LowFrictionInput
+        <input
           value={search}
-          onUpdate={(newValue) => setSearch(newValue)}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div

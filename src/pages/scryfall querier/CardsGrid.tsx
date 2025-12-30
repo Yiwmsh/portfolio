@@ -59,8 +59,8 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
     <div
       style={{
         width: "100%",
-        background: "#ADD8E6",
         overflowY: "scroll",
+        background: "#ADD8E6",
         border: "1px solid red",
         maxHeight: "77.5vh",
       }}
