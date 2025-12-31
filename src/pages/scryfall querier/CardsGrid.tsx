@@ -134,7 +134,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
             textOverflow: "ellipsis",
           }}
         >
-          Score: {card.score}
+          Score: {card.score ?? 0}
         </span>
       </div>
     </a>
