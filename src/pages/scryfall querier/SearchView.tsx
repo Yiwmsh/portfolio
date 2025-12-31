@@ -17,7 +17,7 @@ export const SearchView: React.FC = () => {
 
   const [search, setSearch] = React.useState("");
 
-  const query = React.useMemo(() => {
+  const compileQuery = (search: string) => {
     let queryTerms: string[] = [];
 
     if (globalQuery) {
@@ -33,6 +33,10 @@ export const SearchView: React.FC = () => {
     }
 
     return composeQuery(...queryTerms);
+  };
+
+  const query = React.useMemo(() => {
+    return compileQuery(search);
   }, [globalQuery, search, selectedDeck]);
 
   const [sortedCards, setSortedCards] = React.useState<ScryfallCard[]>([]);
@@ -70,7 +74,8 @@ export const SearchView: React.FC = () => {
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  executeQuery(query, selectedDeck ?? undefined);
+                  const q = compileQuery(e.currentTarget.value);
+                  executeQuery(q, selectedDeck ?? undefined);
                 }
               }}
             />
