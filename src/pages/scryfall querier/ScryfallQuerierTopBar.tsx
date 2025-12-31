@@ -21,6 +21,7 @@ export const ScryfallQuerierTopBar: React.FC<TopbarProps> = ({}) => {
           background: `var(${SemanticColors.midground})`,
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
+          width: "100%",
         }}
       >
         {/* Left Side */}

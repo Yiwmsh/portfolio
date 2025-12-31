@@ -51,15 +51,7 @@ export const SearchView: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "10px 0",
-      }}
-    >
+    <>
       {status === "loading" ? (
         <>
           <div>
@@ -83,51 +75,49 @@ export const SearchView: React.FC = () => {
               }}
             />
           </div>
-          <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: "1rem",
-                margin: "10px 0",
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: "1rem",
+              margin: "10px 0",
+            }}
+          >
+            <button
+              disabled={!query}
+              onClick={() => {
+                setSortedCards([]);
+                executeQuery(query, selectedDeck ?? undefined);
               }}
             >
-              <button
-                disabled={!query}
-                onClick={() => {
-                  setSortedCards([]);
-                  executeQuery(query, selectedDeck ?? undefined);
-                }}
-              >
-                Search
-              </button>
-              <button
-                onClick={() => {
-                  updateSortedCards();
-                }}
-                style={{
-                  display: selectedDeck == null ? "none" : "unset",
-                }}
-              >
-                Sort
-              </button>
-            </div>
-            {error != null ? (
-              <div style={{ color: "red" }}>
-                There was an error with your query:{" "}
-                {displayScryfallError(error).toLowerCase()}.
-              </div>
-            ) : totalCards > 0 ? (
-              <div>Cards: {cards.length}</div>
-            ) : null}
-            {!sorting && (
-              <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
-            )}
-            {sorting && "Sorting"}
+              Search
+            </button>
+            <button
+              onClick={() => {
+                updateSortedCards();
+              }}
+              style={{
+                display: selectedDeck == null ? "none" : "unset",
+              }}
+            >
+              Sort
+            </button>
           </div>
+          {error != null ? (
+            <div style={{ color: "red" }}>
+              There was an error with your query:{" "}
+              {displayScryfallError(error).toLowerCase()}.
+            </div>
+          ) : totalCards > 0 ? (
+            `Cards: ${cards.length}`
+          ) : null}
+          {!sorting && (
+            <CardsGrid cards={sortedCards.length > 0 ? sortedCards : cards} />
+          )}
+          {sorting && "Sorting"}
         </>
       )}
-    </div>
+    </>
   );
 };

@@ -1,3 +1,4 @@
+import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { clamp } from "../../utils/clamp";
 import { ScryfallCard } from "./types";
@@ -59,10 +60,7 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
     <div
       style={{
         width: "100%",
-        overflowY: "scroll",
-        background: "#ADD8E6",
-        border: "1px solid red",
-        maxHeight: "77.5vh",
+        overflowY: "auto",
       }}
       onScroll={(e) => {
         const distanceFromBottom =
@@ -105,9 +103,12 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
     <a
       href={card.scryfall_uri}
       style={{
-        border: "1px solid black",
+        border: `1px solid var(${SemanticColors.primary})`,
         margin: CARD_MARGIN,
         padding: CARD_PADDING,
+        color: "inherit",
+        textDecoration: "none",
+        overflow: "hidden",
       }}
     >
       <img
@@ -118,7 +119,24 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         src={imageUrl}
         alt={card.name}
       />
-      <div>Score: {card.score}</div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <span>${card.prices.usd}</span>
+        <span
+          style={{
+            maxWidth: "50%",
+            textWrap: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          Score: {card.score}
+        </span>
+      </div>
     </a>
   );
 };
