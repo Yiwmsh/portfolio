@@ -26,14 +26,13 @@ export const QueryModifiersView: React.FC = () => {
   return (
     <div
       style={{
-        border: `1px solid var(${SemanticColors.primary})`,
         flex: "100",
         display: "flex",
         flexDirection: "column",
       }}
     >
       <div style={SectionContainerStyle}>
-        <h2>Global</h2>
+        <h2>Global Settings</h2>
         {globalQueryStatus !== "loading" && (
           <div>
             <label>Global Query Terms: </label>
@@ -48,7 +47,7 @@ export const QueryModifiersView: React.FC = () => {
         )}
       </div>
       <div style={SectionContainerStyle}>
-        <h2>Deck</h2>
+        <h2>Deck Settings</h2>
         {selectedDeck && selectedDeckId && (
           <>
             <div

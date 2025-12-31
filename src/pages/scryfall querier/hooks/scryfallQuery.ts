@@ -1,6 +1,6 @@
 import localforage from "localforage";
 import React from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { Url } from "url";
 import { Deck, DeckGoal, ScryfallCard } from "../types";
 import { compileScoreMap, sortCards } from "../utilities/card sorting";
@@ -30,6 +30,15 @@ export const composeQuery = (...queryClusters: string[]): string => {
 
   return query;
 };
+
+export const useScryfallCard = (cardName: string) =>
+  useQuery(cardName, async () => {
+    const query =
+      SCRYFALL_API_BASE + "/cards/named?fuzzy=" + encodeURI(cardName);
+    const response = await fetch(query);
+    const data: ScryfallCard = await response.json();
+    return data;
+  });
 
 interface GetAllQueryPagesProps {
   queryUrl: string;

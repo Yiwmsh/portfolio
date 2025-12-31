@@ -1,8 +1,8 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { generateGUID } from "../../utils/generateGuid";
-import { NAVBAR_HEIGHT_VAR_NAME } from "../SiteNavbar";
 import { LowFrictionInput } from "./Components/LowFrictionInput";
+import { ScryfallQuerierModal } from "./Components/ScryfallQuerierModal";
 import {
   DEFAULT_DECK,
   useDecks,
@@ -12,16 +12,14 @@ import {
   useUpdateDeck,
   useUpdateDeckId,
 } from "./hooks/decks";
-import { useSiteSetting } from "./hooks/siteSettings";
+import { SiteModalSettingKey, useSiteSetting } from "./hooks/siteSettings";
 import { QueryModifiersView } from "./QueryModifiers/QueryModifiersView";
 import { Deck, DeckId } from "./types";
 
+const settingKey: SiteModalSettingKey = "deck modal status";
+
 export const DeckModal: React.FC = () => {
-  const {
-    settingValue: isOpen,
-    toggleSetting: toggleIsOpen,
-    setSetting: setIsOpen,
-  } = useSiteSetting("deck modal status");
+  const { toggleSetting: toggleIsOpen } = useSiteSetting(settingKey);
 
   const { data: { selectedDeck } = {} } = useSelectedDeck();
 
@@ -30,65 +28,26 @@ export const DeckModal: React.FC = () => {
       <h1
         style={{
           cursor: "pointer",
+          textAlign: "center",
         }}
         onClick={() => toggleIsOpen()}
       >
         {selectedDeck ? `Deck: ${selectedDeck.name}` : "No Deck Selected"}
       </h1>
-      <div
+      <ScryfallQuerierModal
+        modalSettingKey={settingKey}
         style={{
-          position: "fixed",
-          display: isOpen ? "flex" : "none",
-          width: `100vw`,
-          maxWidth: `100vw`,
-          height: `calc(100vh - var(${NAVBAR_HEIGHT_VAR_NAME}))`,
-          top: `var(${NAVBAR_HEIGHT_VAR_NAME})`,
-          left: 0,
-          zIndex: 1,
-          backdropFilter: "blur(4px)",
+          width: "80%",
+          height: "80%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: "1rem",
         }}
-        onClick={() => setIsOpen(false)}
       >
-        <div
-          style={{
-            width: "80%",
-            height: "80%",
-            position: "relative",
-            zIndex: 2,
-            background: `var(${SemanticColors.midground})`,
-            margin: "auto",
-            border: `1px solid var(${SemanticColors.primary})`,
-            padding: "2rem",
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            gap: "1rem",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <button
-            style={{
-              background: "none",
-              width: "2rem",
-              height: "2rem",
-              fontSize: "1.5rem",
-              border: "none",
-              cursor: "pointer",
-              right: "0",
-              top: "0",
-              position: "absolute",
-            }}
-            onClick={() => setIsOpen(false)}
-          >
-            x
-          </button>
-          <DeckPicker />
-          <QueryModifiersView />
-        </div>
-      </div>
+        <DeckPicker />
+        <QueryModifiersView />
+      </ScryfallQuerierModal>
     </>
   );
 };
