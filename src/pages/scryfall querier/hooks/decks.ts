@@ -1,6 +1,7 @@
 import localforage from "localforage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Deck, DeckId } from "../types";
+import { GOALS_QUERY_KEY } from "./scryfallQuery";
 
 export const DECKS_COLLECTION_KEY = "decks";
 
@@ -69,7 +70,18 @@ export const useDeleteDeck = () => {
   const client = useQueryClient();
 
   return useMutation({
-    mutationFn: (deckId: string) => decksCollection.removeItem(deckId),
+    mutationFn: async (deckId: string) => {
+      const deck = (await decksCollection.getItem(deckId)) as Deck;
+
+      deck.goals.forEach((goal, goalId) => {
+        localforage.dropInstance({
+          name: GOALS_QUERY_KEY,
+          storeName: goalId,
+        });
+      });
+
+      await decksCollection.removeItem(deckId);
+    },
     onSettled: () => {
       client.invalidateQueries(DECKS_COLLECTION_KEY);
     },
