@@ -1,5 +1,6 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
+import { randomEasterEggQuote } from "../../consts/easterEggQuotes";
 import { clamp } from "../../utils/clamp";
 import { ScryfallCard } from "./types";
 
@@ -33,7 +34,7 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
   }, [cards.length]);
 
   const loadPage = () => {
-    if (nextPage < lastPage && loadedCards.length < cards.length) {
+    if (nextPage <= lastPage && loadedCards.length < cards.length) {
       const pageStart = clamp(CARDS_PER_PAGE * nextPage, 0, cards.length);
       const pageEnd = clamp(pageStart + CARDS_PER_PAGE, 0, cards.length);
       const pageCards = cards.slice(pageStart, pageEnd);
@@ -83,6 +84,20 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
         {loadedCards.map((card) => (
           <CardDisplay card={card} />
         ))}
+        {loadedCards.length === cards.length ? (
+          <div
+            style={{
+              width: "100%",
+              margin: "2rem auto",
+              padding: "0 25%",
+              textAlign: "center",
+              color: `var(${SemanticColors.text})`,
+              opacity: `60%`,
+            }}
+          >
+            {randomEasterEggQuote()}
+          </div>
+        ) : null}
       </div>
     </div>
   );

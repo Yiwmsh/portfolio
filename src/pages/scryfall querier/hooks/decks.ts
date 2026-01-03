@@ -2,7 +2,7 @@ import localforage from "localforage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Deck, DeckId } from "../types";
 
-const DECKS_COLLECTION_KEY = "decks";
+export const DECKS_COLLECTION_KEY = "decks";
 
 export const DEFAULT_DECK: Deck = {
   guid: "",

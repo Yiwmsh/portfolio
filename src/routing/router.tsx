@@ -1,4 +1,5 @@
 import { ThemeContext } from "@chrisellis/react-carpentry";
+import { easterEggQuotes } from "../consts/easterEggQuotes";
 import { TransparentTheme } from "../consts/theme";
 import { SignInManager } from "../pages/admin/SignIn";
 import { BlogHome } from "../pages/blog/BlogHome/BlogHome";
@@ -48,6 +49,23 @@ export const routes = [
       {
         path: "orrery",
         element: <ScryfallQuerier />,
+      },
+      {
+        path: "easterEggs",
+        element: (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              margin: "1rem",
+              gap: "3rem",
+              overflow: "auto",
+              maxHeight: "100%",
+            }}
+          >
+            {[...easterEggQuotes]}
+          </div>
+        ),
       },
     ],
   },
