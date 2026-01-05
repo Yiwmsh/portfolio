@@ -159,9 +159,7 @@ export const useScryfallQuery = () => {
     });
 
     if (scoreMap != null) {
-      console.log("Sorting");
       const sorted = sortCards(scoreMap, newCards);
-      console.log(sorted);
       await setTimeout(() => {}, 10);
       setCards(sorted);
     }

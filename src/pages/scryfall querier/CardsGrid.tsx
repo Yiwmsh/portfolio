@@ -48,7 +48,6 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
   };
 
   React.useEffect(() => {
-    console.log("Resetting loaded cards");
     setLoadedCards([]);
     setNextPage(0);
     loadPage();
@@ -115,7 +114,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   const isMultifaced = isMultiFaced(card.layout);
 
   const imageUrl = React.useMemo(() => {
-    console.log(card.card_faces);
     if (isMultifaced && card.card_faces != null) {
       return card.card_faces[activeFace].image_uris.normal;
     } else {
