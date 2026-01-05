@@ -70,20 +70,42 @@ export const DeckPicker: React.FC = () => {
   }, [decks, input]);
 
   const searchedDecks = React.useMemo(() => {
-    if (search.trim() === "") {
-      return decks;
+    const preSorted =
+      (search.trim() === ""
+        ? decks
+        : decks?.filter((deck) =>
+            deck.name.toLowerCase().includes(search.toLowerCase())
+          )) ?? [];
+
+    if (!selectedDeckId) {
+      return preSorted;
     }
 
-    return decks?.filter((deck) =>
-      deck.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [decks, search]);
+    const sorted = preSorted.sort((a, b) => {
+      if (a.guid === selectedDeckId) {
+        return -1;
+      } else if (b.guid === selectedDeckId) {
+        return 1;
+      } else {
+        if (a.lastUpdated > b.lastUpdated) {
+          return -1;
+        } else if (b.lastUpdated > a.lastUpdated) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+
+    return sorted;
+  }, [decks, search, selectedDeckId]);
 
   function createNewDeck() {
     const newDeck: Deck = {
       ...DEFAULT_DECK,
       name: input.trim(),
       guid: generateGUID(),
+      lastUpdated: new Date(),
     };
     updateDeck(newDeck);
   }
@@ -161,15 +183,10 @@ export const DeckPicker: React.FC = () => {
   );
 };
 
-const buttonStyle: React.CSSProperties = {
-  height: "100%",
-  lineHeight: "100%",
-  padding: "0 5px",
-  textAlign: "center",
-};
+const buttonStyle: React.CSSProperties = {};
 
 const topBarStyle: React.CSSProperties = {
-  height: "20px",
+  height: "calc(1rem + 6px)",
   display: "flex",
   flexDirection: "row",
   padding: "0px 2px",
@@ -186,12 +203,17 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
   name,
   selected,
   setSelected,
+  lastUpdated,
   ...rest
 }) => {
   const [editing, setEditing] = React.useState(false);
 
   const { mutate: updateDeck } = useUpdateDeckId();
   const { mutate: deleteDeck } = useDeleteDeck();
+
+  const lastUpdatedDisplay = `${lastUpdated.getUTCDate()}/${
+    lastUpdated.getUTCMonth() + 1
+  }/${lastUpdated.getUTCFullYear()}`;
 
   return (
     <div
@@ -205,6 +227,7 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
         justifyContent: "space-between",
         background: selected ? `var(${SemanticColors.primary})` : "none",
         margin: "5px",
+        padding: "3px",
       }}
       onClick={() => {
         if (selected) {
@@ -222,7 +245,15 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
           }}
           style={{ ...buttonStyle }}
         >
-          e
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 640 640"
+            width={`1rem`}
+            height={`1rem`}
+          >
+            {/* !Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc. */}
+            <path d="M432.5 82.3L382.4 132.4L507.7 257.7L557.8 207.6C579.7 185.7 579.7 150.3 557.8 128.4L511.7 82.3C489.8 60.4 454.4 60.4 432.5 82.3zM343.3 161.2L342.8 161.3L198.7 204.5C178.8 210.5 163 225.7 156.4 245.5L67.8 509.8C64.9 518.5 65.9 528 70.3 535.8L225.7 380.4C224.6 376.4 224.1 372.3 224.1 368C224.1 341.5 245.6 320 272.1 320C298.6 320 320.1 341.5 320.1 368C320.1 394.5 298.6 416 272.1 416C267.8 416 263.6 415.4 259.7 414.4L104.3 569.7C112.1 574.1 121.5 575.1 130.3 572.2L394.6 483.6C414.3 477 429.6 461.2 435.6 441.3L478.8 297.2L478.9 296.7L343.4 161.2z" />
+          </svg>
         </button>
         <button
           onClick={(e) => {
@@ -231,7 +262,15 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
           }}
           style={{ ...buttonStyle }}
         >
-          x
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 640 640"
+            width={`1rem`}
+            height={`1rem`}
+          >
+            {/* !Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc. */}
+            <path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z" />
+          </svg>
         </button>
       </div>
       <div
@@ -260,7 +299,7 @@ const DeckDisplay: React.FC<DeckDisplayProps> = ({
         )}
       </div>
       {/* Spacer to make vertical alignment easier. */}
-      <div style={topBarStyle} />
+      <div style={topBarStyle}>Last Updated: {lastUpdatedDisplay}</div>
     </div>
   );
 };
