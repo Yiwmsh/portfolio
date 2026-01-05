@@ -33,7 +33,9 @@ const BackgroundAnimation = styled(motion.div)`
   );
 `;
 
-export const Site: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const Showcase: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [name, setName] = React.useState(
     localStorage.getItem("name") ?? "Friend"
   );

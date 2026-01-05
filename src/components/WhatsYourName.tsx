@@ -1,7 +1,7 @@
 import { TextField } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React, { useEffect } from "react";
-import { NameContext } from "../pages/site";
+import { NameContext } from "../pages/Showcase";
 
 const HorizontalTextField = styled(TextField)`
   display: flex;

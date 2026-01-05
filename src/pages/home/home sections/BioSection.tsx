@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import moment from "moment";
 import React from "react";
 import portrait from "../../../resources/portrait.jpg";
-import { NameContext } from "../../site";
+import { NameContext } from "../../Showcase";
 
 const PortraitOfMe = styled.img`
   border-radius: 10px;
@@ -95,7 +95,7 @@ export const BioSection: React.FC = () => {
             </p>
             <p>But, before that, of course, A little bit about me:</p>
             <p>
-              I'm {age} years old, a dual citizen, American and British. My
+              I'm a {age} year old a dual citizen; American and British. My
               family traveled a lot when I was growing up, so I was raised in
               lots of places; Florida, Cumbria, the UAE, and not infrequently on
               a boat. My father owned a 52' sailing yacht, and when I was young
