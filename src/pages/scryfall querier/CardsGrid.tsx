@@ -2,7 +2,11 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { randomEasterEggQuote } from "../../consts/easterEggQuotes";
 import { clamp } from "../../utils/clamp";
-import { ScryfallCard } from "./types";
+import { isMultiFaced, ScryfallCard } from "./types";
+
+const parseCssNumberToNumber = (cssNumber: string) => {
+  return Number(cssNumber.replace(/[\D]/gm, ""));
+};
 
 const CARDS_PER_ROW = 6;
 const CARDS_PER_PAGE = CARDS_PER_ROW * 6;
@@ -10,11 +14,10 @@ const CARDS_PER_PAGE = CARDS_PER_ROW * 6;
 const CARD_MARGIN = "5px";
 const CARD_PADDING = "5px";
 const CARD_IMAGE_HEIGHT = "300px";
+const CARD_IMAGE_WIDTH = `${
+  parseCssNumberToNumber(CARD_IMAGE_HEIGHT) * 0.71766666666
+}px`;
 const TOTAL_CARD_HEIGHT = `(${CARD_MARGIN} + (${CARD_PADDING} * 2) + ${CARD_IMAGE_HEIGHT})`;
-
-const parseCssNumberToNumber = (cssNumber: string) => {
-  return Number(cssNumber.replace(/[\D]/gm, ""));
-};
 
 const TOTAL_CARD_HEIGHT_NUMBER =
   parseCssNumberToNumber(CARD_MARGIN) +
@@ -108,7 +111,17 @@ interface CardDisplayProps {
 }
 
 const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
-  const imageUrl = card?.image_uris?.normal;
+  const [activeFace, setActiveFace] = React.useState(0);
+  const isMultifaced = isMultiFaced(card.layout);
+
+  const imageUrl = React.useMemo(() => {
+    console.log(card.card_faces);
+    if (isMultifaced && card.card_faces != null) {
+      return card.card_faces[activeFace].image_uris.normal;
+    } else {
+      return card?.image_uris?.normal;
+    }
+  }, [activeFace, card.card_faces, card?.image_uris?.normal, isMultifaced]);
 
   if (!imageUrl) {
     return null;
@@ -117,6 +130,8 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   return (
     <a
       href={card.scryfall_uri}
+      target="_blank"
+      rel="noopener noreferrer"
       style={{
         border: `1px solid var(${SemanticColors.primary})`,
         margin: CARD_MARGIN,
@@ -124,7 +139,9 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         color: "inherit",
         textDecoration: "none",
         overflow: "hidden",
+        position: "relative",
       }}
+      key={card.id}
     >
       <img
         style={{
@@ -134,6 +151,49 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         src={imageUrl}
         alt={card.name}
       />
+      {isMultifaced && (
+        <button
+          style={{
+            position: "absolute",
+            left: `calc(${CARD_PADDING} + (${CARD_IMAGE_WIDTH} * .03))`,
+            top: `calc(${CARD_PADDING} + (${CARD_IMAGE_HEIGHT} * .03))`,
+            borderRadius: "100%",
+            cursor: "pointer",
+            // opacity: "50%",
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (activeFace === 0) {
+              setActiveFace(1);
+            } else {
+              setActiveFace(0);
+            }
+          }}
+        >
+          <svg
+            width={15}
+            height={15}
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M4 10H17C19.2091 10 21 11.7909 21 14V14C21 16.2091 19.2091 18 17 18H12"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7 6L3 10L7 14"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      )}
       <div
         style={{
           display: "flex",
