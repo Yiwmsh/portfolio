@@ -2,7 +2,7 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { randomEasterEggQuote } from "../../consts/easterEggQuotes";
 import { clamp } from "../../utils/clamp";
-import { isMultiFaced, ScryfallCard } from "./types";
+import { getCardFaces, isMultiFaced, ScryfallCard } from "./types";
 
 const parseCssNumberToNumber = (cssNumber: string) => {
   return Number(cssNumber.replace(/[\D]/gm, ""));
@@ -111,15 +111,16 @@ interface CardDisplayProps {
 
 const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   const [activeFace, setActiveFace] = React.useState(0);
-  const isMultifaced = isMultiFaced(card.layout);
+  const isMultifaced = isMultiFaced(card);
+  const cardFaces = getCardFaces(card);
 
   const imageUrl = React.useMemo(() => {
-    if (isMultifaced && card.card_faces != null) {
-      return card.card_faces[activeFace].image_uris.normal;
+    if (isMultifaced) {
+      return cardFaces[activeFace];
     } else {
-      return card?.image_uris?.normal;
+      return cardFaces[0];
     }
-  }, [activeFace, card.card_faces, card?.image_uris?.normal, isMultifaced]);
+  }, [activeFace, cardFaces, isMultifaced]);
 
   if (!imageUrl) {
     return null;

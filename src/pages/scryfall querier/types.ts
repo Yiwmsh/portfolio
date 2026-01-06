@@ -17,14 +17,13 @@ export type Deck = DeckId & {
 };
 
 export const MULTI_FACED_CARD_LAYOUTS = [
-  "split",
-  "flip",
   "transform",
   "double_faced_token",
 ] as const;
 
-export const CARD_LAYOUTS = [
-  ...MULTI_FACED_CARD_LAYOUTS,
+export const SINGLE_FACED_CARD_LAYOUTS = [
+  "split",
+  "flip",
   "normal",
   "modal-dfc",
   "meld",
@@ -47,28 +46,67 @@ export const CARD_LAYOUTS = [
   "reversible_card",
 ] as const;
 
+export const CARD_LAYOUTS = [
+  ...MULTI_FACED_CARD_LAYOUTS,
+  ...SINGLE_FACED_CARD_LAYOUTS,
+] as const;
+
+export type MultiFacedCardLayout = (typeof MULTI_FACED_CARD_LAYOUTS)[number];
+export type SingleFacedCardLayout = (typeof SINGLE_FACED_CARD_LAYOUTS)[number];
 export type CardLayout = (typeof CARD_LAYOUTS)[number];
 
-export const isMultiFaced = (layout: CardLayout) => {
-  return MULTI_FACED_CARD_LAYOUTS.some((mfcl) => mfcl === layout);
+export const isMultiFaced = (
+  card: ScryfallCard
+): card is ScryfallDoubleFacedCard => {
+  if (card.image_uris == null) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
-export interface ScryfallCard {
+export const getCardFaces = (card: ScryfallCard) => {
+  if (isMultiFaced(card)) {
+    return [
+      card.card_faces[0].image_uris.normal,
+      card.card_faces[1].image_uris.normal,
+    ];
+  } else {
+    return [card.image_uris.normal];
+  }
+};
+
+export type ScryfallCardBase = {
   id: string;
   oracle_id: string;
   name: string;
-  layout: CardLayout;
-  image_uris: {
-    normal: string;
-  };
   score?: number;
   scryfall_uri: string;
   prices: {
     usd: number;
   };
-  card_faces?: {
+};
+
+export type ScryfallDoubleFacedCard = ScryfallCardBase & {
+  layout: MultiFacedCardLayout;
+  image_uris: undefined;
+  card_faces: {
     image_uris: {
       normal: string;
     };
   }[];
-}
+};
+
+export type ScryfallSingleFacedCard = ScryfallCardBase & {
+  layout: SingleFacedCardLayout;
+  image_uris: {
+    normal: string;
+  };
+  card_faces?: {
+    image_uris?: {
+      normal: string;
+    };
+  }[];
+};
+
+export type ScryfallCard = ScryfallSingleFacedCard | ScryfallDoubleFacedCard;
