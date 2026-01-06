@@ -2,7 +2,7 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
 import { randomEasterEggQuote } from "../../consts/easterEggQuotes";
 import { clamp } from "../../utils/clamp";
-import { isMultiFaced, ScryfallCard } from "./types";
+import { getCardFaces, isMultiFaced, ScryfallCard } from "./types";
 
 const parseCssNumberToNumber = (cssNumber: string) => {
   return Number(cssNumber.replace(/[\D]/gm, ""));
@@ -48,7 +48,6 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
   };
 
   React.useEffect(() => {
-    console.log("Resetting loaded cards");
     setLoadedCards([]);
     setNextPage(0);
     loadPage();
@@ -106,22 +105,50 @@ export const CardsGrid: React.FC<CardsGridProps> = ({ cards }) => {
   );
 };
 
+const CardFlipButton: React.FC = () => {
+  return (
+    <svg
+      width={15}
+      height={15}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M4 10H17C19.2091 10 21 11.7909 21 14V14C21 16.2091 19.2091 18 17 18H12"
+        stroke="#000000"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7 6L3 10L7 14"
+        stroke="#000000"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
 interface CardDisplayProps {
   card: ScryfallCard;
 }
 
 const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   const [activeFace, setActiveFace] = React.useState(0);
-  const isMultifaced = isMultiFaced(card.layout);
+  const isMultifaced = isMultiFaced(card);
+  const cardFaces = getCardFaces(card);
+  const [flipped, setFlipped] = React.useState(false);
+  console.log(card.layout);
 
   const imageUrl = React.useMemo(() => {
-    console.log(card.card_faces);
-    if (isMultifaced && card.card_faces != null) {
-      return card.card_faces[activeFace].image_uris.normal;
+    if (isMultifaced) {
+      return cardFaces[activeFace];
     } else {
-      return card?.image_uris?.normal;
+      return cardFaces[0];
     }
-  }, [activeFace, card.card_faces, card?.image_uris?.normal, isMultifaced]);
+  }, [activeFace, cardFaces, isMultifaced]);
 
   if (!imageUrl) {
     return null;
@@ -146,6 +173,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
       <img
         style={{
           height: CARD_IMAGE_HEIGHT,
+          transform: flipped ? "rotate(180deg)" : "",
         }}
         key={card.id}
         src={imageUrl}
@@ -171,27 +199,26 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
             }
           }}
         >
-          <svg
-            width={15}
-            height={15}
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M4 10H17C19.2091 10 21 11.7909 21 14V14C21 16.2091 19.2091 18 17 18H12"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M7 6L3 10L7 14"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <CardFlipButton />
+        </button>
+      )}
+      {card.layout === "flip" && (
+        <button
+          style={{
+            position: "absolute",
+            borderRadius: "100%",
+            cursor: "pointer",
+            top: `calc(${CARD_PADDING} + ( ${CARD_IMAGE_HEIGHT} * 0.92 ) )`,
+            left: "50%",
+            transform: "translate(-50%, 0)",
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setFlipped(!flipped);
+          }}
+        >
+          <CardFlipButton />
         </button>
       )}
       <div

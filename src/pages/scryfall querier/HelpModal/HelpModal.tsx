@@ -95,7 +95,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({}) => {
             sleeping or taking a walk. That's what I do.
           </p>
           <p>
-            <b>Please be courteous to Scryfall</b>. The provide this amazing
+            <b>Please be courteous to Scryfall</b>. They provide this amazing
             service to us all for free.
           </p>
           <h4>The Long Answer</h4>
