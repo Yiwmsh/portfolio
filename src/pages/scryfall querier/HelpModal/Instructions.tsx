@@ -1,15 +1,9 @@
 import { QueryTextDisplay } from "../Components/QueryTextDisplay";
 import { ScryfallCardTextLink } from "../Components/ScryfallCardTextLink";
-import { HelpModalSection } from "./HelpModal";
 
 export const Instructions: React.FC = () => {
   return (
-    <HelpModalSection
-      title={"Instructions"}
-      style={{
-        flex: "2",
-      }}
-    >
+    <>
       <p>
         This tool is a wrapper around{" "}
         <a href="https://scryfall.com/">Scryfall</a>'s Magic: The Gathering card
@@ -180,6 +174,6 @@ export const Instructions: React.FC = () => {
           be among the highest scoring results of my searches.
         </p>
       </p>
-    </HelpModalSection>
+    </>
   );
 };
