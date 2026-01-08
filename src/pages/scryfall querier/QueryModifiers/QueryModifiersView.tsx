@@ -11,7 +11,6 @@ import { DeckGoalsList } from "./DeckGoalsList";
 const SectionContainerStyle: React.CSSProperties = {
   border: `1px solid var(${SemanticColors.primary})`,
   maxWidth: "100%",
-  overflow: "hidden",
   padding: "1rem",
   margin: "1rem",
 };
@@ -29,6 +28,8 @@ export const QueryModifiersView: React.FC = () => {
         flex: "100",
         display: "flex",
         flexDirection: "column",
+        overflowY: "auto",
+        overflowX: "hidden",
       }}
     >
       <div style={SectionContainerStyle}>

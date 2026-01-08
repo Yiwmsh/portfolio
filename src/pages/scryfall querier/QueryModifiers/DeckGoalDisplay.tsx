@@ -72,6 +72,8 @@ export const DeckGoalDisplay: React.FC<DeckGoalProps> = ({
           <button
             style={{
               gridColumn: "1",
+              maxHeight: "1.5rem",
+              alignSelf: "center",
             }}
             onClick={() => deleteGoal(goalGuid)}
           >

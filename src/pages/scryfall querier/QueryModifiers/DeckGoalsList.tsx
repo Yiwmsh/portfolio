@@ -106,103 +106,97 @@ export const DeckGoalsList: React.FC = () => {
   return (
     <div
       style={{
-        overflowY: "scroll",
+        marginTop: "1rem",
+        display: "grid",
+        gridTemplateColumns: "25px 3fr 1fr 70px 2fr 95px",
+        gap: "5px",
       }}
     >
-      <div
-        style={{
-          marginTop: "1rem",
-          display: "grid",
-          gridTemplateColumns: "25px 3fr 1fr 70px 2fr 95px",
-          gap: "5px",
-        }}
-      >
-        {/* Headers */}
-        <>
-          <div />
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "1.2rem",
-            }}
-          >
-            Goal Name
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "1.2rem",
-            }}
-          >
-            Goal Query Terms
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "1.2rem",
-            }}
-          >
-            Score
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "1.2rem",
-            }}
-          >
-            Cache Status
-          </div>
-          <button
-            onClick={() => {
-              let goals: DeckGoalWithId[] = [];
-              let updatedGoals: Map<string, DeckGoal> = new Map();
-              selectedDeck.goals.forEach((goal, goalId) => {
-                goals.push({
-                  ...goal,
-                  goalId,
-                });
-                updatedGoals.set(goalId, {
-                  ...goal,
-                  dateLastCached: new Date(),
-                });
-              });
-              updateGoalsCache({
-                goals: goals,
-                globalQuery: globalQuery ?? "",
-                deckQuery: selectedDeck.deckQueryFragment,
-              });
-              updateDeck({ ...selectedDeck, goals: updatedGoals });
-            }}
-          >
-            Update All Caches
-          </button>
-        </>
-        {goalsObjects}
-        <button
-          onClick={() => {
-            const guid = generateGUID();
-            const newGoal: DeckGoal = {
-              name: "",
-              queryTerms: "",
-              score: 1,
-            };
-
-            let updatedDeckGoals: Map<string, DeckGoal> = new Map(
-              selectedDeck.goals.entries()
-            );
-
-            updatedDeckGoals.set(guid, newGoal);
-
-            updateDeck({ ...selectedDeck, goals: updatedDeckGoals });
-          }}
+      {/* Headers */}
+      <>
+        <div
           style={{
-            gridColumn: "span 6",
-            margin: "0 40%",
+            textAlign: "center",
+            fontSize: "1.2rem",
+            gridColumn: 2,
           }}
         >
-          +
+          Goal Name
+        </div>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "1.2rem",
+          }}
+        >
+          Goal Query Terms
+        </div>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "1.2rem",
+          }}
+        >
+          Score
+        </div>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "1.2rem",
+          }}
+        >
+          Cache Status
+        </div>
+        <button
+          onClick={() => {
+            let goals: DeckGoalWithId[] = [];
+            let updatedGoals: Map<string, DeckGoal> = new Map();
+            selectedDeck.goals.forEach((goal, goalId) => {
+              goals.push({
+                ...goal,
+                goalId,
+              });
+              updatedGoals.set(goalId, {
+                ...goal,
+                dateLastCached: new Date(),
+              });
+            });
+            updateGoalsCache({
+              goals: goals,
+              globalQuery: globalQuery ?? "",
+              deckQuery: selectedDeck.deckQueryFragment,
+            });
+            updateDeck({ ...selectedDeck, goals: updatedGoals });
+          }}
+        >
+          Update All Caches
         </button>
-      </div>
+      </>
+      {goalsObjects}
+      <button
+        onClick={() => {
+          const guid = generateGUID();
+          const newGoal: DeckGoal = {
+            name: "",
+            queryTerms: "",
+            score: 1,
+          };
+
+          let updatedDeckGoals: Map<string, DeckGoal> = new Map(
+            selectedDeck.goals.entries()
+          );
+
+          updatedDeckGoals.set(guid, newGoal);
+
+          updateDeck({ ...selectedDeck, goals: updatedDeckGoals });
+        }}
+        style={{
+          gridColumn: "span 6",
+          margin: "0 40%",
+        }}
+      >
+        +
+      </button>
     </div>
   );
 };

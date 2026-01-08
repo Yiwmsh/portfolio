@@ -113,10 +113,6 @@ export const HelpModal: React.FC<HelpModalProps> = ({}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  React.useEffect(() => {
-    console.log(openSection);
-  }, [openSection]);
-
   return (
     <>
       {/* Open Button */}
