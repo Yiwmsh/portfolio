@@ -1,5 +1,6 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import React from "react";
+import { emailLink, FEEDBACK_EMAIL } from "../../../utils/emailMe";
 import { ScryfallQuerierModal } from "../Components/ScryfallQuerierModal";
 import { SiteModalSettingKey, useSiteSetting } from "../hooks/siteSettings";
 import { Instructions } from "./Instructions";
@@ -147,6 +148,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({}) => {
             {Sections[sectionTitle]}
           </HelpModalSection>
         ))}
+        <a href={emailLink({ address: FEEDBACK_EMAIL })}>Provide Feedback</a>
       </ScryfallQuerierModal>
     </>
   );

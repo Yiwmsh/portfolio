@@ -1,6 +1,7 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
+import { emailMe } from "../utils/emailMe";
 
 export const NAVBAR_HEIGHT_VAR_NAME = "--navbar-height";
 
@@ -18,7 +19,7 @@ const NavbarContainer = styled.div`
   z-index: 2;
 `;
 
-const HOME_PATHS = ["Home", "About"] as const;
+const HOME_PATHS = ["Home", "About", "Contact"] as const;
 
 const PAGE_PATHS = ["Blog"] as const;
 
@@ -30,31 +31,45 @@ const allPaths = PATH_GROUPS.flat();
 
 type SitePath = (typeof PATH_GROUPS)[number][number];
 type Page = {
-  pathNameRegex: RegExp;
+  pathNameRegex?: RegExp;
   display: string;
-  route: string;
+  onClick: () => void;
 };
 
 const Paths: Record<SitePath, Page> = {
   Blog: {
     pathNameRegex: /\/blog($|\/)/gm,
     display: "Blog",
-    route: "/blog",
+    onClick: () => {
+      window.location.assign("/blog");
+    },
   },
   Orrery: {
     pathNameRegex: /\/orrery($|\/)/gm,
     display: "Orrery",
-    route: "/orrery",
+    onClick: () => {
+      window.location.assign("/orrery");
+    },
   },
   About: {
     pathNameRegex: /\/#[bB]io($|\/)/gm,
     display: "About",
-    route: "/#Bio",
+    onClick: () => {
+      window.location.assign("/#Bio");
+    },
   },
   Home: {
     pathNameRegex: /\//,
     display: "Home",
-    route: "/",
+    onClick: () => {
+      window.location.assign("/");
+    },
+  },
+  Contact: {
+    display: "Contact",
+    onClick: () => {
+      emailMe();
+    },
   },
 };
 
@@ -66,7 +81,7 @@ export const Navbar: React.FC = () => {
 
   for (const pathKey in Paths) {
     const path = Paths[pathKey as SitePath];
-    if (pathName.match(path.pathNameRegex)) {
+    if (path.pathNameRegex && pathName.match(path.pathNameRegex)) {
       page = pathKey as SitePath;
       break;
     }
@@ -130,9 +145,9 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ currentPage }) => {
           {i > 0 && <hr />}
           {pathGroup.map((path) => (
             <option
-              onClick={(e) =>
-                window.location.assign(Paths[path as SitePath].route)
-              }
+              onClick={(e) => {
+                Paths[path as SitePath].onClick();
+              }}
               style={{
                 fontSize: "1rem",
               }}
