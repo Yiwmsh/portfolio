@@ -140,7 +140,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   const isMultifaced = isMultiFaced(card);
   const cardFaces = getCardFaces(card);
   const [flipped, setFlipped] = React.useState(false);
-  console.log(card.layout);
 
   const imageUrl = React.useMemo(() => {
     if (isMultifaced) {

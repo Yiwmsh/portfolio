@@ -1,13 +1,9 @@
 import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
-import { motion } from "motion/react";
 import React from "react";
+import { emailMe } from "../utils/emailMe";
 
 export const NAVBAR_HEIGHT_VAR_NAME = "--navbar-height";
-
-const ScreenWidthBreakpoints = {
-  iconsFit: 370,
-};
 
 const NavbarContainer = styled.div`
   background-color: var(${SemanticColors.foreground});
@@ -23,78 +19,57 @@ const NavbarContainer = styled.div`
   z-index: 2;
 `;
 
-const NavbarUL = styled(motion.ul)`
-  grid-column: 3;
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: flex-end;
-  list-style: none;
-  gap: 50px;
-`;
+const HOME_PATHS = ["Home", "About", "Contact"] as const;
 
-const NavbarLI = styled.li`
-  line-height: 40px;
-`;
+const PAGE_PATHS = ["Blog"] as const;
 
-const NavbarLink = styled(motion.a)`
-  font-size: 20px;
-  font-weight: bold;
-  &:visited,
-  &:link {
-    text-decoration: none;
-    color: var(${SemanticColors.text});
-  }
-`;
+const TOOL_PATHS = ["Orrery"] as const;
 
-const WhimsyLink = styled(NavbarLink)`
-  grid-column: 1;
-  font-size: 40px;
-  margin-right: auto;
+const PATH_GROUPS = [HOME_PATHS, PAGE_PATHS, TOOL_PATHS] as const;
 
-  @media screen and (max-width: ${ScreenWidthBreakpoints.iconsFit}px) {
-    font-size: 30px;
-    margin: auto;
-  }
-`;
+const allPaths = PATH_GROUPS.flat();
 
-const NavbarElement: React.FC<{ label: string; href: string }> = ({
-  label,
-  href,
-}) => {
-  return (
-    <NavbarLI>
-      <NavbarLink
-        href={href}
-        whileHover={{
-          color: `var(${SemanticColors.secondary})`,
-        }}
-      >
-        {label}
-      </NavbarLink>
-    </NavbarLI>
-  );
-};
-
-const PATHS = ["Blog", "Orrery"] as const;
-
-type SitePath = (typeof PATHS)[number];
+type SitePath = (typeof PATH_GROUPS)[number][number];
 type Page = {
-  pathNameRegex: RegExp;
+  pathNameRegex?: RegExp;
   display: string;
-  route: string;
+  onClick: () => void;
 };
 
 const Paths: Record<SitePath, Page> = {
   Blog: {
     pathNameRegex: /\/blog($|\/)/gm,
     display: "Blog",
-    route: "/blog",
+    onClick: () => {
+      window.location.assign("/blog");
+    },
   },
   Orrery: {
     pathNameRegex: /\/orrery($|\/)/gm,
     display: "Orrery",
-    route: "/orrery",
+    onClick: () => {
+      window.location.assign("/orrery");
+    },
+  },
+  About: {
+    pathNameRegex: /\/#[bB]io($|\/)/gm,
+    display: "About",
+    onClick: () => {
+      window.location.assign("/#Bio");
+    },
+  },
+  Home: {
+    pathNameRegex: /\//,
+    display: "Home",
+    onClick: () => {
+      window.location.assign("/");
+    },
+  },
+  Contact: {
+    display: "Contact",
+    onClick: () => {
+      emailMe();
+    },
   },
 };
 
@@ -106,7 +81,7 @@ export const Navbar: React.FC = () => {
 
   for (const pathKey in Paths) {
     const path = Paths[pathKey as SitePath];
-    if (pathName.match(path.pathNameRegex)) {
+    if (path.pathNameRegex && pathName.match(path.pathNameRegex)) {
       page = pathKey as SitePath;
       break;
     }
@@ -131,58 +106,57 @@ export const Navbar: React.FC = () => {
 
   React.useEffect(() => {
     setNavbarHeightVariable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, ref.current]);
 
   return (
     <NavbarContainer ref={ref}>
-      <WhimsyLink
-        whileHover={{
-          color: `var(${SemanticColors.secondary})`,
-        }}
-        href="/"
-      >
-        Whimsy
-      </WhimsyLink>
       <div
         style={{
           gridColumn: 2,
         }}
       >
-        {page !== null ? (
-          <motion.ul
-            style={{
-              display: "flex",
-              listStyle: "none",
-              justifyContent: "center",
-              padding: 0,
-            }}
-            layout
-          >
-            <NavbarElement
-              label={Paths[page].display}
-              href={Paths[page].route}
-            />
-          </motion.ul>
-        ) : null}
+        <NavbarDropdown currentPage={page as SitePath} />
       </div>
-      <NavbarUL layout>
-        {page !== "Blog" && (
-          <NavbarElement
-            label="Blog"
-            href={Paths.Blog.route}
-          />
-        )}
-        {page !== "Orrery" && (
-          <NavbarElement
-            label="Orrery"
-            href={Paths.Orrery.route}
-          />
-        )}
-        <NavbarElement
-          label="About"
-          href="/#Bio"
-        />
-      </NavbarUL>
     </NavbarContainer>
+  );
+};
+
+interface NavbarDropdownProps {
+  currentPage: SitePath;
+}
+
+const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ currentPage }) => {
+  return (
+    <select
+      value={currentPage}
+      style={{
+        appearance: "none",
+        border: "none",
+        background: "none",
+        fontSize: "3rem",
+        fontFamily: "inherit",
+        textAlign: "center",
+        lineHeight: "3rem",
+      }}
+    >
+      {PATH_GROUPS.map((pathGroup, i) => (
+        <>
+          {i > 0 && <hr />}
+          {pathGroup.map((path) => (
+            <option
+              onClick={(e) => {
+                Paths[path as SitePath].onClick();
+              }}
+              style={{
+                fontSize: "1rem",
+              }}
+            >
+              {Paths[path as SitePath].display}
+            </option>
+          ))}
+        </>
+      ))}
+    </select>
   );
 };

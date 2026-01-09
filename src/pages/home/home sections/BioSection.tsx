@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import moment from "moment";
 import React from "react";
 import portrait from "../../../resources/portrait.jpg";
+import { emailLink } from "../../../utils/emailMe";
 import { NameContext } from "../../Showcase";
 
 const PortraitOfMe = styled.img`
@@ -153,6 +154,20 @@ export const BioSection: React.FC = () => {
             href="https://www.youtube.com/channel/UCHL1wtFFMlP0X7s8QfZ5ABg"
           />
         </Socials>
+        <CenteredParagraph>
+          <TextContent>
+            Or you can{" "}
+            <a
+              style={{
+                color: `var(${SemanticColors.primary})`,
+              }}
+              href={emailLink()}
+            >
+              email me.
+            </a>
+            .
+          </TextContent>
+        </CenteredParagraph>
       </BioCard>
     </>
   );
