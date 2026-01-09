@@ -1,3 +1,5 @@
+import { Navigate } from "../pages/scryfall querier/utilities/navigate";
+
 export const DEFAULT_CONTACT_EMAIL = "Contact@whimsy.page";
 export const FEEDBACK_EMAIL = "Feedback@whimsy.page";
 
@@ -22,5 +24,5 @@ export const emailMe = ({
   subject,
   message,
 }: EmailProps = {}) => {
-  window.location.assign(emailLink({ address, subject, message }));
+  Navigate(emailLink({ address, subject, message }));
 };

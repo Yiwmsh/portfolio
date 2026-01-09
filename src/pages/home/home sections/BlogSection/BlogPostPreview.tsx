@@ -6,6 +6,7 @@ import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextD
 import { Row } from "../../../../components/Row";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost/BlogPost";
+import { Navigate } from "../../../scryfall querier/utilities/navigate";
 
 const BlogPostPreviewContainer = styled(motion.button)`
   position: relative;
@@ -46,7 +47,7 @@ export const BlogPostPreview: React.FC<{ post: BlogPostProps }> = ({
   return (
     <BlogPostPreviewContainer
       onClick={() => {
-        window.location.assign(`/blog/post/${post.slug}`);
+        Navigate(`/blog/post/${post.slug}`);
       }}
       whileHover={{ scale: 1.05 }}
     >

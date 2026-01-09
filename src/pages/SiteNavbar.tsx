@@ -2,6 +2,7 @@ import { SemanticColors } from "@chrisellis/react-carpentry";
 import styled from "@emotion/styled";
 import React from "react";
 import { emailMe } from "../utils/emailMe";
+import { Navigate } from "./scryfall querier/utilities/navigate";
 
 export const NAVBAR_HEIGHT_VAR_NAME = "--navbar-height";
 
@@ -41,28 +42,28 @@ const Paths: Record<SitePath, Page> = {
     pathNameRegex: /\/blog($|\/)/gm,
     display: "Blog",
     onClick: () => {
-      window.location.assign("/blog");
+      Navigate("/blog");
     },
   },
   Orrery: {
     pathNameRegex: /\/orrery($|\/)/gm,
     display: "Orrery",
     onClick: () => {
-      window.location.assign("/orrery");
+      Navigate("/orrery");
     },
   },
   About: {
     pathNameRegex: /\/#[bB]io($|\/)/gm,
     display: "About",
     onClick: () => {
-      window.location.assign("/#Bio");
+      Navigate("/#Bio");
     },
   },
   Home: {
     pathNameRegex: /\//,
     display: "Home",
     onClick: () => {
-      window.location.assign("/");
+      Navigate("/");
     },
   },
   Contact: {
@@ -138,6 +139,13 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ currentPage }) => {
         fontFamily: "inherit",
         textAlign: "center",
         lineHeight: "3rem",
+        cursor: "pointer",
+      }}
+      onChange={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const path = Paths[e.target.value as SitePath];
+        path.onClick();
       }}
     >
       {PATH_GROUPS.map((pathGroup, i) => (
@@ -145,11 +153,9 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ currentPage }) => {
           {i > 0 && <hr />}
           {pathGroup.map((path) => (
             <option
-              onClick={(e) => {
-                Paths[path as SitePath].onClick();
-              }}
               style={{
                 fontSize: "1rem",
+                cursor: "pointer",
               }}
             >
               {Paths[path as SitePath].display}

@@ -1,6 +1,7 @@
 import React from "react";
 import { removeTags } from "../../../../components/BlogPostTools";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
+import { Navigate } from "../../../scryfall querier/utilities/navigate";
 import { displayTimestampAsDate } from "../BlogPost/BlogPost";
 import {
   BlogPostAuthors,
@@ -19,7 +20,7 @@ export const BlogSnippet: React.FC<{ post: BlogPostProps }> = ({ post }) => {
   return (
     <SnippetContainer
       onClick={() => {
-        window.location.assign(`/blog/post/${post.slug}`);
+        Navigate(`/blog/post/${post.slug}`);
       }}
     >
       <SnippetContent>

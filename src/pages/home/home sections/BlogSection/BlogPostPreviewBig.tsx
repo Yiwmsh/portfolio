@@ -5,6 +5,7 @@ import React from "react";
 import { RichTextDisplay } from "../../../../components/RichTextEditor/RichTextDisplay";
 import { BlogPostProps } from "../../../admin/Blog/blogPostProps";
 import { fancyDisplayTimestamp } from "../../../blog/BlogPost/BlogPost/BlogPost";
+import { Navigate } from "../../../scryfall querier/utilities/navigate";
 import { BottomBlur } from "./BlogPostPreview";
 
 const BigPreviewContainer = styled(motion.button)`
@@ -50,7 +51,7 @@ export const BlogPostBigPreview: React.FC<{ post?: BlogPostProps }> = ({
       {post ? (
         <BigPreviewContainer
           onClick={() => {
-            window.location.assign(`/blog/post/${post.slug}`);
+            Navigate(`/blog/post/${post.slug}`);
           }}
         >
           <TextContent>
